@@ -11,7 +11,7 @@ int main()
 {
     optimize();
 
-    long long a, b;     /// check what is the a,b range.
+    long long a, b;
     cin >> a >> b;
 
     cout << a << " " << "+" << " " << b << " " << "=" << " " << a + b << endl;
