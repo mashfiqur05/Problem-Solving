@@ -29,7 +29,7 @@
             prefixsum[i] = prefixsum[i-1] + arr[i];
         }
 
-        for (int i = 1; i <= q; i++)
+        while (q--)
         {
             int a, b;
             cin >> a >> b;
@@ -37,6 +37,7 @@
             cout << sum << endl; 
         }
         
+        /// O(n)
     }
 
     int main()
