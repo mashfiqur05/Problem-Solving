@@ -72,7 +72,8 @@
     "cmath": "cpp",
     "ostream": "cpp",
     "complex": "cpp",
-    "cstdlib": "cpp"
+    "cstdlib": "cpp",
+    "random": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
