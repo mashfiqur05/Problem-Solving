@@ -50,7 +50,6 @@ int main()
 
                 if (same >= 2 || notsame == 3)
                 {
-                    //cout << i << ' ' <<j << endl;
                     cout << "YES";
                     return 0;
                 }
