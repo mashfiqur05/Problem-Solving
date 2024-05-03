@@ -80,7 +80,9 @@
     "scoped_allocator": "cpp",
     "tuple": "cpp",
     "type_traits": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "typeindex": "cpp",
+    "typeinfo": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
