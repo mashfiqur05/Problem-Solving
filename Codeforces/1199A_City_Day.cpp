@@ -26,41 +26,40 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
+    int n, x, y;
+    cin >> n >> x >> y;
+    vector<int> v(n+1);
+    for (int i = 1; i <= n; i++) cin >> v[i];
+    int ans = n;
 
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    for (int i = 1; i <= n; i++)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
+        bool f = 1;
+        for (int j = i-1; j >= i-x && j >= 1; j--)
         {
-            b /= 2;
-            ans.push_back (b);
+            if (v[i] >= v[j])
+            {
+                f = 0;
+                break;
+            }
         }
-        else if (last_digit == 1)
+        for (int j = i+1; j <= i+y && j <= n; j++)
         {
-            b /= 10;
-            ans.push_back (b);
+            if (v[i] >= v[j])
+            {
+                f = 0;
+                break;
+            }
         }
-        else 
+
+        if (f)
         {
-            f = 0;
+            ans = i;
             break;
         }
     }
 
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    cout << ans << endl;
 }
 
 

@@ -43,34 +43,42 @@ int32_t main()
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        int n, m, q;
+        cin >> n >> m >> q;
+        vector<int> a(n), b(m);
+        for (int i = 0; i < n; i++) cin >> a[i];    
+        for (int i = 0; i < m; i++) cin >> b[i];
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        int id = 0;
+        vector<int> reform_b;
+        vector<bool> ok (n+1, 0);
+        
+        for (int i = 0; i < m; i++)
         {
-            if (cur_sum + v[j] <= t)
+            if (!ok[b[i]]) 
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
+                reform_b.push_back (b[i]);
+                ok[b[i]] = 1;
+                id++;
             }
         }
 
-        cout << ans << endl;
+        bool f = 1;
+        // dbg (reform_b);
+        for (int i = 0; i < n && i < reform_b.size(); i++)
+        {
+            if (a[i] != reform_b[i]) 
+            {
+                f = 0;
+                break;
+            }
+        }
+
+        if (f) cout << "YA" << endl;
+        else cout << "TIDAK" << endl;
     }
 
     return 0;

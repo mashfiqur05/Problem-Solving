@@ -23,44 +23,46 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPossible (vector<int> &a, int x, int h)
+{
+    int total = 0;
+    for (int i = 0; i < a.size()-1; i++)
+    {
+        total += min (a[i+1] - a[i], x);
+    }
+
+    total += x;
+
+    return total >= h;
+}
+
 
 void solve (int testCase)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
+    int n, h;
+    cin >> n >> h;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    sort (all (v));
+
+    int ans = h;
+
+    int l = 1, r = h;
+
+    while (l <= r)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
+        int mid =  l + (r - l) / 2;
+
+        if (isPossible (v, mid, h))
         {
-            b /= 2;
-            ans.push_back (b);
+            ans = mid;
+            r = mid - 1;
         }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
+        else l = mid+1;
     }
 
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    cout << ans << endl;
 }
 
 
@@ -70,7 +72,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

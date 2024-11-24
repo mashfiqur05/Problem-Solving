@@ -43,34 +43,75 @@ int32_t main()
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
+        int n;
+        cin >> n;
         vector<int> v(n);
         for (int i = 0; i < n; i++) cin >> v[i];
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        int mn = *min_element (all (v));
+        auto pntr = min_element (all (v));
+        int id = distance (v.begin(), pntr);
+        // dbg (id);
+
+        if (mn == 1)
         {
-            if (cur_sum + v[j] <= t)
+            bool ok = 0;
+            for (int i = 0; i < n; i++)
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
+                if (v[i] > 1) {ok = 1; break;}
             }
-            else 
+
+            if (ok) 
             {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
+                cout << -1 << endl;
+                continue;
+            }
+        }    
+
+        bool f1 = 1;
+        for (int i = 0; i < n; i++)
+        {
+            if (v[i] != mn) 
+            {
+                f1 = 0;
+                break;
             }
         }
+        if (n == 1 || f1) 
+        {
+            cout << 0 << endl;
+            continue;
+        }
+        vector<pair<int, int>> ans;
 
-        cout << ans << endl;
+        int i = 0;
+        while (i < n)
+        {
+            // if (v[i] == mn) continue;
+
+            while (v[i] > mn)
+            {
+                ans.push_back ({i+1, id+1});
+                v[i] = ceil ((1.00 * v[i]) / (mn * 1.00));
+            }
+
+            if (v[i] < mn)
+            {
+                // dbg (mn, id, v[i], i);
+                mn = v[i];
+                id = i;
+                i = 0;
+                // dbg (mn, id, i);
+            }
+            else i++;
+        }
+
+        // dbg (v);
+        cout << ans.size() << endl;
+        for (auto u : ans) cout << u.first << " " << u.second << endl;
     }
 
     return 0;

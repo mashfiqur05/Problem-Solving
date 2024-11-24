@@ -26,41 +26,31 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    int n, a, b;
+    cin >> n >> a >> b;
+    string s;
+    cin >> s;
+    int x = 0, y = 0;
+    for (int it = 0; it < 2000; it++)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
+        for (int i = 0; i < n; i++)
         {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
+            if (s[i] == 'N')
+                y++;
+            else if (s[i] == 'S')
+                y--;
+            else if (s[i] == 'E')
+                x++;
+            else
+                x--;
+            if (x == a and y == b)
+            {
+                cout << "YES\n";
+                return;
+            }
         }
     }
-
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    cout << "NO\n";
 }
 
 
@@ -70,7 +60,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

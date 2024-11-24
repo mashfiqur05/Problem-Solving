@@ -9,6 +9,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -20,7 +21,7 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-#define MOD 1000000007
+const int MOD = 1e9+7;
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -41,36 +42,27 @@ ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 int32_t main()
 {
     fastio();
+    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
+        int n, a, k, p;
+        cin >> n >> a >> k >> p;
         vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        v[0] = a;
+        k %= p;
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        for (int i = 1; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            v[i] = (v[i-1] * k) % p;
         }
-
-        cout << ans << endl;
+        // dbg(v);
+        partial_sort (v.begin (), v.begin () + 5, v.begin() + n, greater<int>());
+        // sort (rall (v));
+        
+        for (int i = 4; i >= 0; i--) cout << v[i] << " "; cout << endl;
     }
 
     return 0;

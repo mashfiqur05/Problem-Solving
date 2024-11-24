@@ -41,36 +41,28 @@ ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 int32_t main()
 {
     fastio();
+    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
-
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        int n;
+        cin >> n;
+        int ans = 0, res = 0, id = 1;
+        while (true)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
-        }
+            int tmp = 2 * id - 1;
+            if (ans & 1) ans += tmp;
+            else ans -= tmp;
 
-        cout << ans << endl;
+            if (abs (ans) > n) break;
+            // dbg (ans, tmp, id);
+            id++;
+        }
+        // dbg (id);
+        if (id & 1) cout << "Sakurako" << endl;
+        else cout << "Kosuke" << endl;
     }
 
     return 0;

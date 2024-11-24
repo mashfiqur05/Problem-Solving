@@ -37,40 +37,41 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
+bool cmp (pair<int, int> &a, pair<int, int> &b)
+{
+    int x = min (a.first, a.second);
+    int y = min (b.first, b.second);
+    int p = max (a.first, a.second);
+    int q = max (b.first, b.second);
+    if (x == y) return p < q;
+    return x < y; 
+}
 
 int32_t main()
 {
     fastio();
+    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
-
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        int n;
+        cin >> n;
+        vector<pair<int, int>> v(n);
+        for (int i = 0; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            cin >> v[i].first >> v[i].second;
         }
 
-        cout << ans << endl;
+        sort (all(v), cmp);
+        // dbg (v);
+
+        for (int i = 0; i < n; i++)
+        {
+            cout << v[i].first << " " << v[i].second << " ";
+        }
+        cout << endl;
     }
 
     return 0;

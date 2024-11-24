@@ -43,34 +43,28 @@ int32_t main()
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        ll k;
+        cin >> k;
+        ll tmp = (int)sqrt(k);
+        // dbg (tmp);
+        ll ans = k + tmp;
+        
+        // for (ll i = k+1; i <= ans; i++)
+        // {
+        //     if (((int)sqrt(i) * (int)sqrt(i)) == i) ans++;
+        // }
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        ll tmp2 = sqrt (ans);
+        if (tmp2 == tmp) cout << ans << endl;
+        else 
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            ans += (tmp2 - tmp);
+            if ((int)sqrt(ans) != tmp2) ans++;
+            cout << ans << endl;
         }
-
-        cout << ans << endl;
     }
 
     return 0;

@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -21,59 +20,57 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-void solve (int testCase)
+int digitSum (int n)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    int ret = 0;
+    while (n)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
+        ret += (n % 10);
+        n /= 10;
     }
 
-    if (b != a) f = 0;
+    return ret;
+}
 
-    reverse (all (ans));
-    if (f)
+ll power (int n, int x)
+{
+    ll ret = 1;
+    for (int i = 1; i <= x; i++)
     {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
+        ret *= n;
     }
-    else cout << "NO" << endl;
+
+    return ret;
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        int a, b, c;
+        cin >> a >> b >> c;
+
+        vector<int> ans;
+        for (int i = 1; i <= 81; i++)
+        {
+            ll tmp = b * power (i, a) + c;
+            
+            if (digitSum (tmp) == i && tmp < 1e9) ans.push_back (tmp);
+        }
+
+        sort (all (ans));
+        cout << ans.size() << endl;
+        for (auto u : ans) cout << u << " ";
+        cout << endl;
     }
 
     return 0;

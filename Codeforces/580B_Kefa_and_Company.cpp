@@ -37,6 +37,11 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
+bool cmp (pair<int, int> &a, pair<int, int> &b)
+{
+    if (a.first == b.first) return a.second > b.second;
+    else return a.first > b.first;
+}
 
 int32_t main()
 {
@@ -46,27 +51,32 @@ int32_t main()
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        int n, d;
+        cin >> n >> d;
+        vector<pair<int, int>> v(n);
+        for (int i = 0; i < n; i++) cin >> v[i].first >> v[i].second;
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        sort (v.begin(), v.end(), cmp);
+        // dbg (v);
+        vector<int> prefix (n+1, 0);
+
+        ll ans = 0, res = 0;
+
+        for (int i = 0, j = 0; i < n && j < n;)
         {
-            if (cur_sum + v[j] <= t)
+            int stTk = v[i].first, endTk = v[j].first;
+            ll f1 = v[i].second, f2 = v[j].second;
+
+            if (abs (stTk - endTk) < d)
             {
-                cur_sum += v[j];
+                res += f2;
+                ans = max (ans, res);
                 j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
             }
             else 
             {
-                cur_sum -= v[i];
+                res -= f1;
                 i++;
-                // dbg(cur_sum, i, j);
             }
         }
 

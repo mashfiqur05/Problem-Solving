@@ -55,65 +55,59 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 
 // ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-int n, m;
 const int MX = 1e5+123;
-vector<int> adj[MX];
-bool vis[MX];
-bool cat[MX];
-int consecutive_cat [MX];
-int ans = 0;
-
-void dfs (int vertex)
-{
-    vis[vertex] = 1;
-    if (consecutive_cat[vertex] > m) return;
-    
-    if (adj[vertex].size() == 1 && vertex != 1) ans++;  /// reached at leaf.
-
-    for (auto child : adj[vertex])
-    {
-        if (vis[child]) continue;
-
-        if (cat[child])
-        {
-            consecutive_cat[child] = consecutive_cat[vertex] + 1;
-            // cout << vertex << " " << consecutive_cat[vertex] << " " << child << " " << consecutive_cat[child] << endl;
-        }
-        
-        dfs (child);
-    }
-}
 
 int32_t main() {
 //#ifndef ONLINE_JUDGE
     //freopen("Error.txt", "w", stderr);
 //#endif
 
+    fastio();
+
     int testcases = 1;
     //cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        cin >> n >> m;
-        for (int i = 1; i <= n; i++)
+        int a, b, c, x, y, z;
+        cin >> a >> b >> c >> x >> y >> z;
+
+        int need = 0;
+        if (x > a) need += (x-a);
+        if (y > b) need += (y-b);
+        if (z > c) need += (z-c);
+        // debug (need);
+        int extra = 0;
+        if (a > x)
         {
-            int x;
-            cin >> x;
-            if (x) cat[i] = 1;
+            need -= ((a - x)/2);
+            if (a & 1) extra++;
         }
-
-        for (int i = 0; i < n-1; i++)
+        // debug (need);
+        // debug (extra);
+        if (b > y)
         {
-            int a, b;
-            cin >> a >> b;
-            adj[a].push_back (b);
-            adj[b].push_back (a);
+            need -= ((b - y)/2);
+            if (b & 1) extra++;
         }
+        // debug (need);
+        // debug (extra);
+        if (c > z)
+        {
+            need -= ((c - z)/2);
+            if (c & 1) extra++;
+        }
+        // debug (need);
+        // debug (extra);
 
-        if (cat[1]) consecutive_cat[1] = 1;
+        need -= extra / 3;
 
-        dfs (1);
+        if (need <= 0)
+        {
+            cout << "Yes" << endl;
+            return 0;
+        }
+        else cout << "No" << endl;
 
-        cout << ans << endl;
     }
     
     return 0;

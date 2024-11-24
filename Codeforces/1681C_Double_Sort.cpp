@@ -55,65 +55,70 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 
 // ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-int n, m;
 const int MX = 1e5+123;
-vector<int> adj[MX];
-bool vis[MX];
-bool cat[MX];
-int consecutive_cat [MX];
-int ans = 0;
-
-void dfs (int vertex)
-{
-    vis[vertex] = 1;
-    if (consecutive_cat[vertex] > m) return;
-    
-    if (adj[vertex].size() == 1 && vertex != 1) ans++;  /// reached at leaf.
-
-    for (auto child : adj[vertex])
-    {
-        if (vis[child]) continue;
-
-        if (cat[child])
-        {
-            consecutive_cat[child] = consecutive_cat[vertex] + 1;
-            // cout << vertex << " " << consecutive_cat[vertex] << " " << child << " " << consecutive_cat[child] << endl;
-        }
-        
-        dfs (child);
-    }
-}
 
 int32_t main() {
 //#ifndef ONLINE_JUDGE
     //freopen("Error.txt", "w", stderr);
 //#endif
 
+    fastio();
+
     int testcases = 1;
-    //cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        cin >> n >> m;
-        for (int i = 1; i <= n; i++)
+        int n;
+        cin >> n;
+        vector<int> a(n), b(n);
+
+        for (int i = 0; i < n; i++) cin >> a[i];
+        for (int i = 0; i < n; i++) cin >> b[i];
+
+        vector<int> c = a;
+        vector<int> d = b;
+
+        sort (all (c));
+        sort (all (d));
+        vector<pair<int, int>> ans;
+
+        bool isPossible = 1;
+
+        for (int i = 0; i < n; i++)
         {
-            int x;
-            cin >> x;
-            if (x) cat[i] = 1;
+            int sorted_a = c[i], sorted_b = d[i];
+            bool f = 0;
+            for (int j = i; j < n; j++)
+            {
+                if (a[j] == sorted_a && b[j] == sorted_b)
+                {
+                    a[j] = a[i];
+                    a[i] = sorted_a;
+                    b[j] = b[i];
+                    b[i] = sorted_b;
+                    if (i != j)ans.push_back ({j+1, i+1});
+                    // debug (a);
+                    // debug (b);
+                    f = 1;
+                    break;
+                }
+            }
+            if (!f)
+            {
+                isPossible = 0;
+                break;
+            }
         }
 
-        for (int i = 0; i < n-1; i++)
+        if (!isPossible) cout << -1 << endl;
+        else
         {
-            int a, b;
-            cin >> a >> b;
-            adj[a].push_back (b);
-            adj[b].push_back (a);
+            cout << ans.size() << endl;
+            for (auto val : ans)
+            {
+                cout << val.first << ' ' << val.second << endl;
+            }
         }
-
-        if (cat[1]) consecutive_cat[1] = 1;
-
-        dfs (1);
-
-        cout << ans << endl;
     }
     
     return 0;

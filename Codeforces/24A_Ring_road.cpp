@@ -19,48 +19,49 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n;
+map<pair<int, int>, int> cnt;
+vector<int> undirect[MX];
+bool vis[MX];
+int cost1 = 0;
+
+void dfs (int vertex)
+{
+    vis[vertex] = 1;
+
+    for (int i = 0; i < undirect[vertex].size(); i++)
+    {
+        if (!vis[undirect[vertex][i]])
+        {
+            cost1 += cnt[{vertex, undirect[vertex][i]}];
+            dfs (undirect[vertex][i]);
+        }
+    }
+}
 
 void solve (int testCase)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    cin >> n;
+    int total = 0;
+    for (int i = 0; i < n; i++)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
+        int a, b, c;
+        cin >> a >> b >> c;
+        undirect[a].push_back (b);
+        undirect[b].push_back (a);
+
+        cnt[{a, b}] = c;
+        cnt[{b, a}] = 0;
+        total += c;
     }
 
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    dfs (1);
+    cost1 += cnt[{undirect[1][1], 1}];
+    cout << min (cost1, total-cost1) << endl;
 }
 
 

@@ -21,6 +21,7 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 #define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,6 +36,7 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
+
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
 
@@ -43,31 +45,37 @@ int32_t main()
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        int n;
+        cin >> n;
+        vector<pair<int, int>> v;
+        unordered_map<int, int> freq0, freq1;
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        for (int i = 0; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
+            int a, b;
+            cin >> a >> b;
+            if (b == 0) freq0[a]++;
+            else freq1[a]++;
+        }
+
+        // dbg (freq0, freq1);
+        ll ans = 0;
+        for (auto u : freq1)
+        {
+            if (freq0[u.first])
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
+                ans += (n-2);
             }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            if (freq0[u.first-1] && freq0[u.first+1] && u.second) ans++;
+            // dbg(u, ans);
+        }
+        for (auto u : freq0)
+        {
+            if (freq1[u.first-1] && freq1[u.first+1] && u.second) ans++;
+            // dbg(u, ans);
         }
 
         cout << ans << endl;

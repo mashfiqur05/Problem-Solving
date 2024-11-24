@@ -23,45 +23,7 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-
-void solve (int testCase)
-{
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
-    {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
-}
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
 
 int32_t main()
@@ -70,10 +32,33 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        ll n, k;
+        cin >> n >> k;
+
+        n %= MOD;
+        if (k == 1)
+        {
+            cout << n << endl;
+            continue;
+        }
+
+        int a = 1, b = 1, id = 2;
+        while (a)
+        {
+            int next = (a + b) % k;
+            id++;
+            if (next == 0)
+            {
+                cout << (id % MOD * n % MOD) % MOD << endl;
+                break;
+            }
+
+            a = b;
+            b = next;
+        }
     }
 
     return 0;

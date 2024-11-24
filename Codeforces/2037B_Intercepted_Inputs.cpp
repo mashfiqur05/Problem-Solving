@@ -26,41 +26,39 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
+    int k;
+    cin >> k;
+    vector<int> v(k);
+    map<int, int> cnt;
+    for (int i = 0; i < k; i++)
+    {
+        cin >> v[i];
+        cnt[v[i]]++;
+    } 
+
+    int need = k - 2;
     int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    for (auto u : cnt)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
+        if (need % u.first == 0)
         {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
+            int another = need / u.first;
+            if (another == u.first && cnt[u.first] > 1)
+            {
+                a = u.first;
+                b = another;
+                break;
+            }
+            else if (cnt[another])
+            {
+                a = u.first;
+                b = another;
+                break;
+            }
         }
     }
 
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    cout << a << ' ' << b << endl;
 }
 
 
@@ -70,7 +68,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

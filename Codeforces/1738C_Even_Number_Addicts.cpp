@@ -21,6 +21,7 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 #define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -43,34 +44,34 @@ int32_t main()
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
+        int n;
+        cin >> n;
         vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
-
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        int odd = 0, even = 0;
+        for (int i = 0; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            cin >> v[i];
+            if (v[i] & 1) odd++;
+            else even++;
+        }     
+
+        odd %= 4, even %= 2;
+
+        bool f = 1;
+        if (even)
+        {
+            if (odd == 2) f = 0;
+        }
+        else 
+        {
+            if (odd == 1 || odd == 2) f = 0;
         }
 
-        cout << ans << endl;
+        if (f) cout << "Alice\n";
+        else cout << "Bob\n";
     }
 
     return 0;

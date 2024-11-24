@@ -43,35 +43,31 @@ int32_t main()
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
-
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        int n;
+        cin >> n;
+        vector<int> v;
+        for (int i = 0; i < n; i++) 
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            int x;
+            cin >> x;
+            v.push_back (x);
         }
 
-        cout << ans << endl;
-    }
+        int mx = *max_element (all (v));
+
+        sort (all (v));
+
+        for (int i = 0; i < n-1; i++)
+        {
+            v[i+1] = (v[i] + v[i+1]) / 2;
+        }
+        
+        cout << v[n-1] << endl;
+        
+    } 
 
     return 0;
 }

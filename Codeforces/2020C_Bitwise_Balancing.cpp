@@ -21,6 +21,7 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 #define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -37,40 +38,81 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
+string decToBinary(ll n)
+{
+
+    string ret = "";
+    for (int i = 61; i >= 0; i--) 
+    {
+        int k = n >> i;
+        if (k & 1) ret += "1";
+        else ret += "0";
+    }
+
+    return ret;
+}
+
+long long binaryToDecimal(const string& binaryStr) {
+    long long decimalValue = 0;
+    int length = binaryStr.length();
+
+    for (int i = 0; i < length; i++) {
+        if (binaryStr[i] == '1') {
+            decimalValue += 1LL << (length - 1 - i); // 1 shifted by (position from the right)
+        }
+    }
+    return decimalValue;
+}
 
 int32_t main()
 {
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        ll x, y, z;
+        cin >> x >> y >> z;
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        string b = decToBinary (x), c = decToBinary (y), d = decToBinary (z);
+
+        // dbg (b, c, d);        
+
+        string ans = "";
+        bool ok = 0;
+        for (int i = 0; i < d.size(); i++)
         {
-            if (cur_sum + v[j] <= t)
+            ll bit_b = b[i] - '0';
+            ll bit_c = c[i] - '0';
+            ll bit_d = d[i] - '0';
+
+            if ((bit_b && (!bit_c) && (!bit_d)) || ((!bit_b) && bit_c && bit_d))
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
+                ok = 1;
+                break;
             }
-            else 
+            if (bit_b && bit_c)
             {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
+                if (bit_d) ans += "0";
+                else ans += "1";
             }
+            else
+            {
+                if (!bit_d) ans += "0";
+                else ans += "1";
+            }
+            // dbg(ans);
         }
 
-        cout << ans << endl;
+        if (ok)
+        {
+            cout << -1 << endl;
+            continue;
+        }
+        // dbg(b, c, d, ans);
+
+        cout << binaryToDecimal(ans) << endl;
     }
 
     return 0;

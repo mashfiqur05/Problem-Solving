@@ -37,40 +37,32 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
+int32_t main() {
+    ll testcases;
+    cin >> testcases;
 
-int32_t main()
-{
-    fastio();
-
-    int testcases = 1;
-    // cin >> testcases;
-    for (int tt = 1; tt <= testcases; tt++)
+    for (ll tt = 1; tt <= testcases; tt++) 
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        ll n, q;
+        cin >> n >> q;
+        vector<ll> v(n+1);
+		for(ll i = 1; i <= n; i++) cin >> v[i];\
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+		unordered_map<ll, ll> cnt;
+
+        for (int i = 1; i <= n; i++)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            cnt[i * (n-i+1)-1]++;
+            cnt[i*(n-i)] += v[i+1] - v[i] - 1;
         }
-
-        cout << ans << endl;
+    
+        while (q--)
+        {
+            ll a;
+            cin >> a;
+            cout << cnt[a] << ' ';
+        }
+        cout << endl;
     }
 
     return 0;

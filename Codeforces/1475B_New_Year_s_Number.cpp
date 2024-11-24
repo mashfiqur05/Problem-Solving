@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -19,61 +18,37 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e6+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n;
+int dp[MX];
 
-void solve (int testCase)
+bool isPossible (int n)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
+    if (n == 0) return true;
+    if (n < 0) return false;
 
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
-    {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
-    }
+    if (dp[n] != -1) return dp[n];
 
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    return dp[n] = (isPossible (n-2020) || isPossible(n-2021));
 }
-
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
+    mem (dp, -1);
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        cin >> n;
+
+        if (isPossible(n)) cout << "YES" << endl;
+        else cout << "NO" << endl;
     }
 
     return 0;

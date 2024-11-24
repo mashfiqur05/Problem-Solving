@@ -46,31 +46,34 @@ int32_t main()
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
+        ll n;
+        cin >> n;
         vector<int> v(n);
         for (int i = 0; i < n; i++) cin >> v[i];
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        ll sum = accumulate (all (v), 0LL);
+        ll mx = *max_element (all (v));
+        ll l = 0, r = 1e10, ans = 0;
+        // dbg (sum);
+        while (l <= r)
         {
-            if (cur_sum + v[j] <= t)
+            ll mid = l + (r - l) / 2;
+            // dbg (l, r, mid);
+            ll total = mid * (n-1);
+            if (total > sum)
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
+                ans = mid;
+                r = mid-1;
             }
-            else 
+            else if (total == sum)
             {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
+                ans = mid;
+                break;
             }
+            else l = mid+1;
         }
 
-        cout << ans << endl;
+        cout << max (ans, mx) << endl;
     }
 
     return 0;

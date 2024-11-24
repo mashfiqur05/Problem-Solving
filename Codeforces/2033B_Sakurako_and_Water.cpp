@@ -36,40 +36,43 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#define dbg(args...)
 
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
-
+int v[505][505];
 
 int32_t main()
 {
     fastio();
+    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        int n;
+        cin >> n;
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        for (int i = 0; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
+            for (int j = 0; j < n; j++)
+                cin >> v[i][j];
+        }
+        vector<int> new_diagonal(2 * n, INT_MAX);
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
+                int id = i - j + n;
+                new_diagonal[id] = min(new_diagonal[id], v[i][j]);
             }
         }
 
+        ll ans = 0;
+        for (int i = 0; i < new_diagonal.size(); i++)
+        {
+            if (new_diagonal[i] < 0)
+            {
+                ans -= new_diagonal[i];
+            }
+        }
         cout << ans << endl;
     }
 

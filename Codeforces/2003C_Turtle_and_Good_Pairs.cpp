@@ -55,63 +55,43 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 
 // ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-int n, m;
 const int MX = 1e5+123;
-vector<int> adj[MX];
-bool vis[MX];
-bool cat[MX];
-int consecutive_cat [MX];
-int ans = 0;
-
-void dfs (int vertex)
-{
-    vis[vertex] = 1;
-    if (consecutive_cat[vertex] > m) return;
-    
-    if (adj[vertex].size() == 1 && vertex != 1) ans++;  /// reached at leaf.
-
-    for (auto child : adj[vertex])
-    {
-        if (vis[child]) continue;
-
-        if (cat[child])
-        {
-            consecutive_cat[child] = consecutive_cat[vertex] + 1;
-            // cout << vertex << " " << consecutive_cat[vertex] << " " << child << " " << consecutive_cat[child] << endl;
-        }
-        
-        dfs (child);
-    }
-}
 
 int32_t main() {
 //#ifndef ONLINE_JUDGE
     //freopen("Error.txt", "w", stderr);
 //#endif
 
+    fastio();
+
     int testcases = 1;
-    //cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        cin >> n >> m;
-        for (int i = 1; i <= n; i++)
+        int n;
+        string s;
+        cin >> n >> s;
+
+        sort (all (s));
+        string ans = "";
+        int st = 0, last = n-1;
+
+        while (st <= last)
         {
-            int x;
-            cin >> x;
-            if (x) cat[i] = 1;
+            if (st != last)
+            {
+                ans += s[st];
+                st++;
+                ans += s[last];
+                last--;
+            }
+            else 
+            {
+                ans += s[st];
+                st++;
+                last--;
+            }
         }
-
-        for (int i = 0; i < n-1; i++)
-        {
-            int a, b;
-            cin >> a >> b;
-            adj[a].push_back (b);
-            adj[b].push_back (a);
-        }
-
-        if (cat[1]) consecutive_cat[1] = 1;
-
-        dfs (1);
 
         cout << ans << endl;
     }

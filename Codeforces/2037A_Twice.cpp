@@ -26,41 +26,23 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    map<int, int> cnt;
+    for (int i = 0; i < n; i++)
     {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
+        cin >> v[i];
+        cnt[v[i]]++;
     }
 
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
+    int ans = 0;
+    for (auto u : cnt)
     {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
+        ans += (u.second / 2);
     }
-    else cout << "NO" << endl;
+
+    cout << ans << endl;
 }
 
 
@@ -70,7 +52,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

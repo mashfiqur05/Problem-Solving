@@ -36,38 +36,72 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#define dbg(args...)
 
 ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n;
 
+bool isValid (int x, int y)
+{
+    return (x >= 0 && x <= 1 && y >= 0 && y <= n);
+}
 
 int32_t main()
 {
     fastio();
+    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
-
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        cin >> n;
+        string s[2];
+        cin >> s[0] >> s[1];
+        vector<pair<int, int>> v;
+        for (int i = 0; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
+            if (s[0][i] == 'A') v.push_back ({0, i});
+            if (s[1][i] == 'A') v.push_back ({1, i});
+        }
+        vector<vector<bool>> f(2, vector<bool> (n, false));
+
+        sort (all (v));
+        // dbg(v);
+        int ans = 0;
+        for (int i = 0; i < v.size(); i++)
+        {   
+            int x = v[i].first, y = v[i].second;
+            if (f[x][y]) continue;  
+
+            if (isValid(x + 1, y) && s[x + 1][y] == 'A' && !f[x+1][y]) 
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
+                f[x][y] = true;
+                f[x + 1][y] = true;
+                ans++;
             }
-            else 
+            else if (isValid(x - 1, y) && s[x - 1][y] == 'A' && !f[x-1][y]) 
             {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
+                f[x][y] = true;
+                f[x - 1][y] = true;
+                ans++;
             }
+            else if (isValid(x, y + 1) && s[x][y + 1] == 'A' && !f[x][y+1]) 
+            {
+                f[x][y] = true;
+                f[x][y + 1] = true;
+                ans++;
+            }
+            else if (isValid(x, y - 1) && s[x][y - 1] == 'A' && !f[x][y-1]) 
+            {
+                f[x][y] = true;
+                f[x][y - 1] = true;
+                ans++;
+            }
+            else if (isValid(x, y+2) && s[x][y+2] == 'A' && !f[x][y+2]) 
+            {
+                f[x][y] = true;
+                f[x][y+2] = true;
+                ans++;
+            }
+            // dbg (f);
         }
 
         cout << ans << endl;

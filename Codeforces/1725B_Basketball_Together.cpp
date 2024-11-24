@@ -46,28 +46,23 @@ int32_t main()
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
+        ll n, d;
+        cin >> n >> d;
+        vector<ll> v(n);
         for (int i = 0; i < n; i++) cin >> v[i];
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        sort (all (v));
+        // dbg (v);
+        int l = 0, r = n-1;
+        ll ans = 0;
+        while (l <= r)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+            int need = ceil ((1.00*(d+1)) / v[r]);
+            // dbg (l, r, need);
+            if ((v[r] * need > d) && need <= (r-l+1)) ans++;
+            // dbg(ans);
+            l += (need -1);
+            r--;
         }
 
         cout << ans << endl;

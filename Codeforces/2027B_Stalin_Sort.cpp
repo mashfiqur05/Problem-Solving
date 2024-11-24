@@ -41,33 +41,27 @@ ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 int32_t main()
 {
     fastio();
+    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
+        int n;
+        cin >> n;
         vector<int> v(n);
         for (int i = 0; i < n; i++) cin >> v[i];
-
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        
+        int ans = INT_MAX;
+        for (int i = 0; i < n; i++)
         {
-            if (cur_sum + v[j] <= t)
+            int res = 0;
+            for (int j = i+1; j < n; j++)
             {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
+                if (v[j] > v[i]) res++;
             }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
+
+            ans = min (ans, (res+i));
         }
 
         cout << ans << endl;

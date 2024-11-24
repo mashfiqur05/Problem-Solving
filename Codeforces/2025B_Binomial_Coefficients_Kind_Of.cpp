@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -19,50 +18,20 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e5+5;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int dp[MX], n[MX], k[MX];
 
-void solve (int testCase)
+int fun (int k)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
+    if (k == 0) return 1;
+    if (dp[k] != -1) return dp[k];
 
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
-    {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    return dp[k] = (fun (k-1) % MOD+ fun (k-1) % MOD) % MOD;
 }
-
 
 int32_t main()
 {
@@ -73,7 +42,17 @@ int32_t main()
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        mem (dp, -1);
+        int t;
+        cin >> t;
+        for (int i = 0; i < t; i++) cin >> n[i];
+        for (int i = 0; i < t; i++) cin >> k[i];
+
+        for (int i = 0; i < t; i++)
+        {
+            if (n[i] == k[i]) cout << 1 << endl;
+            else cout << fun (k[i]) << endl;
+        }
     }
 
     return 0;

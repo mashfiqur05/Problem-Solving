@@ -21,6 +21,9 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 #define MOD 1000000007
+
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,42 +38,52 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
-
 
 int32_t main()
 {
     fastio();
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, t;
-        cin >> n >> t;
-        vector<int> v(n);
-        for (int i = 0; i < n; i++) cin >> v[i];
+        int n, m, query;
+        cin >> n >> m >> query;
+        vector<int> teacher(m);
 
-        int ans = 0;
-        int cur_sum = 0;
-        for (int i = 0, j = 0; j < n && i < n;)
+        for (int i = 0; i < m; i++) cin >> teacher[i];
+        sort (all (teacher));
+
+        while (query--)
         {
-            if (cur_sum + v[j] <= t)
-            {
-                cur_sum += v[j];
-                j++;
-                ans = max (ans, j - i);
-                // dbg(cur_sum, i, j);
-            }
-            else 
-            {
-                cur_sum -= v[i];
-                i++;
-                // dbg(cur_sum, i, j);
-            }
-        }
+            int q;
+            cin >> q;
 
-        cout << ans << endl;
+            int lo = m;
+            int l = 0, r = m - 1, mid;
+
+            while (l <= r)
+            {
+                mid = (l + r) / 2;
+                if (teacher[mid] >= q)
+                {
+                    lo = mid;
+                    r = mid - 1;
+                }
+                else
+                {
+                    l = mid + 1;
+                }
+            }
+
+            // dbg (lo);
+            if (lo != 0 && lo != m)
+            {
+                cout << (teacher[lo] - teacher[lo-1]) / 2 << endl; 
+            }
+            else if (lo == 0) cout << teacher[lo] - 1 << endl;
+            else cout << abs (n - teacher[lo-1]) << endl;
+        }
     }
 
     return 0;

@@ -23,46 +23,12 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-void solve (int testCase)
+bool isHere(const string &s, int pos)
 {
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
-    {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
+    return pos >= 0 && pos + 3 < s.size() && s[pos] == '1' && s[pos + 1] == '1' && s[pos + 2] == '0' && s[pos + 3] == '0';
 }
-
 
 int32_t main()
 {
@@ -70,10 +36,40 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        string s;
+        cin >> s;
+        int q;
+        cin >> q;
+        int cnt = 0;
+        for (int i = 0; i < sz(s) - 3; i++)
+        {
+            if (isHere (s, i)) cnt++;
+        }
+
+        while (q--)
+        {
+            int id, val;
+            cin >> id >> val;
+            id--;
+
+            for (int i = id - 3; i <= id; i++) 
+            {
+                if (isHere(s, i)) cnt--;
+            }
+
+            s[id] = '0' + val;
+
+            for (int i = id - 3; i <= id; i++) 
+            {
+                if (isHere(s, i)) cnt++;
+            }
+
+            if (cnt) cout << "YES" << endl;
+            else cout << "NO" << endl;
+        }
     }
 
     return 0;

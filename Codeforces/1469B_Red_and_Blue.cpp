@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -21,59 +20,36 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
-
-void solve (int testCase)
-{
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
-    {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
-}
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        int n, m;
+        cin >> n;
+        vector<int> r(n+1);
+        for (int i = 1; i <= n; i++) cin >> r[i];
+        cin >> m;
+        vector<int> b(m+1);
+        for (int i = 1; i <= m; i++) cin >> b[i];
+        
+        vector<int> r_pre(n+1, 0), b_pre(m+1, 0);
+
+        for (int i = 1; i <= n; i++) r_pre[i] = r_pre[i-1] + r[i];
+        for (int i = 1; i <= m; i++) b_pre[i] = b_pre[i-1] + b[i];
+
+        ll mx1 = *max_element (all (r_pre));
+        ll mx2 = *max_element (all (b_pre));
+
+        cout << mx1+mx2 << endl;
     }
 
     return 0;

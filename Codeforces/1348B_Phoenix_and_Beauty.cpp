@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -21,59 +20,41 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
-
-void solve (int testCase)
-{
-    int a, b;
-    cin >> a >> b;
-    vector<int> ans;
-
-    ans.push_back (b);
-    bool f = 1;
-    while (b > a)
-    {
-        int last_digit = b % 10;
-        if (b % 2 == 0)
-        {
-            b /= 2;
-            ans.push_back (b);
-        }
-        else if (last_digit == 1)
-        {
-            b /= 10;
-            ans.push_back (b);
-        }
-        else 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (b != a) f = 0;
-
-    reverse (all (ans));
-    if (f)
-    {
-        cout << "YES" << endl << ans.size() << endl;
-        for (auto u : ans) cout << u << " "; cout << endl;
-    }
-    else cout << "NO" << endl;
-}
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        int n, k;
+        cin >> n >> k;
+        vector<int> v(n);
+        for (int i = 0; i < n; i++) cin >> v[i];
+
+        set<int> a(all(v));
+        if (a.size() > k) 
+        {
+            cout << -1 << endl;
+            continue;
+        }
+
+        vector<int> ans(all (a));
+        while (ans.size() < k) ans.push_back (1);
+
+        cout << n * k << endl;
+        for (int i = 0; i < n; i++)
+        {
+            for (auto u : ans) cout << u << " ";
+        }
+
+        cout << endl;
     }
 
     return 0;

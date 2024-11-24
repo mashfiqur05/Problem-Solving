@@ -55,63 +55,54 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 
 // ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-int n, m;
 const int MX = 1e5+123;
-vector<int> adj[MX];
-bool vis[MX];
-bool cat[MX];
-int consecutive_cat [MX];
-int ans = 0;
-
-void dfs (int vertex)
-{
-    vis[vertex] = 1;
-    if (consecutive_cat[vertex] > m) return;
-    
-    if (adj[vertex].size() == 1 && vertex != 1) ans++;  /// reached at leaf.
-
-    for (auto child : adj[vertex])
-    {
-        if (vis[child]) continue;
-
-        if (cat[child])
-        {
-            consecutive_cat[child] = consecutive_cat[vertex] + 1;
-            // cout << vertex << " " << consecutive_cat[vertex] << " " << child << " " << consecutive_cat[child] << endl;
-        }
-        
-        dfs (child);
-    }
-}
 
 int32_t main() {
 //#ifndef ONLINE_JUDGE
     //freopen("Error.txt", "w", stderr);
 //#endif
 
+    fastio();
+
     int testcases = 1;
-    //cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        cin >> n >> m;
-        for (int i = 1; i <= n; i++)
+        string s1, s2;
+        cin >> s1 >> s2;
+
+        int ans = 0;
+        for (int i = 0; i < sz(s1)-1; i++)
         {
-            int x;
-            cin >> x;
-            if (x) cat[i] = 1;
+            if (s1[i] == '0' && s2[i] == '0' && s2[i+1] == '0')
+            {
+                ans++;
+                s1[i] = 'X';
+                s2[i] = 'X';
+                s2[i+1] = 'X';
+            }
+            if (s2[i] == '0' && s2[i+1] == '0' && s1[i+1] == '0')
+            {
+                ans++;
+                s2[i] = 'X';
+                s2[i+1] = 'X';
+                s1[i+1] = 'X';
+            }
+            if (s1[i] == '0' && s2[i] == '0' && s1[i+1] == '0')
+            {
+                ans++;
+                s1[i] = 'X';
+                s2[i] = 'X';
+                s1[i+1] = 'X';
+            }
+            if (s1[i] == '0' && s1[i+1] == '0' && s2[i+1] == '0')
+            {
+                ans++;
+                s1[i] = 'X';
+                s1[i+1] = 'X';
+                s2[i+1] = 'X';
+            }
         }
-
-        for (int i = 0; i < n-1; i++)
-        {
-            int a, b;
-            cin >> a >> b;
-            adj[a].push_back (b);
-            adj[b].push_back (a);
-        }
-
-        if (cat[1]) consecutive_cat[1] = 1;
-
-        dfs (1);
 
         cout << ans << endl;
     }
