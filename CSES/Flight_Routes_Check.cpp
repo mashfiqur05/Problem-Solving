@@ -23,25 +23,54 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n, m;
+vector<int> adj[MX], rev_adj[MX];
+bool vis1[MX], vis2[MX];
+
+void dfs1 (int v)
+{
+    vis1[v] = 1;
+    for (auto u : adj[v])
+    {
+        if (!vis1[u]) dfs1(u);
+    } 
+}
+void dfs2 (int v)
+{
+    vis2[v] = 1;
+    for (auto u : rev_adj[v])
+    {
+        if (!vis2[u]) dfs2(u);
+    } 
+}
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    cin >> n >> m;
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    for (int i = 0; i < m; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        rev_adj[b].push_back (a);
     }
 
-    cout << "No" << endl;
+    dfs1(1);
+    dfs2 (1);
+
+    for (int i = 1; i <= n; i++)
+    {
+        if (!vis1[i] || !vis2[i])
+        {
+            cout << "NO" << endl;
+            if (!vis1[i]) cout << 1 << " " << i << endl;
+            else cout << i << " " << 1 << endl;
+            return;
+        }
+    }
+
+    cout << "YES" << endl;
 }
 
 

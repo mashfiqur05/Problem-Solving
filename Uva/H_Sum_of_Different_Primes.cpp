@@ -18,9 +18,10 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1500;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,57 +36,69 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n, k;
+int dp[250][20][MX];
 
-vector<int> sieve_of_eratosthenes(int n) {
 
-    is_prime[0] = is_prime[1] = false;
+bool sieve[MX];
+vector<int> primes;
 
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
+void primeGenerator (int limit)
+{
+    mem (sieve, true);
+    
+    for (int i = 2; i * i <= limit; i++)
+    {
+        if (sieve[i] == true)
+        {
+            for (int j = i * i; j <= limit; j += i) sieve[j] = false;
         }
     }
 
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
+    primes.push_back (2);
+    for (int i = 3; i <= limit; i+=2)
+    {
+        if (sieve[i]) primes.push_back (i);
     }
-    return primes;
 }
 
-void solve (int testCase)
+
+int fun (int pos, int cnt, int sum)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
-
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    if (pos == primes.size() || sum >= n || cnt == k)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        if (sum == n && cnt == k) return 1;
+        else return 0;
     }
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    if (dp[pos][cnt][sum] != -1) return dp[pos][cnt][sum];
+
+    int val1 = fun (pos+1, cnt, sum);
+    int val2 = fun (pos+1, cnt+1, sum+primes[pos]);
+
+    return dp[pos][cnt][sum] = val1 + val2;
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
+    primeGenerator (1500);
+    
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        while (1)
+        {
+            mem (dp, -1);
+            cin >> n >> k;
+            if (n == 0 && k == 0) break;
+
+            cout << fun (0, 0, 0) << endl;
+        }
     }
 
     return 0;

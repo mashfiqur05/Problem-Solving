@@ -22,26 +22,23 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
+vector<int> subset;
 
+int findans (int id, int sum1, int sum2, vector<int> &v)
+{
+    if (id == v.size()) return abs (sum1- sum2);
+
+    return min (findans (id+1, sum1+v[id], sum2, v), findans (id+1, sum1, sum2+v[id], v));
+}
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
-    {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
-
-    cout << "No" << endl;
+    cout << findans (0, 0, 0, v);
 }
 
 

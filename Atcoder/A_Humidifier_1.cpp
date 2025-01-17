@@ -26,22 +26,24 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n, t, v;
+    cin >> n;
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    int ans = 0, last_time = 1;
+    for (int i = 0; i < n; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        cin >> t >> v;
+        if (ans > (t - last_time)) ans += v;
+        else 
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            ans = v;
+            last_time = t;
+        }
+        // cout << last_time << " " << ans << endl;
     }
 
-    cout << "No" << endl;
+
+    cout << ans - (t - last_time) << endl;
 }
 
 

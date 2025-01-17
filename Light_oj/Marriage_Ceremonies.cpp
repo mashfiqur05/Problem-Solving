@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -21,40 +20,49 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n;
+int arr[20][20], dp[20][(1 << 17) + 5];
 
 
-void solve (int testCase)
+int solve (int row, int mask)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    if (mask == (1 << n) - 1 ) return 0;
+    if (row == n) return 0;
 
-    int x = c / a;
+    if (dp[row][mask] != -1) return dp[row][mask];
 
-    for (int i = 0; i <= x; i++)
+    int ret = 0;
+    for (int i = 0; i < n; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        if (mask & (1 << i)) continue;
+        int val = solve (row + 1, (mask | (1 << i))) + arr[row][i];
+        ret = max (ret, val);
     }
 
-    cout << "No" << endl;
+    return dp[row][mask] = ret;
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        mem (dp, -1);
+        cin >> n;
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = 0; j < n; j++) cin >> arr[i][j];
+        }
+        cout << "Case " << tt << ": ";
+
+        cout << solve (0, 0) << endl;
     }
 
     return 0;

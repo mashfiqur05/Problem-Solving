@@ -26,22 +26,17 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    vector<int> v(4);
+    for (int i = 0; i < 4; i++) cin >> v[i];
+    sort (all (v));
+    for (int i = 1; i <= 5; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        if (v[i-1] != i)
         {
-            cout << "Yes" << endl;
+            cout << i << endl;
             return;
-        }    
+        }
     }
-
-    cout << "No" << endl;
 }
 
 

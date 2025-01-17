@@ -53,24 +53,29 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-const int MX = 1e5+123;
-int dp[MX];
-vector<int> v;
+// ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-/// recursive
+const int MX = 2e5+123;
+vector<int> adj[MX];
+int color[MX];
+bool vis[MX];
+bool f = 0;
 
-int min_cost (int nth)
+void dfs(int vertex)
 {
-    if (nth == 0) return 0;
-    if (dp[nth] != -1) return dp[nth];
+    vis[vertex] = 1;
+    if (color[vertex] == -1)color[vertex] = 0;
 
-    int cost = INT_MAX;
+    for (auto child : adj[vertex])
+    {
+        if (color[child] == color[vertex]) {f = 1; return;}
+        if (vis[child]) continue;
 
-    cost = min (cost, min_cost(nth-1) + abs(v[nth] - v[nth-1]));
-
-    if (nth > 1) cost = min (cost, min_cost(nth-2) + abs(v[nth] - v[nth-2]));
-
-    return dp[nth] = cost;
+        vis[child] = 1;
+        color[child] = !(color[vertex]);
+        // cout << vertex << ' ' << color[vertex] << ' ' << child << ' ' <<  color[child] << endl;
+        dfs (child);
+    }
 }
 
 
@@ -79,45 +84,42 @@ int32_t main() {
     //freopen("Error.txt", "w", stderr);
 //#endif
 
+    fastio();
+
     int testcases = 1;
     //cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        mem (dp, -1);
-        int n;
-        cin >> n;
-        for (int i = 0; i < n; i++) 
+        int n, m;
+        cin >> n >> m;
+        for (int i = 0; i < m; i++)
         {
-            int x;
-            cin >> x;
-            v.push_back (x);
+            int a, b;
+            cin >> a >> b;
+            adj[a].push_back (b);
+            adj[b].push_back (a);
         }
 
-        cout << min_cost (n-1) << endl;
+        mem (vis, 0);
+        mem (color, -1);
         
-        /*
-        int ans = 0;
-        dp[0] = 0;
-        dp[1] = abs(v[0] - v[1]);
-
-        for (int i = 2; i < n; i++)
+        for (int i = 1; i <= n; i++)
         {
-            int cost = INT_MAX;
-            if (dp[i] != -1)
-            {
-                ans += dp[i];
-                continue;
-            }
-            cost = min (cost, (dp[i-1] + abs (v[i] - v[i-1])));
-            cost = min (cost, (dp[i-2] + abs (v[i] - v[i-2])));
-
-            dp[i] = cost;
+            if (!vis[i]) dfs (i);
         }
 
+        if (f) 
+        {
+            cout << "IMPOSSIBLE\n";
+            return 0;
+        }
 
-        cout << dp[n-1] << endl;
-        */
+        for (int i = 1; i <= n; i++)
+        {
+            cout << color[i]+1 << ' ';
+        }
+        cout << endl;
     }
-    
+
     return 0;
 }

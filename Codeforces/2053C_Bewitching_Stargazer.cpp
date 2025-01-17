@@ -21,6 +21,7 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,44 +36,25 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
-
-vector<int> sieve_of_eratosthenes(int n) {
-
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
 void solve (int testCase)
 {
-    int n, k;
+    ll n, k;
     cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
-
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    ll num_segs = 1;
+    ll tot_left = 1;
+    ll cur_len = n;
+    ll ans = 0;
+    while (cur_len >= k)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        if (cur_len & 1)
+        {
+            ans += tot_left + (cur_len / 2) * num_segs;
+        }
+        tot_left += tot_left + ((cur_len + 1) / 2) * num_segs;
+        cur_len /= 2;
+        num_segs *= 2;
     }
-
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    cout << ans << endl;
 }
 
 
@@ -82,7 +64,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

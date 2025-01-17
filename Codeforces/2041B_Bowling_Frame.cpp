@@ -23,25 +23,31 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPossible (int i, int sum)
+{
+    return ((i * (i + 1)) / 2) <= sum;
+}
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int w, b;
+    cin >> w >> b;
+    int sum = w + b;
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    int l = 1, r = sum, ans = 0;
+    while (l <= r)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        int mid = (l + r) / 2;
+    
+        if (isPossible (mid, sum))
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            l = mid + 1;
+            ans = mid;
+        }
+        else r = mid - 1;
     }
 
-    cout << "No" << endl;
+    cout << ans << endl;
 }
 
 
@@ -51,7 +57,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

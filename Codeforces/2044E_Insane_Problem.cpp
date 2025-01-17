@@ -26,22 +26,22 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int k, l1, r1, l2, r2;
+    cin >> k >> l1 >> r1 >> l2 >> r2;
+    int ans = 0, kn = 1;
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    while (kn <= r2)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        int st = max (l1, (l2 + kn - 1) / kn);
+        int end = min (r1, r2/kn);
+
+        if (st <= end) ans += (end - st + 1);
+
+        if (kn > r2 / k) break;
+        else kn *= k;
     }
 
-    cout << "No" << endl;
+    cout << ans << endl;
 }
 
 
@@ -51,7 +51,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

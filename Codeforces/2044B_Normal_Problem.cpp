@@ -26,22 +26,16 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    string s;
+    cin >> s;
+    for (int i = s.size()-1; i >= 0; i--)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        if (s[i] == 'p') cout << 'q';
+        else if (s[i] == 'q') cout << 'p';
+        else cout << 'w';
     }
 
-    cout << "No" << endl;
+    cout << endl;
 }
 
 
@@ -51,7 +45,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

@@ -9,6 +9,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -21,6 +22,7 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -34,45 +36,67 @@ template<typename T>void faltu(T a[],int n){for(int i=0;i<n;++i)cerr<<a[i]<<' ';
 template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<<arg<<' ';faltu(rest...);}
 //#else
 //#define dbg(args...)
+// Lower bound: Min index where I can insert x still v is sorted.
+int lb(const vector<int> &arr, int x)
+{
+    int low = 0, high = arr.size();
+    while (low < high)
+    {
+        int mid = low + (high - low) / 2;
 
-vector<bool> is_prime(1000 + 1, true);
-
-vector<int> sieve_of_eratosthenes(int n) {
-
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
+        if (arr[mid] < x) low = mid + 1;
+        else high = mid;
     }
 
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
+    return low;
 }
 
-void solve (int testCase)
+// Upper bound: Max index where I can insert x still v is sorted.
+int ub(const vector<int> &arr, int x)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
-
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    int low = 0, high = arr.size();
+    while (low < high)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        int mid = low + (high - low) / 2;
+        if (arr[mid] <= x) low = mid + 1;
+        else high = mid;    
     }
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    return low;
+}
+void solve (int testCase)
+{
+    int n, x, y;
+    cin >> n >> x >> y;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    ll sum = accumulate (all(a), 0LL);
+
+    vector<int> b = a;
+    sort (all (b));
+    // dbg (sum, b);
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int after_minus = sum - a[i];
+        int st, end;
+        if (after_minus < y) st = 0;
+        else st = after_minus - y;
+
+        if (after_minus < x) end = 0;
+        else end = after_minus - x;
+
+        int idst = lb(b, st);
+        int idend = ub(b, end);
+
+        // dbg (st, end, idst, idend);
+        ans += idend - idst;
+        if (a[i] >= st && a[i] <= end) ans--;
+        // dbg (ans);
+    }
+
+    cout << ans/2 << endl;
 }
 
 
@@ -82,7 +106,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

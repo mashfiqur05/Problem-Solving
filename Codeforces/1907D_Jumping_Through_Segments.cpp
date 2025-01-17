@@ -23,25 +23,43 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPossible (vector<pair<int, int>> &v, int k)
+{
+    int l_cur = 0, r_cur = 0;
+    for (int i = 1; i < v.size(); i++)
+    {
+        l_cur = max (v[i].first, l_cur - k);
+        r_cur = min (r_cur + k, v[i].second);
+
+        if (l_cur <= r_cur){}
+        else return false;
+    }
+
+    return true;
+}
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n;
+    cin >> n;
+    vector<pair<int, int>> v(n+1);
+    for (int i = 1; i <= n; i++) cin >> v[i].first >> v[i].second;
 
-    int x = c / a;
+    int l = 0, r = (int)1e9, ans = r;
 
-    for (int i = 0; i <= x; i++)
+    while (l <= r)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        int mid = (r + l) / 2;
+
+        if (isPossible (v, mid))
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
     }
 
-    cout << "No" << endl;
+    cout << ans << endl;
 }
 
 
@@ -51,7 +69,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

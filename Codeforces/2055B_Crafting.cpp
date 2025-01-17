@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -24,24 +23,39 @@ const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
-void solve (int testCase)
+void testCases (int tt)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    int need = 0, extra = 0, kom = 0, ind = n;
+    for (int i = 0; i < n; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        if (a[i] > b[i]) extra += (a[i] - b[i]);
+        else if (a[i] < b[i]){need += (b[i] - a[i]); kom++; ind = i;}
     }
 
-    cout << "No" << endl;
+    if (ind == n) 
+    {
+        cout << "YES" << endl;
+        return;
+    }
+    else 
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (i == ind) continue;
+            if ((a[i] - b[i]) < (b[ind] - a[ind]))
+            {
+                cout << "NO" << endl;
+                return;
+            }
+        }
+    }
+    cout << "YES" << endl;
 }
 
 
@@ -51,10 +65,10 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        testCases (tt);
     }
 
     return 0;

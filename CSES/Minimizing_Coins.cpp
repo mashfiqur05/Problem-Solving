@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -19,42 +18,52 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e6+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n, desire_coin;
+int arr[MX];
+int dp[MX];
 
 
-void solve (int testCase)
+int solve (int remain_coin)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    if (remain_coin < 0) return INT_MAX;
+    if (remain_coin == 0) return 0;
 
-    int x = c / a;
+    if (dp[remain_coin] != -1) return dp[remain_coin];
 
-    for (int i = 0; i <= x; i++)
+    int val = INT_MAX;
+    for (int i = 0; i < n; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        int res = solve(remain_coin - arr[i]);  // Try using coin arr[i]
+        if (res != INT_MAX) {
+            val = min(val, res + 1);  // Update the minimum if valid
+        }
     }
 
-    cout << "No" << endl;
+    return dp[remain_coin] = val;
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        mem (dp, -1);
+        cin >> n >> desire_coin;
+        for (int i = 0; i < n; i++) cin >> arr[i];
+
+        int ans = solve (desire_coin);
+
+        if (ans == INT_MAX) cout << -1 << endl;
+        else cout << ans << endl;
     }
 
     return 0;

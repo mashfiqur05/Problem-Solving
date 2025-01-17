@@ -23,25 +23,52 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int arr[MX], tree[4 * MX];
+
+void build(int node, int l, int r)
+{
+    if (l == r)
+    {
+        tree[node] = arr[l];
+    }
+    else 
+    {
+        int mid = (l + r) / 2;
+        
+        build (2 * node, l, mid);
+        build (2 * node + 1, mid + 1, r);
+
+        tree[node] = min (tree[2 * node], tree[2 * node + 1]);
+    }
+}
+
+int query (int node, int l, int r, int sl, int sr)
+{
+    if (sr < l or r < sl) return INT_MAX;
+
+    if (sl <= l and r <= sr) return tree[node];
+
+    int mid = (l + r) / 2;
+
+    return min (query (2 * node, l, mid, sl, sr), query (2 * node + 1, mid + 1, r, sl, sr));
+}
+
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    cout << "Case " << testCase << ":" << endl;
+    int n, q;
+    cin >> n >> q;
+    for (int i = 1; i <= n; i++) cin >> arr[i];
+    build (1, 1, n);
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    while (q--)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
+        int l, r;
+        cin >> l >> r;
 
-    cout << "No" << endl;
+        cout << query (1, 1, n, l, r) << endl;
+    }
 }
 
 
@@ -51,7 +78,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

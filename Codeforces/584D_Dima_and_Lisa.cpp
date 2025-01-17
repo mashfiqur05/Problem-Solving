@@ -21,6 +21,7 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,44 +36,47 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
-
-vector<int> sieve_of_eratosthenes(int n) {
-
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
+bool isPrime (int n)
+{
+    if (n == 2 || n == 3) return 1;
+    for (int i = 2; i <= sqrt(n); i++)
+    {
+        if (n % i == 0) return 0;
     }
 
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
+    return 1;
 }
 
 void solve (int testCase)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
-
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    int n;
+    cin >> n;
+    vector<int> ans;
+    int need = n;
+    for (int i = n; i >= 2; i--)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        if (isPrime (i)) 
+        {
+            ans.push_back (i);
+            need -= i;
+            break;
+        }
     }
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    for (int i = n-ans[0]-2; i >= 2; i--)
+    {
+        if (isPrime(i) && (isPrime (need - i) || need == 0))
+        {
+            ans.push_back (i);
+            need -= i;
+            break;
+        }
+    }
+
+    if (need > 0) ans.push_back (need);
+
+    cout << ans.size() << endl;
+    for (auto u : ans) cout << u << " "; cout << endl;
 }
 
 

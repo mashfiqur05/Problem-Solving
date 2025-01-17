@@ -18,9 +18,10 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,57 +36,51 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-vector<int> sieve_of_eratosthenes(int n) {
+int n, w;
+vector<ll> weight, profit;
+ll dp[123][MX];
 
-    is_prime[0] = is_prime[1] = false;
 
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+ll fun (ll pos, ll val)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    if (val < 0) return INT_MIN;
+    if (pos == n) return 0;
 
-    // dbg (prime);
+    if (dp[pos][val] != -1) return dp[pos][val];
 
-    for (int i = 0; i < prime.size()-1; i++)
-    {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
-    }
-
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    ll val1 = fun (pos+1, val);
+    ll val2 = fun (pos+1, val-weight[pos]) + profit[pos];
+    // dbg (pos, val1, val2);
+    return dp[pos][val] = max (val1, val2);
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        /// mem dp.
+        mem (dp, -1);
+        cin >> n >> w;
+
+        for (int i = 0; i < n; i++)
+        {
+            int cost, p;
+            cin >> cost >> p;
+            weight.push_back (cost);
+            profit.push_back (p);
+        }
+
+        ll ans = fun (0, w);
+
+        cout << ans << endl;
+
     }
 
     return 0;

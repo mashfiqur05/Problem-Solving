@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -24,24 +23,18 @@ const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
-void solve (int testCase)
+void testCases (int tt)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    cout << "Case " << tt << ": ";
+    fraction();
+    double ab, ac, bc, ratio;
+    cin >> ab >> ac >> bc >> ratio;
+    double s = (ab + ac + bc) / 2;
+    double ABCarea = sqrt (s * (s - ab) * (s - ac) * (s - bc));
+    double ADEarea = (ratio * ABCarea) / (1 + ratio);
+    double ad = (ab * sqrt (ADEarea)) / sqrt(ABCarea);
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
-    {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
-
-    cout << "No" << endl;
+    cout << ad << endl; 
 }
 
 
@@ -51,10 +44,10 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        testCases (tt);
     }
 
     return 0;

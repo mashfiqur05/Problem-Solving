@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -19,42 +18,45 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e6+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-void solve (int testCase)
+int dp[MX];
+
+int solve (int n)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    if (n == 0) return 0;
+    if (dp[n] != -1) return dp[n];
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    int val = inf;
+    int tmp = n;
+    while (tmp)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        int digit = tmp % 10;
+        tmp /= 10;
+        if (digit > 0) val = min(val, solve(n - digit) + 1);
     }
 
-    cout << "No" << endl;
-}
-
+    return dp[n] = val;
+}   
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        mem (dp, -1);
+
+        int n;
+        cin >> n;
+
+        cout << solve (n) << endl;
     }
 
     return 0;

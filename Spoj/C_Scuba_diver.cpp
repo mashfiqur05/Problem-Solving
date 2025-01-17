@@ -18,51 +18,45 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e6+12;
+const int MX = 1123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
-set<long long> tprimes;
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n, og, ng;
+int oxygen[MX], nitrogen[MX], cylinder[MX], dp[MX][30][85];
 
-bool isPrime(int n)
+
+int fun (int pos, int oxy, int nitro)
 {
-    for (int i = 2; i * i <= n; ++i)
-    {
-        if (n % i == 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
+    if (oxy <= 0 && nitro <= 0) return 0;
+    if (pos < 0) return 1e9;
 
-void testCases(int tt)
-{
-    ll n;
-    cin >> n;
+    if (dp[pos][oxy][nitro] != -1) return dp[pos][oxy][nitro];
 
-    if (tprimes.find (n) == tprimes.end()) cout << "NO" << endl;
-    else cout << "YES" << endl;
+    int val1 = fun (pos-1, oxy, nitro);
+    int val2 = fun (pos-1, max (0, oxy-oxygen[pos]), max (0, nitro-nitrogen[pos])) + cylinder[pos];
+
+    return dp[pos][oxy][nitro] = min (val1, val2);
 }
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
-    tprimes.insert(4);
-    for (int i = 3; i <= 1000000; i += 2)
-    {
-        if (isPrime(i))
-        {
-            tprimes.insert((ll)i * i);
-        }
-    }
-    
+
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        testCases (tt);
+        mem (dp, -1);
+        mem (oxygen, 0);
+        mem (nitrogen, 0);
+        mem (cylinder, 0);
+        cin >> og >> ng >> n;
+        for (int i = 0; i < n; i++) cin >> oxygen[i] >> nitrogen[i] >> cylinder[i];
+
+        int ans = fun (n-1, og, ng);
+        cout << ans << endl;
     }
 
     return 0;

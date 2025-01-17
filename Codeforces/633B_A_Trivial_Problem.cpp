@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -23,25 +22,29 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int countZero (int n)
+{
+    int ret = 0;
+    while (n)
+    {
+        ret += n / 5;
+        n /= 5;
+    }
+    return ret;
+}
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    int m;
+    cin >> m;
+    vector<int> ans;
+    for (int i = 1; i <= (int)1e7; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        if (countZero (i) == m) ans.push_back (i); 
     }
 
-    cout << "No" << endl;
+    cout << ans.size() <<  endl;
+    for (int i = 0; i < ans.size(); i++) cout << ans[i] << ' '; 
 }
 
 

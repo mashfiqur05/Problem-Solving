@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -21,40 +20,62 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n, k;
 
-void solve (int testCase)
+bool isValid (vector<int> &v, ll max_sum)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    ll cnt = 0, cur_sum = 0;
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    for (auto u : v)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        if (u > max_sum) return false;
+
+        if (u + cur_sum > max_sum)
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            cnt++;
+            cur_sum = 0;
+        }
+
+        cur_sum += u;
     }
 
-    cout << "No" << endl;
+    if (cur_sum) cnt++;
+
+    if (cnt > k) return false;
+    else return true;
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        cin >> n >> k;
+        vector<int> v(n);
+        for (int i = 0; i < n; i++) cin >> v[i];
+
+        ll r = accumulate (all (v), 0LL);
+        ll l = *max_element (all (v));
+
+        while (l < r)
+        {
+            ll mid = l + (r - l) / 2;
+
+            if (isValid (v, mid))
+            {
+                r = mid;
+            } 
+            else l = mid + 1;
+        }
+
+        cout << l << endl;
     }
 
     return 0;

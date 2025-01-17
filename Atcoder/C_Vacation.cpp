@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -23,25 +22,34 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n, a[MX], b[MX], c[MX], dp[MX][4], vis[MX];
+
+int fun (int ind, int choose)
+{
+    if (ind == n) return 0;
+    if (dp[ind][choose] != -1) return dp[ind][choose];
+
+    int res = 0;
+
+    if (choose == 1) res = max (fun (ind + 1, 2), fun (ind+1, 3)) + a[ind]; 
+    if (choose == 2) res = max (fun (ind + 1, 1), fun (ind+1, 3)) + b[ind]; 
+    if (choose == 3) res = max (fun (ind + 1, 2), fun (ind+1, 1)) + c[ind];
+
+    return dp[ind][choose] = res;
+}
+
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> a[i] >> b[i] >> c[i];
 
-    int x = c / a;
+    mem (dp, -1);
+    int ans = fun (0, 1);
+    ans = max (ans, fun (0, 2));
+    ans = max (ans, fun (0, 3));
 
-    for (int i = 0; i <= x; i++)
-    {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
-
-    cout << "No" << endl;
+    cout << ans << endl;
 }
 
 

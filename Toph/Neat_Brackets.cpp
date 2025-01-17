@@ -26,22 +26,31 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    string s;
+    cin >> s;
+    stack<char> st;
+    for (int i = 0; i < s.size(); i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        if (s[i] == '(') st.push ('(');
+        else 
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            if (st.empty()) 
+            {
+                cout << "No" << endl;
+                return;
+            }
+            char c = st.top();
+            st.pop();
+            if (c != '(')
+            {
+                cout << "No" << endl;
+                return;
+            }
+        }
     }
 
-    cout << "No" << endl;
+    if (st.empty()) cout << "Yes" << endl;
+    else cout << "No" << endl;
 }
 
 

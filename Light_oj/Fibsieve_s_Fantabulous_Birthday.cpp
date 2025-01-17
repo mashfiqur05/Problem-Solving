@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -24,24 +23,41 @@ const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
-void solve (int testCase)
+void testCases (int tt)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    cout << "Case " << tt << ": ";
+    ll n;
+    cin >> n;
+    ll root = ceil(1.00 * sqrt(n));
+    ll x = root, y = 1;
+    ll diff = (root * root) - n;
+    if (root & 1)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        if (diff <= root - 1)
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            y += diff;
+        }
+        else
+        {
+            y = root;
+            x -= (diff - (root - 1));
+        }
+    }
+    else
+    {
+        x = 1, y = root;
+        if (diff <= root - 1)
+        {
+            x += diff;
+        }
+        else 
+        {
+            x = root;
+            y -= (diff - (root - 1));
+        }
     }
 
-    cout << "No" << endl;
+    cout << y << " " << x <<  endl;
 }
 
 
@@ -51,10 +67,10 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        testCases (tt);
     }
 
     return 0;

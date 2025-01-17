@@ -20,7 +20,8 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,57 +36,38 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
 
-vector<int> sieve_of_eratosthenes(int n) {
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+string s1, s2, s3;
+int result = 0;
+int dp[55][55][55];
 
-    is_prime[0] = is_prime[1] = false;
 
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+int lcs(int i, int j, int k)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    if (i < 0 || j < 0 || k < 0) return 0;
 
-    // dbg (prime);
+    if (dp[i][j][k] != -1) return dp[i][j][k];
+    if (s1[i] == s2[j] && s2[j] == s3[k]) result = lcs (i-1, j-1, k-1) + 1;
+    else result = max (lcs(i-1, j, k), max (lcs(i, j-1, k), lcs(i, j, k-1)));
 
-    for (int i = 0; i < prime.size()-1; i++)
-    {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
-    }
-
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    return dp[i][j][k] = result;
 }
-
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        result = 0;
+        mem (dp, -1);
+        cin >> s1 >> s2 >> s3;
+
+        int ans = lcs (s1.size()-1, s2.size()-1, s3.size()-1);
+        cout << "Case " << tt << ": " << ans << endl;
     }
 
     return 0;

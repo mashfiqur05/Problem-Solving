@@ -9,6 +9,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -35,44 +36,72 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
 
-vector<int> sieve_of_eratosthenes(int n) {
+int n;
+vector<pair<int, int>> adj[MX];
+vector<int> cost[MX];
+bool vis[MX];
+int dis[MX];
 
-    is_prime[0] = is_prime[1] = false;
+void dfs (int vertex)
+{
+    vis[vertex] = 1;
 
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
+    for (auto u : adj[vertex])
+    {
+        if (!vis[u.first])
+        {
+            dis[u.first] = dis[vertex] + u.second;
+            // dbg (u);
+            dfs (u.first);
         }
     }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
 }
+
+/// solve this with dfs. this also can be solved with bfs.
 
 void solve (int testCase)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
-
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    mem (dis, 0);
+    mem (vis, 0);
+    cout << "Case " << testCase << ": ";
+    cin >> n;
+    for (int i = 1; i < n; i++)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        int a, b, c;
+        cin >> a >> b >> c;
+        adj[a].push_back ({b, c});
+        adj[b].push_back ({a, c});
     }
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    dfs (0);
+    // for (int i = 0; i < n; i++) cout << dis[i] << " ";cout << endl;
+    int mx = 0;
+    int id = 0;
+    for (int i = 0; i < n; i++) 
+    {
+        if (dis[i] > mx)
+        {
+            mx = dis[i];
+            id = i;
+        }
+    }
+
+    mem (dis, 0);
+    mem (vis, 0);
+
+    dfs (id);
+    int ans = 0;
+    for (int i = 0; i < n; i++) 
+    {
+        ans = max (ans, dis[i]);
+    }
+
+    cout << ans << endl;
+    for (int i = 0; i <= n; i++)
+    {
+        adj[i].clear();
+    }
 }
 
 
@@ -82,7 +111,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

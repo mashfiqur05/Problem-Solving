@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -23,25 +22,64 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+string decToBinary(int n)
+{
+    // Size of an integer is assumed to be 32 bits
+    string res = "";
+    for (int i = 31; i >= 0; i--) {
+        int k = n >> i;
+        if (k & 1) res += '1';
+        else res += '0';
+    }
+
+    return res;
+}
+
+
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int l, r;
+    cin >> l >> r;
 
-    int x = c / a;
+    string x = decToBinary (l), y = decToBinary (r);
 
-    for (int i = 0; i <= x; i++)
+    string p = "", q = "";
+    bool f = 0;
+
+    for (int i = 0; i < x.size(); i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        if (x[i] == y[i] && !f) 
         {
-            cout << "Yes" << endl;
-            return;
-        }    
+            p += x[i];
+            q += x[i];
+        }
+        else if (f)
+        {
+            p += '0';
+            q += '1';
+        }
+        else 
+        {
+            f = 1;
+            p += '1';
+            q += '0';
+        }
     }
 
-    cout << "No" << endl;
+    int a = stoi (p, 0, 2);
+    int b = stoi (q, 0, 2), c;
+
+    for (int i = l; i <= r; i++)
+    {
+        if (i != a && i != b)
+        {
+            c = i;
+            break;
+        }
+    }
+
+    cout << a << ' ' << b << " " << c << endl;
 }
 
 
@@ -51,7 +89,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

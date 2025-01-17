@@ -20,7 +20,8 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,57 +36,51 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
 
-vector<int> sieve_of_eratosthenes(int n) {
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-    is_prime[0] = is_prime[1] = false;
+int n;
+int dp[23][3];
+int cost[23][3];
 
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+int fun (int pos, int col)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    if (pos == n) return 0;
+    if (dp[pos][col] != -1) return dp[pos][col];
 
-    // dbg (prime);
+    int color1 = (col + 1) % 3; 
+    int color2 = (col + 2) % 3; 
+    int val1 = fun (pos+1, color1) + cost[pos][col];
+    int val2 = fun (pos+1, color2) + cost[pos][col];
 
-    for (int i = 0; i < prime.size()-1; i++)
-    {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
-    }
-
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    return dp[pos][col] = min (val1, val2);
 }
-
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        cout << "Case " << tt << ": ";
+        mem (dp, -1);
+        cin >> n;
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                cin >> cost[i][j];
+            }
+        }
+
+        int ans = INT_MAX;
+        // dbg (dp[n-1][0], dp[n-1][1], dp[n-1][2]);
+        ans = min (fun (0, 0), min (fun (0, 1), fun (0, 2)));
+        cout << ans << endl;
+
     }
 
     return 0;

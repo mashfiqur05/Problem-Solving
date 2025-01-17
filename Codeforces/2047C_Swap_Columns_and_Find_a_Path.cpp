@@ -35,44 +35,30 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
 
-vector<int> sieve_of_eratosthenes(int n) {
-
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+void testCases (int tt)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
 
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    int total = 0;
+    for (int i = 0; i < n; i++)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        if (a[i] > b[i]) total += a[i];
+        else total += b[i];
     }
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    int ans = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] > b[i]) ans = max (ans, total + b[i]);
+        else ans = max (ans, total + a[i]);
+    }
+
+    cout << ans << endl;
 }
 
 
@@ -82,10 +68,10 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        testCases (tt);
     }
 
     return 0;

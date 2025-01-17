@@ -20,7 +20,9 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
+
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,57 +37,51 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
-
-vector<int> sieve_of_eratosthenes(int n) {
-
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+bool isPossible (vector<int> &v, ll x, ll m)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    ll sum = 0;
 
-    // dbg (prime);
-
-    for (int i = 0; i < prime.size()-1; i++)
+    for (int i = 0; i < v.size(); i++)
     {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
+        // dbg(sum);
+        if (v[i] >= x) sum += (v[i] - x);
     }
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    if (sum >= m) return true;
+    else return false;
 }
-
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        ll n, m;
+        cin >> n >> m;
+        vector<int> v(n);
+        for (int i = 0; i < n; i++) cin >> v[i];
+
+        ll l = *min_element (all (v));    
+        ll r = *max_element (all (v));
+        ll ans = 0;
+
+        while (l < r)
+        {
+            ll mid = l + (r - l) / 2;
+            // dbg (l, r, mid, ans);
+            if (isPossible (v, mid, m))
+            {
+                ans = mid;
+                l = mid+1;
+                // dbg(l);
+            }
+            else r = mid;
+        }
+
+        cout << ans << endl;
     }
 
     return 0;

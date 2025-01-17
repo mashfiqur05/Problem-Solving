@@ -26,22 +26,33 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n, m, k;
+    cin >> n >> m >> k;
+    vector<int> a(m), q(k);
+    for (int i = 0; i < m; i++) cin >> a[i];
+    for (int i = 0; i < k; i++) cin >> q[i];
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    vector<bool> pare (n+1, 0);
+    for (int i = 0; i < k; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        pare[q[i]] = true;
     }
 
-    cout << "No" << endl;
+    for (int i = 0; i < m; i++)
+    {
+        if (pare[a[i]] == true)
+        {
+            if (n == k) cout << 1;
+            else cout << 0;
+        }
+        else 
+        {
+            if (n-1 == k) cout << 1;
+            else cout << 0;
+        }
+    }
+
+    cout << endl;
 }
 
 
@@ -51,7 +62,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

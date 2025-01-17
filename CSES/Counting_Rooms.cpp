@@ -53,52 +53,82 @@ template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-const int MX = 1e5+123;
-int dp[MX];
-vector<int> v;
+// ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-/// Recursive
+const int MX = 1123;
+char adj[MX][MX];
+bool vis[MX][MX];
+int n, m;
 
-int min_cost (int nth, int k)
+vector<pair<int, int>> movements = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+bool isValid (int x, int y) 
 {
-    if (nth == 0) return 0;
-    if (dp[nth] != -1) return dp[nth];
-
-    int cost = INT_MAX;
-
-    for (int i = 1; i <= k; i++)
-    {
-        if (nth - i >= 0)
-        {
-            cost = min (cost, (min_cost(nth-i, k) + abs (v[nth] - v[nth-i])));
-        }
-    }
-
-    return dp[nth] = cost;
+    return x >= 0 && y >= 0 && x < n && y < m;
 }
 
+void bfs (int i, int j)
+{
+    queue<pair<int, int>> q;
+    q.push ({i, j});
+    vis[i][j] = 1;
+    
+    while (!q.empty())
+    {
+        pair<int, int> p = q.front();
+        q.pop();
+        int x_cur = p.first;
+        int y_cur = p.second;
+
+        for (auto move : movements)
+        {
+            int xchild = x_cur + move.first;    
+            int ychild = y_cur + move.second;
+
+            if (vis[xchild][ychild] || adj[xchild][ychild] == '#') continue;
+            if (!isValid(xchild, ychild)) continue;
+
+            q.push ({xchild, ychild});
+            vis[xchild][ychild] = 1;
+        }
+    }
+}
 
 int32_t main() {
 //#ifndef ONLINE_JUDGE
     //freopen("Error.txt", "w", stderr);
 //#endif
 
+    fastio();
+
     int testcases = 1;
     //cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        mem (dp, -1);
-        int n, k;
-        cin >> n >> k;
-        for (int i = 0; i < n; i++) 
+        cin >> n >> m;
+        for (int i = 0; i < n; i++)
         {
-            int x;
-            cin >> x;
-            v.push_back (x);
+            for (int j = 0; j < m; j++)
+            {
+                cin >> adj[i][j];
+            }
+        }   
+
+        int ans = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (adj[i][j] != '#' && !vis[i][j])
+                {
+                    bfs (i, j);
+                    ans++;
+                }
+            }
         }
 
-        cout << min_cost (n-1, k) << endl;
-        
+        cout << ans << endl;
     }
     
     return 0;

@@ -9,7 +9,6 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -26,22 +25,26 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    int n;
+    cin >> n;
+    multiset<int> s;
+    while (n--)
     {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
+        int x;
+        cin >> x;
+        s.insert(x);
+    }    
+
+    while (s.size())
+    {
+        int mx = *prev(s.end());
+        s.erase(prev(s.end()));
+        cout << mx << " ";
+        int x = mx / 2;
+        if (x > 0) s.insert(x);
     }
 
-    cout << "No" << endl;
+    cout << endl;
 }
 
 
@@ -51,7 +54,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

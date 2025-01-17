@@ -18,9 +18,9 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e3+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,58 +35,45 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
-vector<int> sieve_of_eratosthenes(int n) {
+char arr[MX][MX];
+int dp[MX][MX], n;
 
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+int solve (int i, int j)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    if (arr[i][j] == '*') return 0;
+    if (i == n-1 && j == n - 1) return 1;
+    if (i >= n || j >= n) return 0;
 
-    // dbg (prime);
+    if (dp[i][j] != -1) return dp[i][j];
 
-    for (int i = 0; i < prime.size()-1; i++)
-    {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
-    }
+    int val = solve (i + 1, j) % MOD;
+    val += solve (i, j+1) % MOD;
 
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    return dp[i][j] = val % MOD;
 }
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        mem (dp, -1);
+        cin >> n;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) cin >> arr[i][j];
+        }
+
+        cout << solve (0, 0) << endl;
     }
+
+
 
     return 0;
 }

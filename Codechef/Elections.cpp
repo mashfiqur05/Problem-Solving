@@ -23,26 +23,7 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-
-void solve (int testCase)
-{
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
-    {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
-
-    cout << "No" << endl;
-}
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
 
 int32_t main()
@@ -51,10 +32,41 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        int n, x;
+        cin >> n >> x;
+        vector<int> a(n), b(n), need;
+        for (int i = 0; i < n; i++) cin >> a[i];
+        for (int i = 0; i < n; i++) cin >> b[i];
+
+        int a_win = 0, required = n / 2 + 1;
+        for (int i = 0; i < n; i++)
+        {
+            if (a[i] > b[i]) a_win++;
+            else 
+            {
+                need.push_back (b[i] - a[i] + 1);
+            }
+        }
+
+        sort (all (need));
+
+        for (auto u : need)
+        {
+            if (a_win >= required) break;
+
+            if (x >= u) 
+            {
+                x -= u;
+                a_win++;
+            }
+            else break;
+        }
+
+        if (a_win >= required) cout << "YES" << endl;
+        else cout << "NO" << endl;
     }
 
     return 0;

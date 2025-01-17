@@ -9,6 +9,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -18,9 +19,9 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e4+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+#define MOD 1000000007
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -35,57 +36,42 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-vector<bool> is_prime(1000 + 1, true);
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
+int n;
+int v[MX];
+int dp[MX][2];
 
-vector<int> sieve_of_eratosthenes(int n) {
 
-    is_prime[0] = is_prime[1] = false;
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (is_prime[i]) {
-            for (int multiple = i * i; multiple <= n; multiple += i) {
-                is_prime[multiple] = false;
-            }
-        }
-    }
-
-    vector<int> primes;
-    for (int i = 2; i <= n; ++i) {
-        if (is_prime[i]) primes.push_back(i);
-    }
-    return primes;
-}
-
-void solve (int testCase)
+int fun (int pos, int take)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> prime = sieve_of_eratosthenes(n);
-    int cnt = 0;
+    if (pos < 0) return 0;
 
-    // dbg (prime);
+    if (dp[pos][take] != -1) return dp[pos][take];
 
-    for (int i = 0; i < prime.size()-1; i++)
-    {
-        int sum = prime[i] + prime[i+1] + 1;
-        if (is_prime[sum] == true && sum <= n) cnt++;
-    }
-
-    if (cnt >= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
-}
+    int val1 = fun (pos-1, 0);
+    int val2 = 0;
+    if (take == 0) val2 = fun (pos-1, 1) + v[pos];
+    // dbg (pos, val1, val2);
+    return dp[pos][take] = max (val1, val2);
+} 
 
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        cout << "Case " << tt << ": ";
+        mem (dp, -1);
+        mem (v, 0);
+        cin >> n;
+        for (int i = 0; i < n; i++) cin >> v[i];
+
+        ll ans = max (fun (n-1, 1), fun (n-1, 0));
+        cout << ans << endl;
     }
 
     return 0;

@@ -23,26 +23,7 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-
-void solve (int testCase)
-{
-    int a, b, c;
-    cin >> a >> b >> c;
-
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
-    {
-        int need = c - i * a;
-        if (need % b == 0)
-        {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
-
-    cout << "No" << endl;
-}
+ll lcm ( ll a, ll b ) { return a * ( b / __gcd ( a, b ) ); }
 
 
 int32_t main()
@@ -51,10 +32,22 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        int n, x;
+        cin >> n >> x;
+
+        int even = n / 2;
+        int odd = n - even;
+
+        bool f = (x % 2 == 0);
+
+        if (f)
+        {
+            cout << even-1 << endl;
+        }
+        else cout << odd-1 << endl;
     }
 
     return 0;

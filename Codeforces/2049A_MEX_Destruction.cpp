@@ -26,22 +26,32 @@ const int MOD = 1e9+7;
 
 void solve (int testCase)
 {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    int x = c / a;
-
-    for (int i = 0; i <= x; i++)
+    bool isZeroInMiddle = 0, isZero = 0;
+    int cnt = 0, other = 0;
+    for (int i = 0; i < n; i++)
     {
-        int need = c - i * a;
-        if (need % b == 0)
+        if (v[i] != 0 && isZeroInMiddle == 1) other = 2;
+        else if (v[i] != 0) other = 1;
+        else if (i != 0 && i != n-1 && v[i] == 0 && other == 1) 
         {
-            cout << "Yes" << endl;
-            return;
-        }    
-    }
+            isZeroInMiddle = 1;
+            isZero = 1;
+        } 
+        else if (v[i] == 0) isZero = 1;
 
-    cout << "No" << endl;
+        if (v[i] == 0) cnt++;
+    }
+    // cout << isZero  << " " << cnt << " " << isZeroInMiddle << " " << other << endl;
+
+    if (isZero == 0) cout << 1 << endl;
+    else if (cnt == n) cout << 0 << endl;
+    else if (other != 2 && (v[0] == 0 || v[n-1] == 0)) cout << 1 << endl;
+    else cout << 2 << endl;
 }
 
 
@@ -51,7 +61,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);
