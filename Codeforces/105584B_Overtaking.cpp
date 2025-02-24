@@ -36,52 +36,51 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-
-void testCases (int tt)
+void testCases(int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
+    while(1)
     {
-        cout << 0 << endl;
-        return;
-    }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
-    {
-        bool f = 0;
-        for (int j = i; j < n; j++)
+        int n;
+        cin >> n;
+        if (n == 0) break;;
+        vector<ll> a(n), b(n);
+        for (int i = 0; i < n; i++)
+            cin >> a[i];
+        for (int i = 0; i < n; i++)
+            cin >> b[i];
+        vector<ll> prea(n + 1, 0), preb(n + 1, 0);
+        for (int i = 1; i <= n; i++)
         {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
+            prea[i] = prea[i - 1] + a[i - 1];
+            preb[i] = preb[i - 1] + b[i - 1];
+        }
+
+        // dbg(prea);
+        // dbg(preb);
+        int ans = 0;
+        int f = -1;
+        for (int i = 1; i <= n; i++)
+        {
+            if (f == -1)
             {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
+                if (prea[i] > preb[i]) f = 1;
+                else if (prea[i] < preb[i]) f = 2;
+            }
+            else if (f == 1 && prea[i] < preb[i])
+            {
+                f = 2;
+                ans++;
+            }
+            else if (f == 2 && prea[i] > preb[i])
+            {
                 f = 1;
-                break;
+                ans++;
             }
         }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
-    }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
-}
 
+        cout << ans << endl;
+    }
+}
 
 int32_t main()
 {
@@ -89,10 +88,10 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        testCases (tt);
+        testCases(tt);
     }
 
     return 0;

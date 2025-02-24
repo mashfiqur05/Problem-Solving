@@ -22,27 +22,23 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+char arr[3][3];
 
 void testCases (int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < 3; i++)
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
-    }
+        for (int j = 0; j < 3; j++) cin >> arr[i][j];
+    }   
 
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
+    bool f = 1;
+    if (arr[0][0] != arr[2][2] ||
+        arr[0][1] != arr[2][1] ||
+        arr[0][2] != arr[2][0] ||
+        arr[1][0] != arr[1][2]) f = 0;
 
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+        if (f) cout << "YES" << endl;
+        else cout << "NO" << endl;
 }
 
 

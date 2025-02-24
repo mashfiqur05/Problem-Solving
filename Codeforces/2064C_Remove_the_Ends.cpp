@@ -9,6 +9,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -41,45 +42,32 @@ void testCases (int tt)
 {
     int n;
     cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
-    {
-        cout << 0 << endl;
-        return;
-    }
-    vector<pair<int, int>> ans;
+    vector<int> pre(n+1, 0), suff(n+1, 0);
+    
     for (int i = 0; i < n; i++)
     {
-        bool f = 0;
-        for (int j = i; j < n; j++)
-        {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
-            {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
-            }
-        }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
+        if (v[i] > 0) pre[i+1] = pre[i] + v[i];
+        else pre[i+1] = pre[i];
+
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+    for (int i = n-1; i >= 0; i--)
+    {
+        if (v[i] < 0) suff[i] = suff[i+1] + abs(v[i]);
+        else suff[i] = suff[i+1];
+    }
+
+    ll ans = 0;
+    // dbg(pre, suff);
+
+    for (int i = 0; i <= n; i++)
+    {
+        ans = max (ans, pre[i] + suff[i]);
+    }
+
+    cout << ans << endl;
 }
 
 

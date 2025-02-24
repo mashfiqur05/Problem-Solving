@@ -25,24 +25,35 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
+    int n;
+    cin >> n;
     string s;
     cin >> s;
-    int n = s.size();
-    ll ans = 0;
+    string a = "", b = "";
     for (int i = 0; i < n; i++)
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        if (s[i] == '2')
+        {
+            a += '1';
+            b += '1';
+        }
+        else if (s[i] == '0')
+        {
+            a += '0';
+            b += '0';
+        }
+        else 
+        {
+            a += '1';
+            b += '0';   
+
+            a += string(n - i - 1, '0');
+            b += s.substr(i + 1, n - i - 1); 
+            break;
+        }
     }
 
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+    cout << a << endl << b << endl;
 }
 
 
@@ -52,7 +63,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

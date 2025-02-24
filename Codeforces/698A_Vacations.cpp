@@ -37,49 +37,36 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#define dbg(args...)
 
 
+int n, v[105], dp[105][3];
+// 1 = contest, 2 = gym, 0 = rest for prev
+
+int fun (int ind, int prev)
+{
+    if (dp[ind][prev] != -1) return dp[ind][prev];
+    if (ind == n) return 0;
+
+    int val = fun (ind + 1, 0) + 1;
+    
+    if ((v[ind] == 1 || v[ind] == 3) && prev != 1) val = min (val, fun (ind + 1, 1)); // contest er option
+    if ((v[ind] == 2 || v[ind] == 3) && prev != 2) val = min (val, fun (ind + 1, 2)); // gym 
+
+    return dp[ind][prev] = val;
+}
+
+
 void testCases (int tt)
 {
-    int n;
     cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
+    for (int i = 0; i < n; i++) cin >> v[i];
+    mem (dp, -1);
 
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
-    {
-        cout << 0 << endl;
-        return;
-    }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
-    {
-        bool f = 0;
-        for (int j = i; j < n; j++)
-        {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
-            {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
-            }
-        }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
-    }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < 3; j++) cout << dp[i][j] << " ";
+    //     cout << endl;
+    // }
+    int ans = fun (0, 0);
+    cout << ans << endl;
 }
 
 
@@ -89,7 +76,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

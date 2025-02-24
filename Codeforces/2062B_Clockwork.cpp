@@ -25,24 +25,22 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
     for (int i = 0; i < n; i++)
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        int at_least = (2 * max ((n-i-1), i)) + 1;
+        if (v[i] < at_least)
+        {
+            cout << "NO" << endl;
+            return;
+        } 
     }
 
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+    cout << "YES" << endl;
 }
 
 
@@ -52,7 +50,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

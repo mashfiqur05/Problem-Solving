@@ -28,21 +28,21 @@ void testCases (int tt)
     string s;
     cin >> s;
     int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
+    if (s[0] == s[1])
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        cout << s[0] << " " << s[1] << ' ';
+        for (int i = 2; i < s.size(); i++) cout << s[i]; cout << endl;
     }
-
-    for (int i = 0; i < n - 1; i++)
+    else if (s[0] == 'b' && s[1] == 'a')
     {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
+        cout << s[0] << " " << s[1] << ' ';
+        for (int i = 2; i < s.size(); i++) cout << s[i]; cout << endl;
     }
-
-    cout << ans << endl;
+    else 
+    {
+        for (int i = 0; i < s.size() -2; i++) cout << s[i]; cout << " ";
+        cout << s[n-2] << " " << s[n-1] << endl;
+    }
 }
 
 
@@ -52,7 +52,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

@@ -36,50 +36,32 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
+    int n, m;
+    cin >> n >> m;
+    vector<pair<pair<int,int>, int>> v(m); /// val, coordinate, index
+    for (int i = 0; i < m; i++)
     {
-        cout << 0 << endl;
-        return;
+        cin >> v[i].first.second >> v[i].first.first;
+        v[i].second = i+1;
     }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
+
+    sort (all (v));
+    // dbg(v);
+
+    ll sum = 0;
+    vector<pair<int,int>> ans;
+    for (int i = 0; i < 2*n; i++)
     {
-        bool f = 0;
-        for (int j = i; j < n; j++)
-        {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
-            {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
-            }
-        }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
+        sum += v[i].first.first;
+        ans.push_back ({v[i].first.second, v[i].second});
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+    // dbg(sum);
+    // dbg(ans);
+    cout << sum << endl;
+    sort (all (ans));
+    for (int i = 0, j = ans.size() - 1; i < j; i++, j--) cout << ans[i].second << " " << ans[j].second << endl;
 }
 
 

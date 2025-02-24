@@ -4,7 +4,7 @@
 using namespace std;
 
 #define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-#define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+#define fraction() cout.unsetf(ios::floatfield); cout.precision(15); cout.setf(ios::fixed,ios::floatfield);
 #define file() freopen("input.txt","r",stdin);freopen("output.txt","w",stdout);
 
 #define endl '\n'
@@ -22,6 +22,7 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -37,59 +38,80 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#define dbg(args...)
 
 
-void testCases (int tt)
+vector<int> adj[MX];
+bool vis[MX];
+ll n, cnt = 0, level[MX];
+double ans = 0, pro[MX];
+
+void bfs (int source)   /// Complexity : O(V+e) where v = total node and e = total edge.
 {
-    int n;
-    cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
+    queue<int> q;
+    q.push (source);
+    vis[source] = 1;
 
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
+    while (!q.empty())
+    {
+        int cur_vartex = q.front();
+        q.pop();
 
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
-    {
-        cout << 0 << endl;
-        return;
-    }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
-    {
-        bool f = 0;
-        for (int j = i; j < n; j++)
+        for (auto child : adj[cur_vartex])
         {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
+            if (!vis[child])
             {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
+                q.push (child);
+                vis[child] = 1;
+                level[child] = level[cur_vartex] + 1;
+                if (cur_vartex != 1) pro[child] = 1.0 * pro[cur_vartex] / (adj[cur_vartex].size() - 1);
+                else pro[child] = 1.0 * pro[cur_vartex] / (adj[cur_vartex].size());
             }
         }
-        if (!f)
+    }
+}
+
+
+void testCases (int tt)
+{
+    mem (vis, 0);
+    mem (level, 0);
+    fill(pro, pro + MX, 1.0);
+
+    cin >> n;
+    for (int i = 1; i < n; i++) 
+    {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back (v);
+        adj[v].push_back (u);
+    }
+
+    bfs (1);
+    // for (int i = 1; i <= n; i++)
+    // {
+    //     cout << i << " " << level[i] << " " << pro[i] << endl;
+    // }
+
+    ans = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (adj[i].size() == 1)
         {
-            cout << -1 << endl;
-            return;
+            ans += (level[i] * pro[i]);
         }
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+    cout << ans << endl;
+
+    for (int i = 1; i <= n; i++) adj[i].clear();
 }
 
 
 int32_t main()
 {
     fastio();
+    fraction();
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

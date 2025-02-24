@@ -25,24 +25,23 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
+
+    unordered_set<int> c;
     for (int i = 0; i < n; i++)
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        for (int j = 0; j < n; j++)
+        {
+            c.insert (a[i] + b[j]);
+        }
     }
 
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+    if (c.size() >= 3) cout << "YES" << endl;
+    else cout << "NO" << endl;
 }
 
 
@@ -52,7 +51,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

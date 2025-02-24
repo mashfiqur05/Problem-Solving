@@ -25,24 +25,22 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
+    string a, b;
+    cin >> a >> b;
+    string c = a;
+    sort (all (c));
+
+    for (int i = 0; i < b.size(); i++)
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        if (c[i] != '0')
+        {
+            swap (c[i], c[0]);
+            break;
+        }
     }
-
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+    
+    if (c == b) cout << "OK" << endl;
+    else cout << "WRONG_ANSWER" << endl;
 }
 
 

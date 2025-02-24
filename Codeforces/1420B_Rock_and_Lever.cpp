@@ -9,6 +9,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -37,49 +38,50 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#define dbg(args...)
 
 
+string decToBinary(int n) {
+    string bin = "";
+    
+    for (int i = 30; i >= 0; i--)
+    {
+        bin += to_string ((n >> i) & 1);
+    }
+
+    return bin;
+}
+
+
 void testCases (int tt)
 {
     int n;
     cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
+    vector<string> s;
+    for (int i= 0; i < n; i++)
     {
-        cout << 0 << endl;
-        return;
+        int a;
+        cin >> a;
+        s.push_back (decToBinary (a));
     }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
-    {
-        bool f = 0;
-        for (int j = i; j < n; j++)
+
+    // dbg (s);
+
+    map<int, int> f;
+    ll  ans = 0;
+    for (int i = 0; i < s[0].size(); i++)
+    {   
+        int cnt = 0;
+        for (int j = 0; j < s.size(); j++)
         {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
+            if (s[j][i] == '1' && f[j] == 0)
             {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
+                cnt++;
+                f[j]++;
             }
         }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
+
+        ans += ((cnt * (cnt - 1)) / 2);
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+
+    cout << ans << endl;
 }
 
 

@@ -25,24 +25,34 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    vector<vector<int>> v(n + 1);
+    v[0] = a;
+    for (int i = 1; i <= n; i++)
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        map<int, int> frq;
+        for (auto u : v[i-1]) frq[u]++;
+        
+        vector<int> cur (n);
+        for (int j = 0; j < n; j++)
+        {
+            cur[j] = frq[v[i-1][j]];
+        }
+        v[i] = cur;
     }
 
-    for (int i = 0; i < n - 1; i++)
+    int q;
+    cin >> q;
+    while (q--)
     {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
+        int x, k;
+        cin >> x >> k;
+        cout << v[min(n, k)][x-1] << endl;
     }
-
-    cout << ans << endl;
 }
 
 
@@ -52,7 +62,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

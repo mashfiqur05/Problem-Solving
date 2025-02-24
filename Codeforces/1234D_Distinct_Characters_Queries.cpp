@@ -39,47 +39,48 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
+    string s;
+    cin >> s;
+    set<int> pos[26];
+    for (int i = 0; i < s.size(); i++)
     {
-        cout << 0 << endl;
-        return;
+        pos[s[i]-'a'].insert (i);
     }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
+    int q;
+    cin >> q;
+    while (q--)
     {
-        bool f = 0;
-        for (int j = i; j < n; j++)
+        int no;
+        cin >> no;
+        if (no == 1)
         {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
+            int p;
+            char c;
+            cin >> p >> c;
+            p--;
+            pos[s[p]-'a'].erase (p);
+            s[p] = c;
+            pos[c-'a'].insert (p);
+        }
+        else 
+        {
+            int l, r;
+            cin >> l >> r;
+            l--;
+            int ans = 0;
+            for (int i = 0; i < 26; i++)
             {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
+                auto it = pos[i].lower_bound (l);
+                // cout << "it : " *it << endl;
+                if (it != pos[i].end() && *it < r)
+                {
+                    ans++;
+                }
             }
+            cout << ans << endl;
         }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
+        // dbg(s);
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
 }
 
 
@@ -89,7 +90,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

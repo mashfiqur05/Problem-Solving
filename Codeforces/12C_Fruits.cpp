@@ -39,47 +39,41 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
-    {
-        cout << 0 << endl;
-        return;
+    int n, m;
+    cin >> n >> m;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    map<string, int> cnt;
+    for (int i = 0; i < m; i++) {
+        string fruit;
+        cin >> fruit;
+        cnt[fruit]++;
     }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
-    {
-        bool f = 0;
-        for (int j = i; j < n; j++)
-        {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
-            {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
-            }
-        }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
-        }
+
+    vector<int> freq;
+    for (auto u : cnt) {
+        freq.push_back(u.second);
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+
+    sort (all (v));
+    sort (rall (freq));
+
+    // dbg(v, freq);
+
+    int mn = 0, mx = 0;
+    for (int i = 0; i < freq.size(); i++)
+    {
+        mn += freq[i] * v[i];
+    }
+
+    sort(rall(v));
+
+    for (int i = 0; i < freq.size(); i++)
+    {
+        mx += freq[i] * v[i];
+    }
+
+    cout << mn << " " << mx << endl;
 }
 
 
@@ -89,7 +83,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

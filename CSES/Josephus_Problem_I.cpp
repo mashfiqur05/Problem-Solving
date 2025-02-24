@@ -18,33 +18,35 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 2e5 + 123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+const int MOD = 1e9 + 7;
 
-
-void testCases (int tt)
+void testCases(int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
+    int n;
+    cin >> n;
+    queue<ll> q;
+    for (int i = 1; i <= n; i++)
+        q.push(i);
+
+    bool f = false;
+
+    while (!q.empty())
     {
-        if ((s[i] - '0') % 4 == 0) ans++;
+        int x = q.front();
+        q.pop();
+        if (f)
+        {
+            cout << x << " ";
+        }
+        else
+        {
+            q.push(x);
+        }
+        f = !f;
     }
-
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
 }
-
 
 int32_t main()
 {

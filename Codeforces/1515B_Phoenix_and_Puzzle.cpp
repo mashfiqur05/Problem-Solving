@@ -20,31 +20,25 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+const int MOD = 1e9 + 7;
 
-
-void testCases (int tt)
+bool isSquare(int x)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-        if ((s[i] - '0') % 4 == 0) ans++;
-    }
-
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+    int y = sqrt(x);
+    return y * y == x;
 }
 
+void testCases(int tt)
+{
+    int n;
+    cin >> n;
+    if (n % 2 == 0 && isSquare(n / 2))
+        cout << "YES" << endl;
+    else if (n % 4 == 0 && isSquare(n / 4))
+        cout << "YES" << endl;
+    else
+        cout << "NO" << endl;
+}
 
 int32_t main()
 {
@@ -52,7 +46,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

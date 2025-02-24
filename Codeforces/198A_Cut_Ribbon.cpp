@@ -22,27 +22,28 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n, a, b, c, dp[4005];
+
+int fun (int len)
+{
+    if (len == 0) return 0;
+    if (len < 0) return INT_MIN;
+
+    if (dp[len] != -1) return dp[len];
+
+    int val = fun (len - a) + 1;
+    val = max (val, (fun (len - b) + 1));
+    val = max (val, (fun (len - c) + 1));
+
+    return dp[len] = val;
+}
 
 void testCases (int tt)
 {
-    string s;
-    cin >> s;
-    int n = s.size();
-    ll ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-        if ((s[i] - '0') % 4 == 0) ans++;
-    }
+    cin >> n >> a >> b >> c;
+    mem (dp, -1);
 
-    for (int i = 0; i < n - 1; i++)
-    {
-        int num = (s[i] - '0') * 10;
-        num += (s[i + 1] - '0');
-
-        if (num % 4 == 0) ans += (i + 1);
-    }
-
-    cout << ans << endl;
+    cout << fun(n) << endl;
 }
 
 

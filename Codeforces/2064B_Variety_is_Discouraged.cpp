@@ -36,50 +36,55 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-
 void testCases (int tt)
 {
     int n;
     cin >> n;
-    vector<int> a(n), b(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-
-    vector<int> sorted_a = a, sorted_b = b;
-    sort (all (sorted_a));
-    sort (all (sorted_b));
-
-    // dbg(a);dbg(b); dbg(sorted_a); dbg(sorted_b);
-    if (a == sorted_a && b == sorted_b) 
+    vector<int> v(n);
+    unordered_map<int, int> frq;
+    for (int i = 0; i < n; i++)
     {
+        cin >> v[i];
+        frq[v[i]]++;
+    }
+    unordered_set<int> s;
+    for (auto u : frq)
+    {
+        if (u.second == 1) s.insert(u.first);
+    }
+
+    vector<int> solo;
+    for (int i = 0; i < n; i++)
+    {
+        auto it = s.find (v[i]);
+        if (it != s.end()) solo.push_back (i+1);
+    }
+
+    // dbg(solo);
+    /// from solo find the longest consecutive range
+
+    if (solo.empty()) {
         cout << 0 << endl;
         return;
     }
-    vector<pair<int, int>> ans;
-    for (int i = 0; i < n; i++)
-    {
-        bool f = 0;
-        for (int j = i; j < n; j++)
-        {
-            if (sorted_a[i] == a[j] && sorted_b[i] == b[j])
-            {
-                swap (a[i], a[j]);
-                swap (b[i], b[j]);
-                if (i != j) ans.push_back ({i+1, j+1});
-                f = 1;
-                break;
-            }
+
+    int max_len = 1, current_len = 1;
+    pair<int, int> range = {solo[0], solo[0]};
+
+    for (int i = 1; i < solo.size(); i++) {
+        if (solo[i] == solo[i - 1] + 1) {
+            current_len++;
+        } else {
+            current_len = 1;
         }
-        if (!f)
-        {
-            cout << -1 << endl;
-            return;
+
+        if (current_len > max_len) {
+            max_len = current_len;
+            range = {solo[i - current_len + 1], solo[i]};  // Update the range
         }
     }
-    
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u.first << " " << u.second << endl;
-    // dbg(a, b);
+
+    cout << range.first << " " << range.second << endl;
 }
 
 
