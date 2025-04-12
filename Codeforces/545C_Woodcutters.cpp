@@ -9,11 +9,13 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
 const double PI = acos(-1);
 const double eps = 1e-9;
@@ -27,51 +29,32 @@ void testCases (int tt)
 {
     int n;
     cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
-
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    vector<pair<int, int>> v(n);
+    vector<bool> f(n, false);
+    for (int i = 0; i < n; i++) cin >> v[i].first >> v[i].second;
+    int ans = 1;
+    sort (all (v));
+    for (int i = 1; i < n-1; i++)
     {
-        if (v[i] != a[i] && f == -1)
+        if (v[i].first - v[i].second > v[i-1].first && !f[i-1])
         {
-            f = 1;
-            l = i;
+            ans++;
+            f[i-1] = true;
         }
-        else if (f == 1 && v[i] != a[i])
+        else if (v[i-1].first + v[i-1].second < v[i].first - v[i].second)
         {
-            r = i;
+            ans++;
         }
-    }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
+        else if (v[i].first + v[i].second < v[i+1].first && !f[i])
         {
-            f = 0;
-            break;
+            ans++;
+            f[i] = true;
         }
     }
 
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    if (n > 1) ans++;
+
+    cout << ans << endl;
 }
 
 

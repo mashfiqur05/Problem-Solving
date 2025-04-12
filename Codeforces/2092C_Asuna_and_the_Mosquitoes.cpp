@@ -9,11 +9,13 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
 const double PI = acos(-1);
 const double eps = 1e-9;
@@ -29,49 +31,29 @@ void testCases (int tt)
     cin >> n;
     vector<int> v(n);
     for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
 
-    int l = 0, r = 0, f= -1;
-
+    int even_sum = 0, mx_odd = 0, cnt_odd = 0, odd_sum = 0, cnt_even = 0, mx_even = 0;
     for (int i = 0; i < n; i++)
     {
-        if (v[i] != a[i] && f == -1)
+        if (v[i] & 1)
         {
-            f = 1;
-            l = i;
+            odd_sum += v[i];
+            mx_odd = max (v[i], mx_odd);
+            cnt_odd++;
         }
-        else if (f == 1 && v[i] != a[i])
+        else 
         {
-            r = i;
-        }
-    }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
+            even_sum += v[i];
+            mx_even = max (v[i], mx_even);
+            cnt_even++;
         }
     }
 
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    int ans = even_sum + mx_odd + (odd_sum - mx_odd - cnt_odd + 1);
+    if (cnt_even == 0) ans = mx_odd; 
+    else if (cnt_odd == 0) ans = mx_even;
+    
+    cout << ans << endl;
 }
 
 
@@ -81,7 +63,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

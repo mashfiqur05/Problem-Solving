@@ -14,6 +14,7 @@ using namespace std;
 #define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
 const double PI = acos(-1);
 const double eps = 1e-9;
@@ -25,52 +26,26 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    string r = s;
+    unq (r);
 
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    if (r.size() == 1) 
     {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
-    }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
+        cout << "NO" << endl;
         return;
     }
 
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
+    string x = s;
+    reverse (all (x));
+    if (k > 0) cout << "YES" << endl;
     else 
     {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
+        if (x > s) cout << "YES" << endl;
+        else cout << "NO" << endl;
     }
 }
 
@@ -81,7 +56,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

@@ -25,53 +25,38 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
+    /// -1 for only s = 0 or m * 9 < s cz s = 21 m = 2.
+    int m, s;
+    cin >> m >> s;
 
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    if ((s == 0 && m > 1) || m * 9 < s) 
     {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
-    }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
+        cout << -1 << " " << -1 << endl;
         return;
     }
 
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
+    string mx = "", mn = "";
+    int tmp = s;
+    while (tmp >= 9)
     {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
+        mx += '9';
+        tmp -= 9;
     }
+    if (tmp != 0) mx += (tmp + '0');
+    for (int i = mx.size(); i < m; i++) mx += '0';
+    // cout << mx << endl;
 
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    /// for 1117999 m = 7, s = 38
+    mn = mx;
+    reverse(all(mn));
+    int ind = 0;
+    while (mn[ind] == '0' && ind < m-1)
+        ind++;
+    mn[ind]--;
+    mn[0]++;
+
+    cout << mn << " " << mx << endl;
+
 }
 
 

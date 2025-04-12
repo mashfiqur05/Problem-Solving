@@ -9,11 +9,13 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
 const double PI = acos(-1);
 const double eps = 1e-9;
@@ -25,53 +27,38 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
-
-    int l = 0, r = 0, f= -1;
-
+    string s;
+    cin >> s;
+    int n = s.size();
     for (int i = 0; i < n; i++)
     {
-        if (v[i] != a[i] && f == -1)
+        int val = (s[i] - '0');
+        if (val % 8 == 0)
         {
-            f = 1;
-            l = i;
+            cout << "YES" << endl << val << endl;
+            return;
         }
-        else if (f == 1 && v[i] != a[i])
+        for (int j = i+1; j < n; j++)
         {
-            r = i;
+            val = (s[i] - '0') * 10 + (s[j] - '0');
+            if (val % 8 == 0)
+            {
+                cout << "YES" << endl << val << endl;
+                return;
+            }
+            for (int k = j+1; k < n; k++)
+            {
+                int num = (s[i] - '0') * 100 + (s[j] - '0') * 10 + (s[k] - '0'); 
+                if (num % 8 == 0)
+                {
+                    cout << "YES" << endl << num << endl;
+                    return;
+                }
+            }
         }
     }
 
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    cout << "NO" << endl;
 }
 
 

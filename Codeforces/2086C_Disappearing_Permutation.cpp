@@ -9,11 +9,13 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
 const double PI = acos(-1);
 const double eps = 1e-9;
@@ -27,51 +29,38 @@ void testCases (int tt)
 {
     int n;
     cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
+    vector<int> p(n+1), d(n+1);
+    // map<int, int> ind;
+    for (int i = 1; i <= n; i++) {cin >> p[i];}
+    for (int i = 1; i <= n; i++) cin >> d[i];
 
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    // for (auto u : ind) cout << u.first << ' ' << u.second << endl;
+    vector<bool> f(n+1, false);
+    int cnt = 0;
+    vector<int> ans(n+1);
+    for (int i = 1; i <= n; i++)
     {
-        if (v[i] != a[i] && f == -1)
+        // cout << "i " << i << endl;
+        int khujbo = d[i], child = p[d[i]];
+        if (f[khujbo])
         {
-            f = 1;
-            l = i;
+            ans[i] = cnt;
+            continue;
         }
-        else if (f == 1 && v[i] != a[i])
+        while (khujbo != child)
         {
-            r = i;
+            // cout << "khujbo " << khujbo << " chi " << child << " ";
+            f[child] = true;
+            child = p[child];
+            cnt++;
+            // cout << "khujbo " << khujbo << " chi " << child << endl;
         }
+        f[child] = true;
+        cnt++;
+        ans[i] = cnt;
     }
 
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    for (int i = 1; i <= n; i++) cout << ans[i] << ' '; cout << endl;
 }
 
 
@@ -81,7 +70,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

@@ -9,69 +9,48 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
+#define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
+
+int dp[MX][3], h1[MX], h2[MX];
+int n;
+
+int func (int pos, int last_choosen)
+{
+    if (pos == n) return 0;
+    if (dp[pos][last_choosen] != -1) return dp[pos][last_choosen];
+
+    int val = func (pos + 1, 0);
+    if (last_choosen != 1) val = max (val, func (pos + 1, 1) + h1[pos]);
+    if (last_choosen != 2) val = max (val, func (pos + 1, 2) + h2[pos]);
+
+    return dp[pos][last_choosen] = val;
+}
 
 
 void testCases (int tt)
 {
-    int n;
+    mem (dp, -1);
     cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
-
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
-    {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
-    }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    for (int i = 0; i < n; i++) cin >> h1[i];    
+    for (int i = 0; i < n; i++) cin >> h2[i];
+    
+    int ans = func (0, 0);
+    ans = max (ans, func (1, 0));
+    
+    cout << ans << endl;
 }
 
 
@@ -88,4 +67,4 @@ int32_t main()
     }
 
     return 0;
-}
+}       

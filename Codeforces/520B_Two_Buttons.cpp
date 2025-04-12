@@ -25,53 +25,17 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
-
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    int n, m;
+    cin >> n >> m;
+    int ans = 0;
+    while (n != m)
     {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
+        if (m % 2 == 0 && m > n) m /= 2;
+        else m++;
+        ans++;
     }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    
+    cout << ans << endl;
 }
 
 

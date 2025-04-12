@@ -25,52 +25,30 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
-
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    int n, k, q;
+    cin >> n >> k >> q;
+    vector<int> ar(200000+1, 0), pre (200000, 0);
+    for (int i = 0; i < n; i++) 
     {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
+        int l, r;
+        cin >> l >> r;
+        ar[l]++;
+        ar[r+1]--;
     }
 
-    if (l > r)
+    for (int i = 1; i <= 200000; i++) 
     {
-        cout << "no" << endl;
-        return;
+        ar[i] += ar[i-1];
+        if (ar[i] >= k) pre[i]++;  
+        pre[i] += pre[i-1];  
     }
 
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
+    while (q--)
     {
-        if (v[i] != a[j]) 
-        {
-            f = 0;
-            break;
-        }
-    }
-
-    if (f == 0)
-    {
-        cout << "no" << endl;
-    }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
+        int a, b;
+        cin >> a >> b;
+        // for (int i = a; i <= b; i++) cout << pre[i] << " "; cout << endl;
+        cout << pre[b] - pre[a-1] << endl;
     }
 }
 

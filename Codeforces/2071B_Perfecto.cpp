@@ -22,56 +22,56 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPerfectSquare (ll n)
+{
+    ll q = sqrt (n);
+    return (q * q == n);
+}
 
 void testCases (int tt)
 {
     int n;
     cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
-
-    int l = 0, r = 0, f= -1;
-
-    for (int i = 0; i < n; i++)
+    ll sum = (n * (n + 1)) / 2;
+    if (isPerfectSquare (sum)) 
     {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
-    }
-
-    if (l > r)
-    {
-        cout << "no" << endl;
+        cout << -1 << endl;
         return;
     }
 
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
+    vector<int> ans;
+    ans.push_back (2);
+    ans.push_back (1);
+    ll total = 0;
+    for (int i = 3; i <= n; i++)
     {
-        if (v[i] != a[j]) 
+        ans.push_back (i);
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        total += ans[i];
+        if (isPerfectSquare(total))
         {
-            f = 0;
-            break;
+            if (i != n - 1)
+            {
+                swap(ans[i], ans[i + 1]);
+                total += ans[i];
+                i++;
+            }
+            else 
+            {
+                cout << -1 << endl;
+                return;
+            }
         }
     }
 
-    if (f == 0)
+    for (auto u : ans)
     {
-        cout << "no" << endl;
+        cout << u << " ";
     }
-    else 
-    {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
-    }
+    cout << endl;
 }
 
 
@@ -81,7 +81,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

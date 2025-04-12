@@ -25,52 +25,49 @@ const int MOD = 1e9+7;
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
-    vector<int> a = v;
-    sort (all (a));
+    ll n, x, k;
+    cin >> n >> x >> k;
+    string s;
+    cin >> s;
 
-    int l = 0, r = 0, f= -1;
-
+    ll first_zero = -1, full_cycle = -1, pos = x;
     for (int i = 0; i < n; i++)
     {
-        if (v[i] != a[i] && f == -1)
-        {
-            f = 1;
-            l = i;
-        }
-        else if (f == 1 && v[i] != a[i])
-        {
-            r = i;
-        }
-    }
+        if (s[i] == 'L') pos--;
+        else pos++;
 
-    if (l > r)
-    {
-        cout << "no" << endl;
-        return;
-    }
-
-    // cout << l << " " << r << endl;
-    for (int i = l, j = r; i <= r; i++, j--)
-    {
-        if (v[i] != a[j]) 
+        if (pos == 0)
         {
-            f = 0;
+            first_zero = i+1;
             break;
         }
     }
 
-    if (f == 0)
+    if (first_zero == -1)
     {
-        cout << "no" << endl;
+        cout << 0 << endl;
+        return;
     }
     else 
     {
-        cout << "yes" << endl;
-        cout << l + 1 << " " << r + 1 << endl;
+        pos = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (s[i] == 'L') pos--;
+            else pos++;
+
+            if (pos == 0)
+            {
+                full_cycle = i+1;
+                break;
+            }
+        }
+
+        k -= first_zero;
+        ll ans;
+        if (full_cycle != -1) ans = k / full_cycle;
+        else ans = 0;
+        cout << ans + 1 << endl;
     }
 }
 
@@ -81,7 +78,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);
