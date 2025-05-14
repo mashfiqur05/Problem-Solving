@@ -20,7 +20,7 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
@@ -29,42 +29,28 @@ void testCases (int tt)
 {
     int n;
     cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    vector<int> v(n+1);
+    for (int i = 1; i <= n; i++) cin >> v[i];
+    vector<int> ans(n);
+    for (int i = 1; i <= n; i++)
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
-    }
+        int l = 1, r = i;
 
-    for (int i = 0; i < n; i++)
-    {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
+        while (l <= r)
         {
-            int p = v[i].second[j];
-            if (f)
+            int mid = (l + r) / 2;
+
+            if (v[i - mid + 1] >= mid) 
             {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
+                l = mid + 1;
             }
+            else r = mid - 1;
         }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
+        ans[i-1] = r;
     }
 
-    cout << "No" << endl;
+    for (auto u : ans) cout << u << " "; cout << endl;
+    
 }
 
 

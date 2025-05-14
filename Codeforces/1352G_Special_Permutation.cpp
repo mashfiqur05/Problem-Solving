@@ -20,51 +20,67 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
+    int n; 
     cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    if (n >= 1 && n <= 3) {cout << -1 << endl; return;}
+    else if (n == 4)
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
+        cout << "3 1 4 2" << endl;
+        return;
+    }
+    else if (n == 5)
+    {
+        cout << "3 1 4 2 5" << endl;
+        return;
     }
 
-    for (int i = 0; i < n; i++)
+    int i = 0, val = n;
+    for (i = 0; i < n && val > 0; i++)
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
+        cout << val << " ";
+        val -= 2;
     }
 
-    cout << "No" << endl;
+    if (n % 2 == 0)
+    {
+        if (n < 7)
+        {
+            cout << "5 1 3 ";
+        }
+        else
+            cout << "5 1 3 7 ";
+
+        val = 9;
+        while (val <= n)
+        {
+            cout << val << " ";
+            val += 2;
+        }
+    }
+    else 
+    {
+        if (n < 8)
+        {
+            cout << "4 2 6 ";
+        }
+        else
+            cout << "4 2 6 8 ";
+
+        val = 10;
+        while (val <= n)
+        {
+            cout << val << " ";
+            val += 2;
+        }
+    }
+    cout << endl;
 }
 
 

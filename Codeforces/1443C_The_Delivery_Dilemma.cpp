@@ -20,51 +20,46 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPossible (vector<int> &a, vector<int> &b, int pickTime)
+{
+    int ownCollect = 0;
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (a[i] > pickTime) ownCollect += b[i];
+    }
+
+    return ownCollect <= pickTime;
+}
 
 void testCases (int tt)
 {
     int n;
     cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    vector<int> a(n), b(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
+
+    int mx = max (*max_element (all (a)), *max_element (all (b)));
+    int l = 0, r = mx, ans = mx;
+
+    while (l <= r)
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
+        int mid = (l + r) / 2;
+
+        // cout << "l " << l << " r " << r << " mid " << mid << " ans " << ans <<endl;
+        if (isPossible (a, b, mid))
         {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
+            ans = mid;
+            r = mid - 1;
         }
+        else l = mid + 1;
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
-    }
-
-    cout << "No" << endl;
+    cout << ans << endl;
 }
 
 

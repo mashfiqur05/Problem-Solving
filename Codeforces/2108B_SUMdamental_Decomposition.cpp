@@ -20,51 +20,44 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    int n, x;
+    cin >> n >> x;
+    if (x == 0) 
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
+        if (n == 1) cout << -1 << endl;
+        else if (n % 2 == 0) cout << n << endl;
+        else cout << n + 3 << endl;
+
+        return;
+    }
+    if (x == 1)
+    {
+        if (n & 1) cout << n << endl;
+        else cout << n + 3 << endl;
+
+        return;
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
-    }
+    int cnt = __builtin_popcountll(x);
 
-    cout << "No" << endl;
+    // cout << cnt << " " << n-cnt << endl;
+    if (cnt >= n) cout << x << endl;
+    else 
+    {
+        int ans = x;
+        n -= cnt;
+        if (n % 2 == 0) ans += n;
+        else ans += (n + 1);
+
+        cout << ans << endl;
+    }
 }
 
 

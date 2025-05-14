@@ -20,51 +20,73 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
+    int n, m;
+    cin >> n >> m;
+    int mn = min (n, m);
+    int ans[n][m];
+
+    for (int i = 0; i < mn; i++)
+    {   
+        int val = 1;
+        for (int j = 0; j <= i; j++)
         {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
+            ans[i][j] = val;
+        }
+        val++;
+        for (int j = i+1; j < mn; j++)
+        {
+            ans[i][j] = val++;
         }
     }
 
-    for (int i = 0; i < n; i++)
+    if (n > m)
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
+        for (int i = mn; i < n; i++)
         {
-            int p = v[i].second[j];
-            if (f)
+            int val = i+1;
+            for (int j = 0; j < m; j++)
             {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
+                ans[i][j] = val;
             }
         }
-        if (f)
+    }
+    else if (m > n)
+    {
+        for (int j = mn; j < m; j++)
         {
-            cout << "Yes" << endl;
-            return;
+            int val = j + 1;
+            for (int i = 0; i < n; i++) ans[i][j] = val;
         }
     }
 
-    cout << "No" << endl;
+    set<int> s;
+    for (int i = 0; i < n; i++)
+    {
+        set<int> tmp;
+        for (int j = 0; j < m; j++) tmp.insert(ans[i][j]);
+        s.insert (tmp.size());
+    }
+
+    for (int j = 0; j < m; j++)
+    {
+        set<int> tmp;
+        for (int i = 0; i < n; i++)tmp.insert(ans[i][j]);
+        s.insert (tmp.size());
+    }
+
+    cout << s.size() << endl;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++) cout << ans[i][j] << " ";
+        cout << endl;
+    }
 }
 
 

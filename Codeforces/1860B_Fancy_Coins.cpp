@@ -20,51 +20,48 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    int m, k, a1, ak;
+    cin >> m >> k >> a1 >> ak;
+    
+    int burrleWithAk = m / k;
+    if (burrleWithAk <= ak)
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
+        ak -= burrleWithAk;
+        m -= (burrleWithAk * k);
+    }
+    else
+    {
+        m -= (ak * k);
+        ak = 0;
     }
 
-    for (int i = 0; i < n; i++)
+    // cout << m << " ";
+    if (m <= a1) 
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
+        cout << 0 << endl;
     }
+    else 
+    {
+        int needMore = m - a1;
+        int canDoWithAk = (needMore + k - 1) / k;
+        // int extra = m - a1 - canDoWithAk * k;?
+        if (canDoWithAk * k <= m && m - canDoWithAk * k <= a1) cout << canDoWithAk << endl;
+        else 
+        {
+            canDoWithAk--;
+            cout << canDoWithAk + (m - canDoWithAk * k - a1) << endl;
+        }
 
-    cout << "No" << endl;
+        // cout << needMore << " " << canDoWithAk << " " << extra << endl;
+        // cout << canDoWithAk + extra << endl;
+    }
 }
 
 

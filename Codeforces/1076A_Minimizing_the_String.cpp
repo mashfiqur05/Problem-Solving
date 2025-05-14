@@ -20,51 +20,30 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    int n; cin >> n;
+    string s;
+    cin >> s;
+
+    bool f = 0;
+    for (int i = 0; i < n-1; i++) 
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
+        if (s[i] > s[i+1] && !f)
         {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
+            f = 1;
+            continue;
         }
+        else cout << s[i];
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
-    }
-
-    cout << "No" << endl;
+    if (f) cout << s[n-1];
+    cout << endl;
 }
 
 
@@ -74,7 +53,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

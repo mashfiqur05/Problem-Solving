@@ -20,51 +20,40 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
-    }
+    string s;
+    cin >> s;
 
-    for (int i = 0; i < n; i++)
+    int hour = (s[0] - '0') * 10 + (s[1] - '0'), min = (s[3] - '0') * 10 + (s[4]-'0'), ans = 0;
+    while (1)
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
+        string h = to_string (hour), m = to_string (min);
+        if (h.size() == 1) h = '0' + h;
+        if (m.size() == 1) m = '0' + m;
+        reverse (all (m));
+        if (h == m)
         {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
+            // cout << hour << " " << min << endl;
+            cout << ans << endl;
             return;
         }
-    }
 
-    cout << "No" << endl;
+        ans++;
+        min = (min + 1);
+        if (min >= 60)
+        {
+            min %= 60;
+            hour = (hour + 1) % 24;
+        }
+
+        // cout << ans << " " << h <<" " << m << endl;
+    }
 }
 
 
@@ -74,7 +63,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         testCases (tt);

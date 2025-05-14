@@ -20,51 +20,40 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
-    }
+    string s;
+    cin >> s;
+    int ones = count (all (s), '1'), zeros = count (all (s), '0');
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < s.size(); i++)
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
+        if (s[i] == '0')
         {
-            int p = v[i].second[j];
-            if (f)
+            if (ones) ones--;
+            else 
             {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
+                cout << s.size() - i << endl;
+                return;
             }
         }
-        if (f)
+        else
         {
-            cout << "Yes" << endl;
-            return;
+            if (zeros) zeros--;
+            else 
+            {
+                cout << s.size() - i << endl;
+                return;
+            }
         }
     }
 
-    cout << "No" << endl;
+    cout << 0 << endl;
 }
 
 

@@ -20,51 +20,33 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    int a, b, k;
+    cin >> a >> b >> k;
+    vector<int> boys(k), girls(k);
+    for (int i = 0; i < k; i++) cin >> boys[i];  
+    for (int i = 0; i < k; i++) cin >> girls[i];
+    
+    map<int, int> cntb, cntg;
+    for (int i = 0; i < k; i++)
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
+        cntb[boys[i]]++;
+        cntg[girls[i]]++;
     }
 
-    for (int i = 0; i < n; i++)
+    int ans = 0;
+    for (int i = 0; i < k; i++)
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
+        ans += (k - cntb[boys[i]] - cntg[girls[i]] + 1);
     }
 
-    cout << "No" << endl;
+    cout << ans / 2 << endl;
 }
 
 

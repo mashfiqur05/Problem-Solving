@@ -20,51 +20,71 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+
+    int cnt = count (all (s), 'W');
+    if (cnt == 0)
+    {
+        cout << max (0LL, k * 2 - 1) << endl;
+        return;
+    }
+
+    int ans = 0;
     for (int i = 0; i < n; i++)
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
+        if (s[i] == 'W')
         {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
+            ans++;
+            if (i - 1 >= 0 && s[i-1] =='W') ans++;
         }
     }
 
-    for (int i = 0; i < n; i++)
+    int cur = 0, frst = 0;
+    vector<int> block;
+    while (s[frst] == 'L') frst++;
+    for (int i = frst; i < n; i++)
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
+        if (s[i] == 'L') cur++;
+        else 
         {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
+            if (cur != 0) block.push_back (cur);
+            cur = 0;
         }
     }
 
-    cout << "No" << endl;
+    sort (all (block));
+    for (int i = 0; i < block.size(); i++)
+    {
+        if (block[i] > k) 
+        {
+            ans += (k * 2);
+            k = 0;
+            break;
+        }
+        else 
+        {
+            ans += ((block[i] * 2) + 1);
+            k -= block[i];
+        }
+    }
+
+    if (k <= frst + cur) ans += (k * 2);
+    else 
+    {
+        ans += ((frst + cur) * 2);
+    }
+
+    cout << ans << endl;
 }
 
 

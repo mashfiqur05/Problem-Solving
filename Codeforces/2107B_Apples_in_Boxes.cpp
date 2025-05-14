@@ -20,51 +20,30 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
-    }
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    int mn = *min_element (all (v)), mx = *max_element (all (v));
+    int sum = accumulate (all (v), 0LL);
+    int cnt = count (all (v), mx);
 
-    for (int i = 0; i < n; i++)
+    // cout << cnt << " " << mn << " " << mx << endl;
+    
+    if (mx - mn > k+1) cout << "Jerry" << endl;
+    else if (mx - mn == k+1 && cnt > 1) cout << "Jerry" << endl;
+    else 
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
+        if (sum % 2 == 1) cout << "Tom" << endl;
+        else cout << "Jerry" << endl;
     }
-
-    cout << "No" << endl;
 }
 
 

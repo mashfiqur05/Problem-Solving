@@ -20,51 +20,59 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isRxCyFormat(const string &s) 
+{
+    if (s[0] != 'R' || s[1] == 'C') return false;
+    int i = 1;
+    while (i < s.size() && isdigit(s[i])) i++;
+    if (i >= s.size() || s[i] != 'C') return false;
+    return true;
+}
 
 void testCases (int tt)
 {
-    int n;
-    cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
+    string s;
+    cin >> s;
+    
+    if (isRxCyFormat (s))
     {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
-    }
+        int ind = 1;
+        string r = "", c = "";
 
-    for (int i = 0; i < n; i++)
+        while (isdigit (s[ind])) r += s[ind++];
+        ind++;
+        while (ind < s.size()) c += s[ind++];
+
+        int col = stoi (c);
+        string ans = "";
+        while (col)
+        {
+            col--;
+            ans = char('A' + col % 26) + ans;
+            col /= 26;
+        }
+
+        cout << ans << r << endl;
+    }
+    else 
     {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
-    }
+        string r = "", c = "";
+        int ind = 0;
+        while (isalpha (s[ind])) c += s[ind++];
+        while (ind < s.size()) r += s[ind++];
 
-    cout << "No" << endl;
+        int col = 0;
+        for (auto u : c)
+        {
+            col = col * 26 + (u - 'A' + 1);
+        }
+
+        cout << "R" << r << "C" << col << endl;
+    }
 }
 
 

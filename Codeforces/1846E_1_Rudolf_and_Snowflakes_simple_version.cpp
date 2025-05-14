@@ -20,51 +20,20 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+set<int> nums;
 
 void testCases (int tt)
 {
     int n;
     cin >> n;
-    unordered_map<int, int> vis;
-    bool f = true, ans = 0;
-    vector<pair<int, vector<int>>> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i].first;
-        for (int j = 0; j < v[i].first; j++) 
-        {
-            int c;
-            cin >> c;
-            v[i].second.push_back (c);
-            vis[c]++;
-            // cout << c << " " << vis[c] << endl;
-        }
-    }
+    auto it = nums.find (n);
 
-    for (int i = 0; i < n; i++)
-    {
-        f = true;
-        for (int j = 0; j < v[i].first; j++)
-        {
-            int p = v[i].second[j];
-            if (f)
-            {
-                if (vis[p] >= 2) continue;
-                else {f = false; break;}
-            }
-        }
-        if (f)
-        {
-            cout << "Yes" << endl;
-            return;
-        }
-    }
-
-    cout << "No" << endl;
+    if (it != nums.end()) cout << "YES" << endl;
+    else cout << "NO" << endl;
 }
 
 
@@ -72,6 +41,22 @@ int32_t main()
 {
     fastio();
     // srand(time(NULL));
+
+    for (int k = 2; k <= 1000; k++)
+    {
+        int power = k * k;
+        int val = 1 + k;
+
+        for (int i = 2; i <= 30; i++)
+        {
+            val += power;
+
+            if (val > (int)1e6 + 1)
+                break;
+            nums.insert(val);
+            power *= k;
+        }
+    }
 
     int testcases = 1;
     cin >> testcases;
