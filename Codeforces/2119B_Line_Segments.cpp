@@ -1,0 +1,74 @@
+///   ***   ---   |||		 In the name of ALLAH		|||   ---   ***   ///
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+#define file() freopen("input.txt","r",stdin);freopen("output.txt","w",stdout);
+
+#define endl '\n'
+#define ll long long
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).rend()
+#define sz(x) (int)x.size()
+#define mem(a,b) memset(a, b, sizeof(a) )
+#define sq(a) ((a) * (a))
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
+
+const double PI = acos(-1);
+const double eps = 1e-8;
+const int inf = 2000000000;
+const int MX = 2e5+123;
+const ll infLL = 9000000000000000000;
+const int MOD = 1e9+7;
+
+
+void solve (int CaseNo)
+{
+    int n; cin >> n;
+    int px, py, qx, qy;
+    cin >> px >> py >> qx >> qy;
+
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
+    double dis = sqrt(sq(px - qx) + sq(py - qy));
+
+    if (n == 1) {
+        if (abs(dis - v[0]) < eps)
+            cout << "Yes\n";
+        else
+            cout << "No\n";
+        return;
+    }
+
+    vector<double> all_steps;
+    for (int i = 0; i < n; i++) all_steps.push_back((double)v[i]);
+    all_steps.push_back(dis);
+
+    sort(all_steps.begin(), all_steps.end());
+
+    double sum_of_other = accumulate(all_steps.begin(), all_steps.end() - 1, 0.0);
+    double largest = all_steps.back();
+
+    if (sum_of_other + eps > largest) cout << "Yes" << endl;
+    else cout << "No" << endl; 
+}
+
+
+int32_t main()
+{
+    fastio();
+    // srand(time(NULL));
+
+    int testcases = 1;
+    cin >> testcases;
+    for (int tt = 1; tt <= testcases; tt++)
+    {
+        solve (tt);
+    }
+
+    return 0;
+}
