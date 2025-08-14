@@ -38,37 +38,40 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
-{
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
-}
 
 void solve (int CaseNo)
 {
-    int n;
-    cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
-    {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
-    }
+    int n, k;
+    cin >> n >> k;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    int st_lvl = v[k-1], ind;
+    sort (all (v));
+    v.erase(unique(v.begin(), v.end()), v.end());
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
+    for (int i = 0; i < n; i++)
     {
-        cur += u.second;
-        if (cur > 2)
+        if (v[i] == st_lvl) 
+        {
+            ind = i;
+            break;
+        }
+    }
+    // dbg (v);
+
+    int wtr_lvl = 1;
+    for (int i = ind; i < v.size()-1; i++)
+    {
+        int nxt_time = v[i+1] - v[i];
+        int remain = v[i] - wtr_lvl + 1;
+        if (nxt_time > remain)
         {
             cout << "NO" << endl;
             return;
         }
-    }
+        // dbg (wtr_lvl, nxt_time, remain);
+        wtr_lvl += nxt_time;
+    }   
 
     cout << "YES" << endl;
 }
@@ -80,7 +83,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

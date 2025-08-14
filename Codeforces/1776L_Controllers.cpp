@@ -27,28 +27,45 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
-    {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
+    int n; cin >> n;
+    string s; cin >> s;
+    int plus = count (all (s), '+');
+    int minus = count (all (s), '-');
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
-    }
+    // (a - b)(x-y) - b (minus-plus)
+    // x = no. of use + by a, y = no of use - by a
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    int q;
+    cin >> q;
+    while (q--)
+    {
+        int a, b; 
+        cin >> a >> b;
+        // if (a < b) swap (a, b);
+        int b_min_plus = b * (minus - plus);
+        int dif = (a - b);
+        
+        // cout << b_min_plus << " " << dif << "---> " << b_min_plus / dif << endl;
+
+        if (a == b)
+        {
+            if (plus == minus) cout << "YES" << endl;
+            else cout << "NO" << endl;
+        }
+        else 
+        {
+            if (b_min_plus % dif != 0) {cout << "NO" << endl; continue;}
+
+            int p_minus_m = b_min_plus / dif;
+            int low = max(0LL, -p_minus_m);         
+            int high = min(minus, plus - p_minus_m); 
+
+            if (low <= high)
+                cout << "YES" << endl;
+            else
+                cout << "NO" << endl;
+        }
+    }
 }
 
 

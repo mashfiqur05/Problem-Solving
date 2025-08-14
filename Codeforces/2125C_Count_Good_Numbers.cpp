@@ -24,31 +24,40 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+vector<int> badPrimes = {2, 3, 5, 7};
+
+int cntBad(int x)
+{
+    int res = 0;
+    int n = badPrimes.size();
+    for (int mask = 1; mask < (1 << n); ++mask)
+    {
+        int lcm = 1, bits = 0;
+        for (int i = 0; i < n; ++i)
+        {
+            if (mask >> i & 1)
+            {
+                lcm *= badPrimes[i];
+                bits++;
+            }
+        }
+        if (lcm > x) continue;
+        int cnt = x / lcm;
+        if (bits % 2 == 1)
+            res += cnt; 
+        else
+            res -= cnt; 
+    }
+    return res;
+}
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
-    {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
+    int l, r; cin >> l >> r;
+    int total = r - l + 1;
+    int rmv = cntBad (r) - cntBad(l-1);
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
-    }
-
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    cout << total - rmv << endl;
 }
 
 
@@ -58,7 +67,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

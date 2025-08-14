@@ -38,39 +38,49 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
-{
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
-}
 
 void solve (int CaseNo)
 {
-    int n;
-    cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
-    {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
-    }
+    int n, k, z;
+    cin >> n >> k >> z;
+    vector<int> v(n), prefix_sum(n+1, 0), prefix_max(n+1, 0);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
+    for (int i = 1; i <= n; i++)
     {
-        cur += u.second;
-        if (cur > 2)
+        prefix_sum[i] = prefix_sum[i - 1] + v[i - 1];
+    }
+    prefix_max[1] = v[0];
+    for (int i = 2; i < n; i++)
+    {
+        prefix_max[i] = max (prefix_max[i-1], max (v[i-1] + v[i-2], v[i-1] + v[i]));
+    }
+    if (n >= 2) prefix_max[n] = max (prefix_max[n-1], v[n-1] + v[n-2]);
+
+    // dbg (prefix_sum);
+    int ans = 0;
+    for (int i = 0; i <= z; i++)
+    {
+        for (int j = 1; j <= k - 2*i +1; j++)
         {
-            cout << "NO" << endl;
-            return;
-        }
-    }
+            if (j == k - 2*i + 1 && i == 0) continue;
+            // case 1 -> 4 6 8 2 8 2 8 2
+            int sum1 = prefix_sum[j+1];
+            int repeat1 = prefix_max[j+1];
+            repeat1 *= i;
+            int total = sum1 + repeat1;
+            //case 2 -> 4 6 8 2 8 2 8
+            if (j == k - 2*i + 1)
+            {
+                total -= v[j];
+            }
 
-    cout << "YES" << endl;
+            ans = max (ans, total);
+        }
+        // cout << i << "-> " <<  ans << endl;
+    }
+    
+    cout << ans << endl;
 }
 
 
@@ -80,7 +90,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

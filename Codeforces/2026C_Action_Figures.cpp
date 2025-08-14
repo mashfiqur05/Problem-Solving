@@ -27,27 +27,23 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n;cin >> n;
+    string s; cin >> s;
+    s = '.' + s;
+
+    int ans = (n * (n + 1))/2, cnt = 0;
+    for (int i = n; i >= 2; i--)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
+        if (s[i] == '1' && (i - 1 - cnt) > 0)
+        {
+            ans -= i;
+            cnt++;
+            continue;
+        }
+        if (cnt > 0)
+            cnt--;
     }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
-    }
-
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
     cout << ans << endl;
 }
 
@@ -58,7 +54,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

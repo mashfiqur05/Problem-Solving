@@ -27,28 +27,37 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n; cin >> n;
+    vector<int> a(n), b(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
+
+    if (a[n-1] != b[n-1])
     {
-        cin >> ai;
+        cout << "NO" << endl;
+        return;
     }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
+    if (a[n-2] != b[n-2] && (a[n-1] ^ a[n-2]) != b[n-2])
     {
-        pref[i + 1] = pref[i] + a[i];
+        cout << "NO" << endl;
+        return;
     }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
+    for (int i = n-3; i >= 0; i--)
     {
-        sum += pref[i] - pref[i - k];
+        int val1 = (a[i] ^ a[i+1]);
+        int val2 = (a[i] ^ b[i+1]);
+
+        // cout << i << " " << val1 << "--> " << val2 << endl;
+        if (val1 == b[i] || val2 == b[i] || a[i] == b[i]) {}
+        else
+        {
+            cout << "NO" << endl;
+            return;
+        }
     }
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    cout << "YES" << endl;
 }
 
 
@@ -58,7 +67,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

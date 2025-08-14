@@ -27,28 +27,25 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n, q; cin >> n >> q;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    vector<int> prefix_sum (n+1, 0), cnt1(n+1, 0);
+    for (int i = 1; i <= n; i++) prefix_sum[i] = prefix_sum[i-1] + v[i-1];
+    for (int i = 1; i <= n; i++) cnt1[i] = cnt1[i-1] + (v[i-1] == 1);
+    while (q--)
     {
-        cin >> ai;
+        int l, r; cin >> l >> r;
+        int len = r - l + 1;
+        int cnt = cnt1[r] - cnt1[l-1];
+        int possible_sum = len + cnt;
+        int sum = prefix_sum[r] - prefix_sum[l-1];
+        if (possible_sum > sum || len == 1)
+        {
+            cout << "NO" << endl;
+        }
+        else cout << "YES" << endl;
     }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
-
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
-    }
-
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
 }
 
 
@@ -58,7 +55,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

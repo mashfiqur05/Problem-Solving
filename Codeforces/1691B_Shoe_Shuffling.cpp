@@ -27,28 +27,47 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n; cin >> n;
+    vector<int> v(n);
+    map<int, int> cnt;
+    for (int i = 0; i < n; i++)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
+        cin >> v[i];
+        cnt[v[i]]++;
     }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
+    for (auto u : cnt)
     {
-        sum += pref[i] - pref[i - k];
+        if (u.second < 2) 
+        {
+            cout << -1 << endl;
+            return;
+        }
     }
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    vector<int> ans(n);
+    for (int i = 0; i < n;)
+    {
+        int val = cnt[v[i]];
+        if (val == 0) i++;
+        else if (val % 2 == 1 && val >= 3)
+        {
+            ans[i] = i+2;
+            ans[i+1] = i;
+            ans[i+2] = i+1;
+            cnt[v[i]] -= 3;
+            i+=3;
+        }
+        else
+        {
+            ans[i] = i+1;
+            ans[i+1] = i;
+            cnt[v[i]] -= 2;
+            i+=2;
+        }
+    }
+
+    for (auto u : ans) cout << u+1 << " "; cout << endl;
 }
 
 
@@ -58,7 +77,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

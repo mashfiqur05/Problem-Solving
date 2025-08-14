@@ -27,28 +27,27 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n; cin >> n;
+    string s; cin >> s;
+    int need = (n - 11) / 2; need++;
+    int cnt = count (all (s), '8');
+    if (cnt < need)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
+        cout << "NO" << endl;
+        return;
     }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
+    int vasya = 0, move = need-1;
+    for (int i = 0; i < n; i++)
     {
-        sum += pref[i] - pref[i - k];
+        if (s[i] == '8') need--;
+        else vasya++;
+
+        if (need == 0) break;
     }
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    if (vasya > move) cout << "NO" << endl;
+    else cout << "YES" << endl;
 }
 
 

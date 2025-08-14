@@ -20,35 +20,38 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e6+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n, q; cin >> n >> q;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    int mx = *max_element (all (v));
+    vector<int> ans(mx+1, 0);
+    sort (all (v));
+    int cur = 0;
+    for (int i = 1, j = 0; i <= mx && j < n; i++)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
+        while ((i - 1) > v[j])
+        {
+            cur += v[j];
+            j++;
+        }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
+        int res = cur + (i-1) * (n - j) + 1;
+        ans[i] = res;
     }
-
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    
+    while (q--)
+    {
+        int x; cin >> x;
+        if (x > mx) cout << -1 << endl;
+        else cout << ans[x] << endl;
+    }
 }
 
 

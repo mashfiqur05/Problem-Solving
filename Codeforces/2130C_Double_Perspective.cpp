@@ -24,31 +24,37 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool cmp (pair<pair<int, int>, int> &a, pair<pair<int, int>, int> &b)
+{
+    if (a.first.first == b.first.first) return a.first.second > b.first.second;
+    return a.first.first < b.first.first;
+}
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n; cin >> n;
+    vector<pair<pair<int, int>, int>> v(n);
+    for (int i = 0; i < n; i++)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
+        cin >> v[i].first.first >> v[i].first.second;
+        v[i].second = i+1;
     }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
+    sort (all (v), cmp);
+
+    vector<int> ans;
+    int cur = -1;
+    for (int i = 0; i < n; i++)
     {
-        sum += pref[i] - pref[i - k];
+        if (cur != v[i].first.first)
+        {
+            cur = v[i].first.first;
+            ans.push_back (v[i].second);
+        }
     }
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    cout << ans.size() << endl;
+    for (auto u : ans) cout << u << " "; cout << endl;
 }
 
 
@@ -58,7 +64,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

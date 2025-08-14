@@ -23,7 +23,6 @@ const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
-
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -38,41 +37,57 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
+int lcm (int a, int b)
 {
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
+    return (a * b) / __gcd (a, b);
 }
 
 void solve (int CaseNo)
 {
     int n;
     cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
+    vector<int> p(n), s(n), a(n);
+    for (int i = 0; i < n; i++) cin >> p[i];
+    for (int i = 0; i < n; i++) cin >> s[i];
+
+    for (int i = 0; i < n; ++i)
     {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
+        a[i] = lcm(p[i], s[i]);
     }
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
+    // dbg (a);
+    
+    int expect;
+    for (int i = 0; i < n; i++)
     {
-        cur += u.second;
-        if (cur > 2)
+        if (i == 0) expect = p[i];
+        else expect = __gcd (expect, a[i]);
+
+        if (expect != p[i])
         {
             cout << "NO" << endl;
             return;
         }
     }
 
+    for (int i = n-1; i >= 0; i--)
+    {
+        if (i == n-1) expect = s[i];
+        else expect = __gcd (expect, a[i]);
+
+        if (expect != s[i])
+        {
+            cout << "NO" << endl;
+            return;
+        }
+    }
+    if (p[n-1] != s[0]) 
+    {
+        cout << "NO" << endl;
+        return;
+    }
     cout << "YES" << endl;
 }
-
 
 int32_t main()
 {
@@ -80,7 +95,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

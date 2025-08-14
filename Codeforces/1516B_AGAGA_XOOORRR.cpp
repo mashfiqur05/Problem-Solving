@@ -38,39 +38,42 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
-{
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
-}
 
 void solve (int CaseNo)
 {
-    int n;
-    cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
-    {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
-    }
+    int n; cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
+    vector<int> prefix_xor (n+1, 0);
+    for (int i = 0; i < n; i++) prefix_xor[i+1] = prefix_xor[i] ^ v[i];
+
+    // dbg (prefix_xor);
+    // dbg (suffix_xor);
+
+    for (int i = 1; i <= n; i++)
     {
-        cur += u.second;
-        if (cur > 2)
+        for (int j = i+1; j <= n; j++)
         {
-            cout << "NO" << endl;
-            return;
+            int till_i = prefix_xor[i];
+            int i_to_j = prefix_xor[j] ^ prefix_xor[i];
+            int j_to_n = prefix_xor[n] ^ prefix_xor[j];
+
+            if (till_i == i_to_j && i_to_j == j_to_n) 
+            {
+                cout << "YES" << endl;
+                return;
+            }
         }
     }
 
-    cout << "YES" << endl;
+    if (prefix_xor[n] == 0)
+    {
+        cout << "YES" << endl;
+        return;
+    }
+
+    cout << "NO" << endl;
 }
 
 
@@ -80,7 +83,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

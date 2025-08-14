@@ -20,10 +20,9 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e12;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
-
 //
 //debug
 template<typename F,typename S>ostream&operator<<(ostream&os,const pair<F,S>&p){return os<<"("<<p.first<<", "<<p.second<<")";}
@@ -38,39 +37,46 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
+
+vector<int> factorial;
+set<pair<int, int>> sums;
+
+void generateSums(int idx, ll currentSum, int element) 
 {
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
+    if (currentSum > 0 && currentSum <= MX) {
+        if (__builtin_popcountll(currentSum) != 1) sums.insert({currentSum, element}); 
+        else sums.insert ({currentSum, 1});
+    }
+    if (idx == factorial.size() || currentSum > MX) return;
+
+    generateSums(idx + 1, currentSum + factorial[idx], element + 1);
+
+    generateSums(idx + 1, currentSum, element);
 }
 
 void solve (int CaseNo)
 {
-    int n;
-    cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
-    {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
+    int n; cin >> n;
+
+    int ans = infLL, res = infLL;
+    if (__builtin_popcountll(n) == 1)
+    {   
+        cout << 1 << endl;
+        return;
     }
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
+    // dbg (sums);
+    for (auto u : sums)
     {
-        cur += u.second;
-        if (cur > 2)
-        {
-            cout << "NO" << endl;
-            return;
-        }
+        if (n < u.first) break;
+        int bit = __builtin_popcountll(n - u.first);
+        
+        // cout << "bit > " << bit << "--> " << u.first << " " << u.second << " = " << n-u.first << endl;
+
+        ans = min (ans, bit + u.second);
     }
 
-    cout << "YES" << endl;
+    cout << ans << endl;
 }
 
 
@@ -78,9 +84,26 @@ int32_t main()
 {
     fastio();
     // srand(time(NULL));
+    
+    int fact = 1, ind = 2;
+    factorial.push_back (1);
+    while (fact <= MX)
+    {
+        fact *= ind;
+        ind++;
+        factorial.push_back (fact);
+    }
+
+    generateSums(0, 0, 0);
+
+    for (auto u : factorial) sums.insert ({u, 1});
+    for (int i = 0; i <= 40; i++)
+    {
+        sums.insert ({pow (2, i), 1});
+    }
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

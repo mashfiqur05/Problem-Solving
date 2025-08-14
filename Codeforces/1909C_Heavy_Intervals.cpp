@@ -38,41 +38,34 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
-{
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
-}
-
 void solve (int CaseNo)
 {
-    int n;
-    cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
-    {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
-    }
+    int n; cin >> n;
+    vector<int> l(n), r(n), c(n);
+    for (int i = 0; i < n; i++) cin >> l[i];
+    for (int i = 0; i < n; i++) cin >> r[i];
+    for (int i = 0; i < n; i++) cin >> c[i];
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
+    sort (all (l));
+    sort (all (r));
+    sort(rall(c));
+    // dbg (l, r, c);
+    vector<int> v, all;
+    long long ans = 0;
+    for (int i = 0, j = 0; i < n; i++)
     {
-        cur += u.second;
-        if (cur > 2)
+        while (j < n && l[j] < r[i])
         {
-            cout << "NO" << endl;
-            return;
+            v.push_back(l[j++]);
         }
+        all.push_back(r[i] - v.back());
+        v.pop_back();
     }
-
-    cout << "YES" << endl;
+    sort(all.begin(), all.end());
+    for (int i = 0; i < n; i++)
+        ans += 1LL * all[i] * c[i];
+    cout << ans << "\n";
 }
-
 
 int32_t main()
 {
@@ -80,7 +73,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

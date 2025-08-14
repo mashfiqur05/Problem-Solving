@@ -27,30 +27,35 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
-    {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
+    int n; cin >> n;
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
+    for (int i = 1; i <= n; i++)
     {
-        sum += pref[i] - pref[i - k];
-    }
+        int size = i * i;
+        int all_ways = (size * (size - 1) ) / 2;
+        int bad_ways = 0;
+        bad_ways += (8 * sq(i-4));
+        bad_ways += (6 * (4 * (i-4)));
+        bad_ways += (4 * (4 * (i-3)));
+        bad_ways += (3 * 8);
+        bad_ways += (2 * 4);
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+        cout << all_ways - bad_ways/2 << endl;
+    }
 }
 
+/*
+2344444432
+3466666643
+4688888864
+4688888864
+4688888864
+4688888864
+4688888864
+4688888864
+3466666643
+2344444432
+*/
 
 int32_t main()
 {

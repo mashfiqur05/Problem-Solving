@@ -24,31 +24,50 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int gcd (int a, int b, int &x, int &y)
+{
+    if (b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+
+    int x1, y1;
+    int d = gcd (b, a % b, x1, y1);
+    x = y1;
+    y = x1 -y1 *(a/b);
+
+    // cout << x << " " << y << " --> " << x1 << " " << y1 << endl;
+    return d;
+}
+
+bool findAnySolution (int a, int b, int c, int &x0, int &y0, int &g)
+{
+    g = gcd(abs(a), abs(b), x0, y0);
+    if (c % g) {
+        return false;
+    }
+
+    x0 *= c / g;
+    y0 *= c/g;
+    if (a < 0) x0 = -x0;
+    if (b < 0) y0 = -y0;
+    return true;
+}
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
-    {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
+    int a, b, c;
+    cin >> a >> b >> c;
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
+    c *= (-1);
+    int x0, y0, g;
+    if (findAnySolution (a, b, c, x0, y0, g))
     {
-        sum += pref[i] - pref[i - k];
+        cout << x0 << " " << y0 << endl;
     }
-
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    else cout << -1 << endl;
 }
 
 

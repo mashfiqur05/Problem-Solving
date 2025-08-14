@@ -38,39 +38,25 @@ template<typename T,typename...hello>void faltu(T arg,const hello&...rest){cerr<
 //#else
 //#define dbg(args...)
 
-bool cmp (pair<int, int> &a, pair<int, int> &b)
-{
-    if (a.first == b.first) return a.second > b.second;
-    return a.first < b.first;
-}
 
 void solve (int CaseNo)
 {
-    int n;
-    cin >> n;
-    vector <pair<int, int>> prefix;
-    for (int i = 0; i < n; i++) 
+    int n; cin >> n;
+    vector<int> v(n);
+    map<int, int> cnt;
+    for (int i = 0; i < n; i++) {cin >> v[i]; cnt[v[i]]++;}
+    sort (all (v));
+
+    // dbg (v);
+
+    int ans = inf;
+    for (int i = 0; i < n-2; i++)
     {
-        int l, r;
-        cin >> l >> r;
-        prefix.push_back ({l, 1});
-        prefix.push_back ({r, -1});
+        int val = lower_bound (all (v), v[i] + v[i+1]) - v.begin();
+        ans = min (ans, n - val + i);
     }
 
-    sort (all (prefix), cmp);
-    // dbg (prefix);
-    int cur = 0;
-    for (auto u : prefix)
-    {
-        cur += u.second;
-        if (cur > 2)
-        {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-
-    cout << "YES" << endl;
+    cout << ans << endl;
 }
 
 
@@ -80,7 +66,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

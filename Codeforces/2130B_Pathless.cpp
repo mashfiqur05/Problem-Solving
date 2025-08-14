@@ -27,28 +27,26 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n, m; cin >> n >> m;
+    vector<int> v(n);
+    map<int, int> cnt;
+    for (int i = 0; i < n; i++) {cin >> v[i]; cnt[v[i]]++;}
+    int sum = accumulate (all (v), 0LL);
+    int baki = m - sum;
+    if (baki < 0)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
-
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
+        for (auto u : v) cout << u << " "; cout << endl;
+        return;
     }
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    // cout << "Baki " << baki << endl;
+    if (baki >= 2 || baki == 0) cout << -1 << endl;
+    else
+    {
+        for (int i = 0; i < cnt[0]; i++) cout << 0 << " ";
+        for (int i = 0; i < cnt[2]; i++) cout << 2 << " ";
+        for (int i = 0; i < cnt[1]; i++) cout << 1 << " "; cout << endl;
+    }
 }
 
 
@@ -58,7 +56,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

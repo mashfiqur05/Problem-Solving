@@ -20,34 +20,32 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int MX = 1e6+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int numOfDiv[MX];
+
+void divisors(int n)
+{
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = i; j <= n; j+=i) numOfDiv[j]++;
+    }
+}
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
+    int n; cin >> n;
+    ll ans = 0;
+    for (int i = 1; i <= n; i++)
     {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
+        int can_go = n / i;
+        int add = i * ((can_go * (can_go + 1)) / 2);
+
+        ans += add;
     }
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
-    }
-
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
     cout << ans << endl;
 }
 

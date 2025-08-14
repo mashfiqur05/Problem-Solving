@@ -24,31 +24,37 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+void generateSequences(vector<string>& S, vector<int>& seq, int N, int K, int depth, vector<string>& all) {
+    if (depth == K) {
+        string result = "";
+        for (int idx : seq) {
+            result += S[idx];
+        }
+        all.push_back(result);
+        return;
+    }
+
+    for (int i = 0; i < N; i++) {
+        seq.push_back(i);
+        generateSequences(S, seq, N, K, depth + 1, all);
+        seq.pop_back(); // backtrack
+    }
+}
 
 void solve (int CaseNo)
 {
-    int n, k;
-    cin >> n >> k;
-    vector<ll> a(n);
-    for (auto &ai : a)
-    {
-        cin >> ai;
-    }
-    vector<ll> pref(n + 1);
-    for (int i = 0; i < n; ++i)
-    {
-        pref[i + 1] = pref[i] + a[i];
-    }
+    int n, k, x;
+    cin >> n >> k >> x;
+    vector<string> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    ll sum = 0;
-    for (int i = k; i <= n; ++i)
-    {
-        sum += pref[i] - pref[i - k];
-    }
+    vector<string> ans;
+    vector<int> seq;
+    generateSequences (v, seq, n, k, 0, ans);
 
-    fraction();
-    double ans = 1.0 * sum / (n - k + 1);
-    cout << ans << endl;
+    sort (all (ans));
+
+    cout << ans[x-1] << endl;
 }
 
 
