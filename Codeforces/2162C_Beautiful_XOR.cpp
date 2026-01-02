@@ -24,32 +24,55 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+string decToBinary(long long n) {
+    string s = "";
+    for(int i = 0; i < 32; i++) {
+        s = char((n & 1) + '0') + s;
+        n >>= 1;
+    }
+    return s;
+}
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
-    {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
-    }
+    int a, b; cin >> a >> b;
+    int x = a ^ b;
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    int msb_a = 1;
+    while(msb_a <= a) msb_a <<= 1;
+    msb_a >>= 1;
+
+    int msb_b = 1;
+    while(msb_b <= b) msb_b <<= 1;
+    msb_b >>= 1;
+    int pos_a = 31 - __builtin_clz(a);
+    int pos_b = 31 - __builtin_clz(b);
+
+    if (a == b)
+    {
+        cout << 0 << endl;
+    }
+    else if (pos_b > pos_a) cout << -1 << endl;
+    else if (x <= a)
+    {
+        cout << 1 << endl << x << endl;
+    }
+    else 
+    {
+        vector<int> ans;
+        string need = decToBinary(x);
+        for (int i = 31; i >= 0; i--)
+        {
+            if (need[i] == '1')
+            {
+                int val = 1 << (31 - i);
+                ans.push_back(val);
+            }
+        }
+
+        cout << sz (ans) << endl;
+        for (int i = 0; i < sz (ans); i++) cout << ans[i] << " "; cout << endl;
+    }
 }
 
 

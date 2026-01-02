@@ -28,28 +28,42 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    map<int, int> frq;
+    for (int i = 0; i < n; i++) frq[v[i]]++;
+
+    for (auto u : frq)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        if (u.second % u.first != 0)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            cout << -1 << endl;
+            return;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    vector<int> ans(n);
+    vector<int> cnt(n+1, 0), val(n+1, 0);
+    int nxt = 1;
+    for (int i = 0; i < n; i++)
+    {
+        if (val[v[i]] == 0)
+        {
+            val[v[i]] = nxt;
+            nxt++;
+        }
+        if (cnt[v[i]] % v[i] == 0 && cnt[v[i]] != 0)
+        {
+            val[v[i]] = nxt;
+            nxt++;
+        }
+
+        ans[i] = val[v[i]];
+        cnt[v[i]]++;
+    }
+
+    for (auto u : ans) cout << u << " "; cout << endl;
+
 }
 
 

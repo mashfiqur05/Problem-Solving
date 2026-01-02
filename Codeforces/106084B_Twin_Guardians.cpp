@@ -24,32 +24,24 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPrime (int n)
+{
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    for (int i = 5; i * i <= n; i += 6)
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+    return true;
+}
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
-    {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
-    }
-
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    int a, b; cin >> a >> b;
+    if (isPrime(a) && isPrime(b)  && a+2 == b)
+        cout << "Y" << endl;
+    else
+        cout << "N" << endl;
 }
 
 

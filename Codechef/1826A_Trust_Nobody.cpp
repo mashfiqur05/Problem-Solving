@@ -24,32 +24,46 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+bool isPossible (vector<int> &v, int mid)
+{
+    int cnt = 0;
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (v[i] > mid) cnt++;
+    }
+
+    // cout << cnt << " " << mid << endl;
+    if (cnt == mid) return true;
+    else return false;
+}
 
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    vector<int> v(n);
+    map<int, int> frq; 
+    for (int i = 0; i < n; i++)
     {
-        cout << 1 << endl << n << endl;
+        cin >> v[i];
+        frq[v[i]]++;
+    }   
+
+    if (frq.size() == 1 && frq[0] == 0) 
+    {
+        cout << -1 << endl;
         return;
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+    
+    for (int i = 0; i <= n; i++)
     {
-        if (((1LL << i) & n) != 0)
+        if (isPossible (v, i))
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            cout << i << endl;
+            return;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << -1 << endl;
 }
 
 

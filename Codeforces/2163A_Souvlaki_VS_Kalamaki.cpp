@@ -28,28 +28,21 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
+    sort (all (v));
+
+    for (int i = 1; i < n-1; i+=2)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        if (v[i] != v[i+1])
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            cout << "NO" << endl;
+            return;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << "YES" << endl;
 }
 
 

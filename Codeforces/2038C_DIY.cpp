@@ -28,28 +28,40 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    sort(all(v));
+
+    vector<int> len;
+    for (int i = 0; i < n-1; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        if (v[i] == v[i+1]) 
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            len.push_back(v[i]);
+            i++;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    if (len.size() < 4) cout << "NO" << endl;
+    else 
+    {
+        cout << "YES" << endl;
+        int x1 = len[0];
+        int y1 = len[1];
+        int x2 = len[sz(len)-1];
+        int y3 = len[sz(len)-2]; 
+
+        int a = x2 - x1, b = y3 - y1;
+        int c = y3 - x1, d = x2 - y1;
+
+        if (a*b < c*d)
+        {
+            swap (y1, y3);
+            swap (y1, x2);
+        }
+
+        cout << x1 << " " << y1 << " " << x2 << " " << y1 << " " << x2 << " " << y3 << " " << x1 << " " << y3 << endl;
+    }
 }
 
 

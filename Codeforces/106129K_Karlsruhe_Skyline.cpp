@@ -27,29 +27,35 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int n, a, b; cin >> n >>a >> b;
+    if (a + b > n+1 || (a == 1 && b == 1)) 
     {
-        cout << 1 << endl << n << endl;
+        cout << "no" << endl;
         return;
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+
+    vector<int> ans(n+1);
+    if (a <= b)
     {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
+        int val = 1;
+        for (int i = 1; i < a; i++) ans[i] = val++;
+        ans[a] = n;
+        for (int i = n; i > n - b + 2; i--) ans[i] = val++;
+        ans[n-b+2] = n-1;
+        for (int i = a+1; i < n - b + 2; i++) ans[i] = val++;
+    }
+    else 
+    {
+        int val = 1;
+        for (int i = n; i > n - b + 1; i--) ans[i] = val++;
+        ans[n-b+1] = n;
+        for (int i = 1; i <= a-2; i++) ans[i] = val++;
+        ans[a-1] = n-1;
+        for (int i = a; i < n-b+1; i++) ans[i] = val++;
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << "yes" << endl;
+    for (int i = 1; i <= n; i++) cout << ans[i] << " "; cout << endl;
 }
 
 
@@ -59,7 +65,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

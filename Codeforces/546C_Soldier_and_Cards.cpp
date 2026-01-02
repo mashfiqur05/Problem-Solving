@@ -28,28 +28,57 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    deque<int> a, b;
+    map<int, int> frq;
+    bool f = true;
+    int ans = 0;
+    int p, q; cin >> p;
+    for (int i = 0; i < p; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        int x; cin >> x;
+        a.push_back(x);
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+    cin >> q;
+    for (int i = 0; i < q; i++)
     {
-        if (((1LL << i) & n) != 0)
+        int x; cin >> x;
+        b.push_back(x);
+    }
+
+    while (!a.empty() && !b.empty())
+    {
+        if (a.front () > b.front())
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            a.push_back (b.front());
+            a.push_back (a.front());
+            frq[a.front()]++;
+            frq[b.front()]++;
+
+            a.pop_front();
+            b.pop_front();
+        }
+        else if (b.front() > a.front())
+        {
+            b.push_back (a.front());
+            b.push_back (b.front());
+            frq[a.front()]++;
+            frq[b.front()]++;
+
+            a.pop_front();
+            b.pop_front();
+        }
+        ans++;
+        if (ans > MX) 
+        {
+            f = 0; break;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    if (f)
+    {
+        cout << ans << " " << (a.empty() ? 2 : 1) << endl;
+    }
+    else cout << -1 << endl;
 }
 
 
@@ -59,7 +88,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

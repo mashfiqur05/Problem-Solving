@@ -7,7 +7,7 @@ using namespace std;
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
 #define file() freopen("input.txt","r",stdin);freopen("output.txt","w",stdout);
 
-#define endl '\n'
+// #define endl '\n'
 #define ll long long
 #define int long long
 #define all(a) (a).begin(),(a).end()
@@ -27,29 +27,49 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
+    string s; cin >> s;
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
-    {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
-    }
+    string num, ans = ""; cin >> num;
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    if (s == "Encode")
+    {
+        if (count (all (num), '0') == n) 
+        {
+            cout << num << endl;
+            return;
+        }
+        int i = 0;
+        while (num[i] != '1' && i < n) 
+        {
+            num[i] = '2';
+            i++;
+        }
+        if (i < n) num[i] = '2';
+        cout << num << endl;
+    }
+    else 
+    {
+        if (count (all (num), '0') == n) 
+        {
+            cout << num << endl;
+            return;
+        }
+        int ind = n-1; 
+        while (ind >= 0 && num[ind] != '2') ind--;
+        while (ind >= 0 && num[ind] == '2') ind--;
+        // cout << ind << endl;
+        for (int i = ind+1; i < n; i++) ans += num[i];
+        for (int i = 0; i <= ind; i++) ans+= num[i];
+        // cout << ans << endl;
+        ind = 0;
+        while (ans[ind] == '2')
+        {
+            ans[ind] = '0';
+            ind++;
+        }
+        ans[ind-1] = '1';
+        cout << ans << endl;
+    }
 }
 
 
@@ -59,7 +79,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

@@ -24,32 +24,19 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+map<int, int> ways;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    string s; cin >> s;
+
+    int ans = 1;
+    for (auto u : s)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
+        ans *= ways[u-'0'];
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << ans << endl;
 }
 
 
@@ -58,6 +45,16 @@ int32_t main()
     fastio();
     // srand(time(NULL));
 
+    for (int i = 0; i <= 9; i++)
+    {
+        for (int j = 0; j <= 9;  j++)
+        {
+            for (int k = 0; k <= 9; k++)
+            {
+                if (i + j + k < 10) ways[i+j+k]++;
+            }
+        }
+    }
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

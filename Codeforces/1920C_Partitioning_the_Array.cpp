@@ -24,32 +24,41 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+vector<int> divisor(int n)
+{
+    vector<int> res; 
+    for (int i = 1; i * i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            res.push_back (i);
+            if (i != n/i) res.push_back (n/i);
+        }
+    }
+
+    return res;
+}
 
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
+    vector<int> div = divisor(n);
+
+    int ans = 0;
+    for (auto u : div)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        int m = 0;
+        for (int i = u; i < n; i++)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            m = __gcd (m, abs (v[i] - v[i-u]));
         }
+        if (m != 1) ans++;
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << ans << endl;
 }
 
 

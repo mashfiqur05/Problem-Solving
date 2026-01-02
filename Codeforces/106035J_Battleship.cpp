@@ -27,29 +27,38 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
+    int n, k, c; cin >> n >> k >> c;
+    vector<pair<int, int>> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i].first >> v[i].second;
+
+    int ans = -1;
     
-    if (__builtin_popcountll(n) == 1)
+    for (int i = 1; i+k-1 <= n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        int l = i, r = l + k-1, f = 1;
+        for (int j = 0; j < c; j++)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            int l_hit;
+            if (i == 1) l_hit = 0;
+            else l_hit = (l-1) / v[j].first;
+            int r_hit = r / v[j].first;
+
+            int total_hit = r_hit - l_hit;
+
+            if (total_hit != v[j].second)
+            {
+                f = 0;
+                break;
+            }
+        }
+        if (f)
+        {
+            ans = l;
+            break;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << ans << endl;
 }
 
 
@@ -59,7 +68,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

@@ -24,45 +24,75 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+vector<bool> mark(MX + 1, false);
+vector<int> primes;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int n;
+    cin >> n;
+
+    int g = 0;
+    for (int i = 0; i < n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        long long x;
+        cin >> x;
+        if (i == 0) g = x;
+        else g = __gcd(g, x);
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+
+    for (int p : primes)
     {
-        if (((1LL << i) & n) != 0)
+        if (g % p != 0)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            cout << p << endl;
+            return;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    for (int x = MX + 1;; x++)
+    {
+        bool ok = true;
+        for (int i = 2; i * i <= x; i++)
+        {
+            if (x % i == 0)
+            {
+                ok = false;
+                break;
+            }
+        }
+        if (ok && g % x != 0)
+        {
+            cout << x << endl;
+            break;
+        }
+    }
 }
-
 
 int32_t main()
 {
     fastio();
     // srand(time(NULL));
+    for (int i = 2; i <= MX; i++)
+    {
+        if (!mark[i])
+        {
+            primes.push_back(i);
+            if (1LL * i * i <= MX)
+            {
+                for (int j = i * i; j <= MX; j += i)
+                {
+                    mark[j] = true;
+                }
+            }
+        }
+    }
 
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        solve(tt);
     }
 
     return 0;

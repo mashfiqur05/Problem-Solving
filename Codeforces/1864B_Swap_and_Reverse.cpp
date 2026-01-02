@@ -27,29 +27,37 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int n, k; cin >> n >> k;
+    string s; cin >> s;
+    if (k % 2 == 0) 
     {
-        cout << 1 << endl << n << endl;
-        return;
+        sort (all (s));
+        cout << s << endl;
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+    else 
     {
-        if (((1LL << i) & n) != 0)
+        string odd = "", even = "";
+        for (int i = 0; i < n; i++)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            if (i % 2 == 0) even += s[i];
+            else odd += s[i];
         }
-    }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+        sort (all (even));
+        sort (all (odd));
+
+        string ans1 = "", ans2 = "";
+        for (int i = 0, j = 0; i < sz(even) || j < sz(odd); ++i, ++j) {
+            if (i < sz(even)) {
+                ans1 += even[i];
+            }
+            if (j < sz(odd)) {
+                ans1 += odd[i];
+            }
+        }
+
+        cout << ans1 << endl;
+    }
 }
 
 

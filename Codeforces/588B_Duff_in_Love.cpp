@@ -24,32 +24,49 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+vector<int> findDiv (int n)
+{
+    vector<int> div;
+    for (int i = 1; i * i <= n; i++)
+    {
+        if (n % i == 0) 
+        {
+            div.push_back (i);
+            if (i != n/i) div.push_back (n/i);
+        }
+    }
+
+    return div;
+}
 
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+
+    vector<int> divN = findDiv (n);
+    sort (rall (divN));
+
+    for (int i = 0; i < divN.size(); i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        // cout << divN[i] << " ";
+        vector<int> div = findDiv(divN[i]);
+        bool f = 1;
+        for (auto u : div)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            if (sq ((int)sqrt (u)) == u && u != 1)
+            {   
+                // cout << sqrt(u) << endl;
+                f = 0;
+                break;
+            }
+        }
+
+        if (f)
+        {
+            cout << divN[i] << endl;
+            return;
         }
     }
-
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
 }
 
 
@@ -59,7 +76,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

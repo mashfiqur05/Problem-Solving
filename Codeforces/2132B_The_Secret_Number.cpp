@@ -29,27 +29,23 @@ void solve (int CaseNo)
 {
     int n; cin >> n;
     vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+
+    int p = 10;
+    for (int i = 1; i <= 18; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        int y = 1 + p;
+        if (y > n) break;
+        if (n % y == 0)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            ans.push_back (n / y);
         }
+        p *= 10;
     }
 
-    ans.push_back (n);
     sort (all (ans));
+    
     cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    if (ans.size () != 0) {for (auto u : ans) cout << u << " "; cout << endl;}
 }
 
 

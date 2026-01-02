@@ -24,34 +24,54 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int findMinD (vector<int> &v)
+{
+    sort (all (v));
+    int mn = 0;
+    for (int i = 0; i+1 < v.size(); i+=2)
+    {
+        mn = max (mn, v[i+1] - v[i]);
+    }
+
+    return mn;
+}
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int n, d;
+    cin >> n >> d;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    sort (all (v));
+
+    if (n == 1) cout << "YES" << endl;
+    else if (n % 2 == 0)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        if (findMinD (v) <= d) cout << "YES" << endl;
+        else cout << "NO" << endl;
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+    else
     {
-        if (((1LL << i) & n) != 0)
+        for (int i = 0; i < n; i++)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            vector<int> a;
+            for (int j = 0; j < n; j++)
+            {
+                if (i != j)
+                    a.push_back(v[j]);
+            }
+            if (findMinD(a) <= d)
+            {
+                cout << "YES" << endl;
+                // for (auto u : a) cout << u << " ";
+                cout << endl;
+                return;
+            }
         }
+
+        cout << "NO" << endl;
     }
-
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
 }
-
 
 int32_t main()
 {

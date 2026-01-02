@@ -22,34 +22,31 @@ const double eps = 1e-9;
 const int inf = 2000000000;
 const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
+const int MOD = 1e18;
 
 
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int ans = 0;
+    for (int i = 0; i <= 4; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        for (int j = 0; j <= 1; j++)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            if (i + j > n) continue;
+
+            int baki = n - (i + j);
+            int mn = baki % 2, mx = baki / 5;
+
+            if (mx >= mn)
+            {
+                ans += (mx - mn) / 2 + 1;
+                ans %= MOD;
+            }
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << ans << endl;
 }
 
 

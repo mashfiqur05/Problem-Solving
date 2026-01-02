@@ -27,29 +27,33 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int n, m; cin >> n;
+    map<string, int> frq;
+    for (int i = 0; i < n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        string s; cin >> s;
+        int song; cin >> song;
+        frq[s] = song;
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+
+    cin >> m;
+    for (int i = 0; i < m; i++)
     {
-        if (((1LL << i) & n) != 0)
+        string s; 
+        cin >> s;
+        frq[s]--;
+    }
+
+    for (auto u : frq)
+    {
+        if (u.second > 0)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            cout << u.first << endl;
+            return;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << "NO KPOP FOR VADER" << endl;
 }
 
 
@@ -59,7 +63,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

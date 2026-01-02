@@ -1,4 +1,4 @@
-///   ***   ---   |||		 In the name of ALLAH		|||   ---   ***   ///
+///   ***   ---   |||        In the name of ALLAH        |||   ---   ***   ///
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -24,46 +24,31 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-
-void solve (int CaseNo)
+void solve(int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
+    ll x; 
+    cin >> x;
     
-    if (__builtin_popcountll(n) == 1)
-    {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
-    }
+    ll y = 2 * x;
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    // string sy = to_string(y);
+    // ll xy = x * pow (10, sz(sy)) + y;
+    // if (xy % (x + y) != 0) 
+    // {
+    //     cout << xy << " " << y << endl;
+    //     return;
+    // } 
+    cout << y << endl;
 }
-
 
 int32_t main()
 {
     fastio();
-    // srand(time(NULL));
-
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        solve(tt);
     }
-
     return 0;
 }

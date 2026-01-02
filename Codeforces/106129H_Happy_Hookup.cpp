@@ -24,32 +24,63 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+vector<int> g[MX];
+bool visForA[MX], visForB[MX];
+int n, m, a, b;
+
+void dfs1 (int vertex)
+{
+    visForA[vertex] = true;
+
+    for (auto u : g[vertex])
+    {
+        if (visForA[u]) continue;
+        dfs1 (u);
+    }
+}
+
+void dfs2 (int vertex)
+{
+    visForB[vertex] = true;
+
+    for (auto u : g[vertex])
+    {
+        if (visForB[u]) continue;
+        dfs2 (u);
+    }
+}
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    cin >> n >> m;
+    for (int i = 0; i < m; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        int u, v; cin >> u >> v;
+        g[u].push_back (v);
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+    cin >> a >> b;
+
+    // for (int i = 1; i <= n; i++)
+    // {
+    //     cout << "node " << i << ":  " ;
+    //     for (auto u : g[i]) cout << u << ' ';
+    //     cout << endl;
+    // }
+    dfs1 (a);   
+    // for (int i = 1; i <= n; i++) cout << i << " " << visForA[i] << endl;
+    dfs2 (b);
+    // for (int i = 1; i <= n; i++) cout << i << " " << visForB[i] << endl;
+
+
+    for (int i = 1; i <= n; i++)
     {
-        if (((1LL << i) & n) != 0)
+        if (visForA[i] && visForB[i])
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            cout << "yes" << endl << i << endl;
+            return;
         }
     }
-
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << "no" << endl;
 }
 
 
@@ -59,7 +90,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

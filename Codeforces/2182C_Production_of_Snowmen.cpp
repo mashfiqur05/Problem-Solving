@@ -28,28 +28,46 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    vector<int> a(2*n), b(2*n), c(2*n);
+
+    for (int i = 0; i < n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        cin >> a[i];
+        a[i+n] = a[i];
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+    for (int i = 0; i < n; i++)
     {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
+        cin >> b[i];
+        b[i+n] = b[i];
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cin >> c[i];
+        c[i+n] = c[i];
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    int x = 0, y = 0;
+    for (int i = 0; i < n; i++)
+    {
+        bool ok= true;
+        for (int j = 0; j < n; j++)
+        {
+            if (a[j + i] >= b[j]) ok = false;
+        }
+        if (ok) x++;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        bool ok= true;
+        for (int j = 0; j < n; j++)
+        {
+            if (b[j + i] >= c[j]) ok = false;
+        }
+        if (ok) y++;
+    }
+
+    cout << x * y * n << endl;
 }
 
 

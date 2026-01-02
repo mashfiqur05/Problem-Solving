@@ -28,28 +28,49 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)cin >> v[i];
     
-    if (__builtin_popcountll(n) == 1)
+    vector<int> even, odd;
+    for (int i = 0; i < n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        if (v[i] % 2 == 0) even.push_back (v[i]);
+        else odd.push_back (v[i]);
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+
+    sort (rall (even));
+    sort (rall (odd));
+
+    vector<int> ans(n);
+    int cur = 0, last = 0;
+    if (odd.size() == 0) ans[0] = 0;
+    else {ans[0] = odd[0]; cur += odd[0];}
+
+    int sum = accumulate(all (v), 0LL);
+
+    for (int k = 1, e = 0, o = 0; k <n; k++)
     {
-        if (((1LL << i) & n) != 0)
+        if (odd.size() == 0) 
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            ans[k] = 0;
+        }
+        else if (even.size() == e)
+        {
+            ans[k] = last;
+            last = ans[k-1];
+        }
+        else 
+        {
+            cur += even[e];
+            e++;
+            ans[k] = cur;
+            last = ans[k-1];
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    if (sum % 2 == 0) ans[n-1] = 0;
+    
+    for (auto u : ans) cout << u << " "; cout << endl;
 }
 
 

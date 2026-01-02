@@ -24,32 +24,24 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+vector<int> cost, watermelon;
 
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int ans = 0;
+
+    for (int i = watermelon.size() - 1; i >= 0; i--)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        if (watermelon[i] <= n)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            ans += (n / watermelon[i]) * cost[i];
+            n %= watermelon[i];
+            // cout << ans << "--> " << n << endl;
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    cout << ans << endl;
 }
 
 
@@ -57,6 +49,16 @@ int32_t main()
 {
     fastio();
     // srand(time(NULL));
+
+
+    for (int i = 0;; i++)
+    {
+        int number = pow (3, i);
+        int coin = pow (3, i+1) + i * pow (3, i-1);
+        if (coin > 1e18) break;
+        watermelon.push_back(number);
+        cost.push_back(coin);
+    }
 
     int testcases = 1;
     cin >> testcases;

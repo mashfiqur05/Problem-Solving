@@ -27,29 +27,34 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int n, q; cin >> n >> q;
+    vector<int> v(n+1), prefix0(n+1, 0), prefix1(n+1, 0),diffsum(n+1, 0), diff(n+1, 0);
+    for (int i = 1; i <= n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
-        {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
-        }
+        cin >> v[i];
+        prefix0[i] = prefix0[i-1] + (v[i] == 0);
+        prefix1[i] = prefix1[i-1] + (v[i] == 1);
+
+        diff[i] = v[i] != v[i - 1];
+		diffsum[i] = diffsum[i - 1] + diff[i];
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+
+    while (q--)
+    {
+        int l, r; cin >> l >> r;
+        int cnt0 = prefix0[r] - prefix0[l-1], cnt1 = prefix1[r] - prefix1[l-1];
+        if (cnt0 % 3 != 0 || cnt1 % 3 != 0)
+        {
+            cout << -1 << endl;
+        }
+        else
+        {
+            int sum = cnt1 / 3 + cnt0 / 3;
+            if (diffsum[r] - diffsum[l] == (r - l)) sum++;
+            cout << sum << '\n';
+        }
+    }
 }
 
 

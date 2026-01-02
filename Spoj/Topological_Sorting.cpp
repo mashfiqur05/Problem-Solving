@@ -24,32 +24,63 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n, m;
+vector<int> adj[MX];
+int indegree[MX];
 
 void solve (int CaseNo)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    cin >> n >> m;
+
+    for (int i = 1; i <= m; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
+        int u, v;
+        cin >> u >> v;
+
+        adj[u].push_back(v);
+        indegree[v]++;
     }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
+
+    priority_queue<int, vector<int>, greater<int>> q;
+    for (int i = 1; i <= n; i++)
     {
-        if (((1LL << i) & n) != 0)
+        if (indegree[i] == 0)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            q.push(i);
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    vector<int> topological_order;
+
+    while (!q.empty())
+    {
+        int u = q.top();
+        q.pop();
+
+        topological_order.push_back(u);
+
+        for (int v : adj[u])
+        {
+            indegree[v]--;
+            if (indegree[v] == 0)
+            {
+                q.push(v);
+            }
+        }
+    }
+
+    if (topological_order.size() != n)
+    {
+        cout << "Sandro fails." << endl;
+    }
+    else
+    {
+        for (int node : topological_order)
+        {
+            cout << node << " ";
+        }
+        cout << endl;
+    }
 }
 
 
@@ -59,7 +90,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

@@ -27,29 +27,25 @@ const int MOD = 1e9+7;
 
 void solve (int CaseNo)
 {
+    string s; cin >> s;
     int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    for (int i = 0; i < n; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        string q; cin >> q;
+        int j = 0, k = 0;
+        while (j < s.size() && k < q.size())
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            if (s[j] == q[k])
+            {
+                j++;
+                k++;
+            }
+            else j++;
         }
-    }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+        if (k == q.size()) cout << "YES" << endl;
+        else cout << "NO" << endl;
+    }
 }
 
 
@@ -59,7 +55,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

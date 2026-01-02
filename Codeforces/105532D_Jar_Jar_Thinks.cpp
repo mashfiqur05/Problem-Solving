@@ -25,32 +25,55 @@ const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 
-void solve (int CaseNo)
+bool isPossible(int mid, const vector<pair<int,int>>& v)
 {
-    int n; cin >> n;
-    vector<int> ans;
-    
-    if (__builtin_popcountll(n) == 1)
+    int total_width = 0;
+
+    for (auto p : v)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        int a = p.first;
+        int b = p.second;
+
+        int mx = max(a, b), mn = min(a, b);
+
+        if (mx >= mid)
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            total_width += min(mn, (long long)mid);
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    return total_width >= mid;
 }
+
+void solve (int CaseNo)
+{
+    int n; 
+    cin >> n;
+
+    vector<pair<int, int>> v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i].first >> v[i].second;
+
+    int l = 0, r = 1e9, ans = 0;
+
+    while (l <= r)
+    {
+        int mid = l + (r - l) / 2;
+
+        if (isPossible(mid, v))
+        {
+            ans = mid;   
+            l = mid + 1;
+        }
+        else
+        {
+            r = mid - 1;  
+        }
+    }
+
+    cout << ans << endl;
+}
+
 
 
 int32_t main()
@@ -59,7 +82,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve (tt);

@@ -28,28 +28,35 @@ const int MOD = 1e9+7;
 void solve (int CaseNo)
 {
     int n; cin >> n;
-    vector<int> ans;
+    string s; cin >> s;
+    vector<char> side(n);
+    vector<int> dontCare (n, 0);
     
-    if (__builtin_popcountll(n) == 1)
+    if (s[0] == '0' && n > 1) { side[1] = 'R'; dontCare[1] = 1; }
+    if (s[n-1] == '0' && n > 1) { side[n-2] = 'L'; dontCare[n-2] = 1; }
+    for (int i = 1; i < n-1; i++)
     {
-        cout << 1 << endl << n << endl;
-        return;
-    }
-    // cout << n << ": ";
-    for (int i = 0; i < 64; i++)
-    {
-        if (((1LL << i) & n) != 0)
+        if (s[i] == '0')
         {
-            // cout << i << " " << (1LL << i) << " " << ((1LL << i) & n) << endl;
-            ans.push_back (n - (1LL << i));
+            if (side[i-1] == 'R' && dontCare[i-1] == 0) side[i-1] = 'L';
+            else if (side[i-1] == 'R' && dontCare[i-1] == 1) {side[i+1] = 'R'; dontCare[i+1] = 1;}
+            else if (s[i-1] == '0') {side[i+1] = 'R'; dontCare[i+1] = 1;}
+            else if (s[i+1] == '0' || side[i+1] == 'L') {}
+            else side[i+1] = 'R';
         }
     }
 
-    ans.push_back (n);
-    sort (all (ans));
-    cout << ans.size() << endl;
-    for (auto u : ans) cout << u << ' '; 
-    cout << endl;
+    for (int i = 0; i < n; i++)
+    {
+        if (side[i] == 'R' && dontCare[i] == 0) 
+        {
+            // cout << i << endl;
+            cout << "NO" << endl;
+            return;
+        }
+    }
+
+    cout << "YES" << endl;
 }
 
 
