@@ -19,28 +19,47 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
     int n; cin >> n;
-    cout << divSum[n] << endl;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    vector<pair<int, int>> pos(n+1, {0, 0}); // prev, maxdis
+    vector<int> ans(n+1, -1);
+
+    for (int i = 0; i < n; i++)
+    {
+        int prevPos = pos[v[i]].first, dis = pos[v[i]].second;
+        pos[v[i]].first = i+1;
+        pos[v[i]].second = max (dis, i+1 - prevPos);
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        int prevPos = pos[i].first, dis = pos[i].second;
+        pos[i].first = n+1;
+        pos[i].second = max (dis, n+1 - prevPos);
+    }
+    
+    // for (int i = 1; i <= n; i++) cout << pos[i].first <<" " << pos[i].second << endl;
+
+    for (int i = 1; i <= n; i++)
+    {
+        int st = pos[i].second;
+        if (st == 0) continue;
+        for (int j = st; j <= n; j++)
+        {
+            if (ans[j] != -1) break;
+            ans[j] = i;
+        }
+    }
+
+    for (int i = 1; i <= n; i++) cout << ans[i] << " "; cout << endl;
 }
 
 
@@ -53,7 +72,6 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

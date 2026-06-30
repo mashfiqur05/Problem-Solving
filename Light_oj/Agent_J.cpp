@@ -19,45 +19,49 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    double r1, r2, r3; cin >> r1 >> r2 >> r3;
+
+    double a = r1 + r2;
+    double b = r2 + r3;
+    double c = r1 + r3;
+
+    double s = (a + b + c) / 2.0;
+    double tri = sqrt(s * (s - a) * (s - b) * (s - c));
+
+    double B = acos ((sq (a) + sq(c) - sq (b)) / (2 * a * c));
+    double A = acos ((sq (b) + sq(c) - sq (a)) / (2 * b * c));
+    double C = acos ((sq (a) + sq(b) - sq (c)) / (2 * a * b));
+
+    double rmv = .5 * ((r1*r1*B) + (r2*r2*C) + (r3*r3*A));
+
+    double shaded = tri - rmv;
+
+    cout << shaded << endl;
 }
 
 
 int32_t main()
 {
     fastio();
+    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
+        cout << "Case " << tt << ": ";
         solve ();
     }
 

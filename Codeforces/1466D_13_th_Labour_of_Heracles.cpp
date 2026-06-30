@@ -19,28 +19,50 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
     int n; cin >> n;
-    cout << divSum[n] << endl;
+    int total = 0;
+    vector<pair<int, int>> w(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> w[i].first;
+        total += w[i].first;
+        w[i].second = i + 1;
+    }
+    map<int, int> deg;
+    for (int i = 1; i < n; i++)
+    {
+        int u, v; cin >> u >> v;
+        deg[u]++;
+        deg[v]++;
+    }
+
+    sort (rall (w));
+
+    vector<int> ans;
+    int cur = total;
+    ans.push_back (cur);
+    for (int i = 0; i < n;)
+    {
+        if (ans.size() == n-1) break;
+        int node = w[i].second;
+        if (deg[node] == 1) 
+        {
+            i++;
+            continue;
+        }
+        deg[node]--;
+        cur += w[i].first;
+        ans.push_back (cur);
+    }
+
+    for (auto u : ans) cout << u << " "; cout << endl;
 }
 
 
@@ -53,7 +75,6 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

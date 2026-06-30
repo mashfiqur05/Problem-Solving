@@ -19,30 +19,69 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
-}
+    int n, k;
+    cin >> n >> k;
 
+    string s;
+    cin >> s;
+
+    int ans = 0;
+
+    for (int i = 0; i < k / 2; i++)
+    {
+        map<char, int> mp;
+        int cnt = 0;
+
+        for (int j = i; j < n; j += k)
+        {
+            mp[s[j]]++;
+            cnt++;
+        }
+
+        for (int j = k - 1 - i; j < n; j += k)
+        {
+            mp[s[j]]++;
+            cnt++;
+        }
+
+        int mx = 0;
+
+        for (auto [c, f] : mp)
+            mx = max(mx, f);
+
+        ans += cnt - mx;
+    }
+
+    if (k & 1)
+    {
+        int mid = k / 2;
+
+        map<char, int> mp;
+        int cnt = 0;
+
+        for (int j = mid; j < n; j += k)
+        {
+            mp[s[j]]++;
+            cnt++;
+        }
+
+        int mx = 0;
+
+        for (auto [c, f] : mp)
+            mx = max(mx, f);
+
+        ans += cnt - mx;
+    }
+
+    cout << ans << endl;
+}
 
 int32_t main()
 {
@@ -53,7 +92,6 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

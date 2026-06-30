@@ -19,28 +19,68 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    string s; cin >> s;
+    int pos; cin >> pos;
+
+    int n = s.size();
+
+    /* pos = 9 n = 4
+    pos = 5 n = 3
+    pos = 2 n = 2
+    */
+    int ind = 0;
+    stack<char> st;
+    while (n < pos)
+    {
+        if (st.empty()) 
+        {
+            st.push (s[ind]);
+            ind++;
+        }
+        else if (ind == s.size())
+        {
+            st.pop();
+            pos -= n;
+            n--;
+        }
+        else 
+        {
+            char c = st.top();
+            if (c > s[ind]) 
+            {
+                st.pop();
+                pos -= n;
+                n--;
+            }
+            else 
+            {
+                st.push (s[ind]);
+                ind++;
+            }
+        }
+    }
+
+    while (ind < s.size())
+    {
+        st.push (s[ind]);
+        ind++;
+    }
+    string ans = "";
+    while (!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse (all (ans));
+
+    cout << ans[pos-1];
 }
 
 
@@ -53,13 +93,12 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();
     }
-
+    cout << endl;
     return 0;
 }

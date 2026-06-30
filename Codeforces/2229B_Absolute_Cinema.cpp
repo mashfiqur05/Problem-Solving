@@ -19,28 +19,29 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
     int n; cin >> n;
-    cout << divSum[n] << endl;
+    vector<int> a(n), b(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
+
+    vector<int> extra;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        ans += max (a[i], b[i]);
+        extra.push_back (min (a[i], b[i]));
+    }
+
+    ans += *max_element (all (extra));
+
+    cout << ans << endl;
 }
 
 
@@ -53,7 +54,6 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

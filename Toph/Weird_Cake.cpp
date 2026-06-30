@@ -19,33 +19,40 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
+double VolumeOfCape (double R, double h)
 {
-    for (int i = 1; i < MX; i++)
+    double v = (1.0 /3.0) * PI * h*h * (3.0*R - h);
+    return v;
+}
+
+void solve()
+{
+    double H, h1, h2;
+    while (cin >> H >> h1 >> h2)
     {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
+        double r = H / 2;
+        double cap_bottom = VolumeOfCape(r, H - h1);
+        double cap_mid = VolumeOfCape(r, H - h2);
+        double cap_full = VolumeOfCape(r, H);
+
+        double part1 = cap_bottom;
+        double part2 = cap_mid - cap_bottom;
+        double part3 = cap_full - cap_mid;
+
+        double arr[3] = {part1, part2, part3};
+        sort(arr, arr + 3);
+
+        cout << arr[0] << " " << arr[1] << " " << arr[2] << endl;
     }
 }
 
-void solve ()
-{
-    int n; cin >> n;
-    cout << divSum[n] << endl;
-}
-
-
 int32_t main()
 {
+    fraction();
     fastio();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
@@ -53,9 +60,8 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

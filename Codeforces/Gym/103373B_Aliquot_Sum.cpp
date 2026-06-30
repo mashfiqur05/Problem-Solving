@@ -19,7 +19,7 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 1e6+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
@@ -40,20 +40,26 @@ void precompute()
 void solve ()
 {
     int n; cin >> n;
-    cout << divSum[n] << endl;
+    int sn = divSum[n];
+
+    // cout << sn << endl;
+    if (sn > n) cout << "abundant" << endl;
+    else if (sn < n) cout << "deficient" << endl;
+    else cout << "perfect" << endl;
 }
+
 
 
 int32_t main()
 {
     fastio();
+    precompute();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

@@ -19,28 +19,58 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
+bool isPossible (vector<int> &v, int target, int k)
 {
-    for (int i = 1; i < MX; i++)
+    int n = v.size();
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 2*i; j < MX; j+=i)
+        int nk = 0, cur = target;
+        for (int j = i; j < n; j++)
         {
-            divSum[j] += i;
+            if (cur <= v[j]) break;
+            nk += max (0LL, cur - v[j]);
+            // cout << cur << " " << v[j] << " " << nk << endl;
+            cur--;
+            if (j == n-1)
+            {
+                nk += inf;
+            }
         }
+
+        // cout << target << " " << nk << " " << k << " " << cur << " " << v[n-1]<< endl;
+        if (nk <= k) return true;
     }
+
+    return false;
 }
+
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    int n, k; cin >> n >> k;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
+    int ans = *max_element(all (v));
+    int l = ans, r = 1e9;
+
+    while (l <= r)
+    {
+        int mid = (l+r)/2;
+
+        if (isPossible (v, mid, k))
+        {
+            ans = mid;
+            l = mid+1;
+        }
+        else r = mid-1;
+    }
+
+    cout << ans << endl;
 }
 
 
@@ -53,7 +83,6 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

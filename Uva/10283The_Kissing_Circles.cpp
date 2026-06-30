@@ -19,43 +19,58 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
-}
+    double R;
+    int n;
+    while (cin >> R >> n)
+    {
+        if (n == 1)
+        {
+            cout << R << " " << 0.0 << " " << 0.0 << endl;
+            continue;
+        }
+        double lob = R * sin(PI / n);
+        double hor = 1 + sin(PI / n);
 
+        double r = lob / hor;
+        double blue = 0.0;
+
+        if (n >= 2)
+        {
+            double circumradius = R - r;
+            double polygonArea = .5 * n * sq(circumradius) * sin(2 * PI / n);
+            double interior_angle = (n - 2.0) * PI / n;
+            double sectors = n * 0.5 * r * r * interior_angle;
+
+            blue = polygonArea - sectors;
+        }
+
+        double big = PI * sq (R);
+        double small = PI * sq (r) * n;
+        double green = big - small - blue;
+
+        cout << r << " " << blue << " " << green << endl;
+    }
+}
 
 int32_t main()
 {
     fastio();
+    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

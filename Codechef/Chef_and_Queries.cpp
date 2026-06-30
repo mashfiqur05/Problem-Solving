@@ -8,7 +8,7 @@ using namespace std;
 
 #define endl '\n'
 #define ll long long
-#define int long long
+// #define int long long
 #define all(a) (a).begin(),(a).end()
 #define rall(a) (a).rbegin(),(a).rend()
 #define sz(x) (int)x.size()
@@ -19,43 +19,51 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const unsigned int MX = (1u << 31);
 const ll infLL = 9000000000000000000;
-const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
+bitset<MX> vis;
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    unsigned int q, s, a, b;
+    cin >> q >> s >> a >> b;
+
+    long long ans = 0;
+
+    for (unsigned int i = 0; i < q; i++) {
+        unsigned int val = s >> 1;
+
+        if (s & 1) {
+            if (!vis[val]) {
+                vis[val] = 1;
+                ans += val;
+            }
+        } else {
+            if (vis[val]) {
+                vis[val] = 0;
+                ans -= val;
+            }
+        }
+
+        s = a * s + b;  
+    }
+
+    cout << ans << endl;
 }
 
 
 int32_t main()
 {
     fastio();
-    //#ifndef ONLINE_JUDGE
-    //freopen("input.txt", "r", stdin);
-    //freopen("output.txt", "w", stdout);
-    //#endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

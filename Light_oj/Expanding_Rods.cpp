@@ -19,45 +19,55 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    double l, n, c; cin >> l >> n >> c;
+
+    double lPrime = (1 + n * c) * l;
+
+    if (lPrime - l <= 1e-12)
+    {
+        cout << 0 << endl;
+        return;
+    }
+
+    double low = 0.0, high = l, h = 0.0;
+
+    for (int i = 0; i <= 100; i++)
+    {
+        h = (low + high) / 2;
+        double R = (h * h + (l * l) / 4.0) / (2.0 * h);
+        double theta = 2.0 * asin(l / (2.0 * R));
+        double curL = R * theta;
+
+        if (curL < lPrime) low = h;
+        else high = h;
+    }
+
+    cout << h << endl;
 }
 
 
 int32_t main()
 {
     fastio();
+    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
+        cout << "Case " << tt << ": ";
         solve ();
     }
 

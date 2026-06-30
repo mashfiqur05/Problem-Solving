@@ -16,44 +16,43 @@ using namespace std;
 #define sq(a) ((a) * (a))
 #define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
-const double PI = acos(-1);
+const double PI = acos(-1.0);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
+int findAngle (double x)
 {
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
+    return (round(asin(x) * 180.0/PI));
 }
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    double a, b, c; cin >> a >> b >> c;
+
+    int x = findAngle (a);
+    int y = findAngle (b);
+    int z = findAngle (c);
+
+    if (x + y + z == 180) cout << (int)max ({x, y, z}) << endl;
+    else if (x+y == z) cout << (int)max ({x, y, 180-z}) << endl;
+    else if (x+z == y) cout << (int)max ({x, z, 180-y}) << endl;
+    else if (z+y == x) cout << (int)max ({z, y, 180-x}) << endl;
 }
 
 
 int32_t main()
 {
     fastio();
+    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

@@ -19,43 +19,38 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    double l3, l4, l5; cin >> l3 >> l4 >> l5;
+
+    double v3 = (sqrt(2) / 12) * l3 * l3 * l3;
+    double v4 = (l4 * l4 * l4 ) / (3 * sqrt (2));
+    double R5   = l5 / (2.0 * sin(PI / 5.0));          // circumradius of base pentagon
+    double h5   = sqrt(l5 * l5 - R5 * R5);             // apex height
+    double base5 = (5.0 * l5 * l5) / (4.0 * tan(PI / 5.0)); // area of regular pentagon
+    double v5   = (1.0 / 3.0) * base5 * h5;
+
+    cout << v3 + v4 + v5 << endl;
 }
 
 
 int32_t main()
 {
     fastio();
+    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

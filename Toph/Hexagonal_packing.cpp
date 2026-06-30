@@ -19,41 +19,41 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
+    int n;
+    double r; cin >> n >> r;
+
+    double a = r / sqrt(3.0 * n * n - 3.0 * n + 1.0);
+
+    double area = (3.0 * sqrt(3.0) * a * a) / 2.0;
+
+    cout << area << endl;
+    // if (n != 1) a = r / (1 + sqrt(3.0) * (n-1.0));
+
+    // // int totalHexagon = 3 * n * (n-1) + 1;
+    // double area = (3 * sqrt (3) * sq(a)) / 2.00;
+    // // double ans = totalHexagon * area;
+
+    // cout << area << endl;
 }
 
 
 int32_t main()
 {
     fastio();
+    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)

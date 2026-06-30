@@ -19,28 +19,38 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
-
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
-        }
-    }
-}
 
 void solve ()
 {
     int n; cin >> n;
-    cout << divSum[n] << endl;
+    int xleft = 0, yleft = 0, zleft = 0;
+    int xright = 1001, yright = 1001, zright = 1001;
+    for (int i = 0; i < n; i++)
+    {
+        int x1, y1, z1, x2, y2, z2;
+        cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2;
+
+        xleft = max (x1, xleft);
+        yleft = max (y1, yleft);
+        zleft = max (z1, zleft);
+
+        xright = min (x2, xright);
+        yright = min (y2, yright);
+        zright = min (z2, zright);
+    }
+
+    int xc = xright - xleft;
+    int yc = yright - yleft;
+    int zc = zright - zleft;
+
+    int ans = 0;
+    if (xc > 0 && yc > 0 && zc > 0) ans = xc * yc * zc; 
+
+    cout << ans << endl;
 }
 
 
@@ -53,11 +63,11 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
+        cout << "Case " << tt << ": ";
         solve ();
     }
 

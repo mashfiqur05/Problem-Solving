@@ -23,23 +23,76 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n, k; 
+vector<int> adj[MX];
+int vis[MX], black[MX];
+int cur = 0;
+
+void dfs (int vertex)
+{
+    vis[vertex] = 1;
+    cur++;
+
+    for (auto child : adj[vertex])
+    { 
+        if (vis[child]) continue;
+        dfs (child);    
+    }
+}
+long long bigmod(long long a, long long b) {
+    long long res = 1;
+
+    while(b > 0) {
+        if(b & 1)
+            res = (res * a) % MOD;
+
+        a = (a * a) % MOD;
+        b >>= 1;
+    }
+
+    return res;
+}
 
 void solve ()
 {
-    double R, n; cin >> R >> n;
+    cin >> n >> k;
+    for (int i = 0; i < n-1; i++)
+    {
+        int u, v, c;
+        cin >> u >> v >> c;
+        if (c == 1) {
+            continue;
+        }
+        adj[u].push_back (v);
+        adj[v].push_back (u);
+    }
 
-    double lob = R * sin (PI / n);
-    double hor = 1 + sin (PI / n);
+    vector<int> nk(n + 1, 0);
+    for (int i = 1; i <= n; i++)
+    {
+        nk[i] = bigmod(i, k);
+    }
 
-    double r = lob / hor;
-    cout << r << endl;
+    int bad = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (!vis[i])
+        {
+            cur = 0;
+            dfs (i);
+            bad += nk[cur];
+            bad %= MOD;
+        }
+    }
+
+    int ans = (nk[n] - bad + MOD) % MOD;
+    cout << ans << endl;
 }
 
 
 int32_t main()
 {
     fastio();
-    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
@@ -47,10 +100,9 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        cout << "Case " << tt << ": ";
         solve ();
     }
 

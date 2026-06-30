@@ -19,29 +19,43 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 500000+123;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-// proper divisor 
-int divSum[MX];
+long long powerMod(long long base, long long exp, long long mod) {
+    long long ans = 1 % mod;
 
-void precompute()
-{
-    for (int i = 1; i < MX; i++)
-    {
-        for (int j = 2*i; j < MX; j+=i)
-        {
-            divSum[j] += i;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            ans = (ans * base) % mod;
         }
+
+        base = (base * base) % mod;
+        exp /= 2;
     }
+
+    return ans;
 }
 
 void solve ()
 {
-    int n; cin >> n;
-    cout << divSum[n] << endl;
-}
+    int n, k; cin >> n >> k;
+    string s; cin >> s;
+    // s = '.'+s;
+    string ans = "";
+
+    int val = powerMod(2, k, n);
+    // cout << val << endl;
+    for (int i = 0; i < n; i++)
+    {
+        int ind = ((i * val) % n) % n;
+        // cout << ind << " ";
+        ans += s[ind];
+    }
+
+    cout << ans << endl;
+}   
 
 
 int32_t main()
@@ -53,9 +67,8 @@ int32_t main()
     //#endif
     // srand(time(NULL));
 
-    precompute();
     int testcases = 1;
-    cin >> testcases;
+    // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

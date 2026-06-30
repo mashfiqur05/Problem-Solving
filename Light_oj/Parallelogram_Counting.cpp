@@ -23,23 +23,67 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-
-void solve ()
+struct Point
 {
-    double R, n; cin >> R >> n;
+    int x, y;
+    bool operator<(const Point &other) const
+    {
+        if (x != other.x)
+            return x < other.x;
+        return y < other.y;
+    }
+    bool operator==(const Point &other) const
+    {
+        return x == other.x && y == other.y;
+    }
+};
 
-    double lob = R * sin (PI / n);
-    double hor = 1 + sin (PI / n);
+void solve()
+{
+    int n;
+    cin >> n;
+    vector<pair<int, int>> v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i].first >> v[i].second;
+    }
 
-    double r = lob / hor;
-    cout << r << endl;
+    vector<Point> midpoints;
+    midpoints.reserve((n * (n - 1)) / 2);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            midpoints.push_back({v[i].first + v[j].first, v[i].second + v[j].second});
+        }
+    }
+
+    sort(midpoints.begin(), midpoints.end());
+
+    int ans = 0;
+    int cur = 1;
+
+    for (int i = 1; i < midpoints.size(); i++)
+    {
+        if (midpoints[i] == midpoints[i - 1])
+        {
+            cur++;
+        }
+        else
+        {
+            ans += (cur * (cur - 1)) / 2;
+            cur = 1;
+        }
+    }
+    ans += (cur * (cur - 1)) / 2;
+
+    cout << ans << endl;
 }
-
 
 int32_t main()
 {
     fastio();
-    fraction();
     //#ifndef ONLINE_JUDGE
     //freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
