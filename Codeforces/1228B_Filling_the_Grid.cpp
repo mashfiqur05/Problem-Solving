@@ -23,52 +23,61 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-void solve()
+
+void solve ()
 {
-    int n, m;
-    cin >> n >> m;
+    int h, w; cin >> h >> w;
+    vector<vector<int>> v(h, vector<int> (w, -1));
+    vector<int> r(h), c(w);
+    for (int i = 0; i < h; i++) cin >> r[i];
+    for (int i = 0; i < w; i++) cin >> c[i];
 
-    string s, t;
-    cin >> s >> t;
-
-    int pos = s.find('*');
-
-    if (pos == string::npos)
+    for (int i = 0; i < h; i++)
     {
-        if (s == t) cout << "YES" << endl;
-        else cout << "NO" << endl;
-
-        return;
+        int val = r[i];
+        for (int j = 0; j < val; j++) v[i][j] = 1;
+        if (val < w) v[i][val] = 0;
     }
 
-    if (m < n - 1)
+    for (int j = 0; j < w; j++)
     {
-        cout << "NO" << endl;
-        return;
-    }
-
-    for (int i = 0; i < pos; i++)
-    {
-        if (s[i] != t[i])
+        int val = c[j];
+        for (int i = 0; i < val; i++) 
         {
-            cout << "NO" << endl;
-            return;
+            if (v[i][j] == 0) 
+            {
+                cout << 0 << endl;
+                return;
+            }
+            v[i][j] = 1;
+        }
+
+        if (val < h) 
+        {
+            if (v[val][j] == 1) 
+            {
+                cout << 0 << endl;
+                return;
+            }
+            v[val][j] = 0;
         }
     }
 
-    int suffixLength = n - pos - 1;
-
-    for (int i = 0; i < suffixLength; i++)
+    int unoccupied = 0;
+    for (int i = 0; i < h; i++)
     {
-        if (s[n - 1 - i] != t[m - 1 - i])
+        for (int j = 0; j < w; j++)
         {
-            cout << "NO" << endl;
-            return;
+            if (v[i][j] == -1) unoccupied++;
         }
     }
 
-    cout << "YES" << endl;
+    int ans = 1;
+    for (int i = 0; i < unoccupied; i++) ans = (ans * 2) % MOD;
+
+    cout << ans << endl;
 }
+
 
 int32_t main()
 {

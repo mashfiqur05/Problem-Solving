@@ -23,52 +23,40 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-void solve()
+
+void solve ()
 {
-    int n, m;
-    cin >> n >> m;
-
-    string s, t;
-    cin >> s >> t;
-
-    int pos = s.find('*');
-
-    if (pos == string::npos)
+    int n; cin >> n;
+    vector<int> v(n);
+    int val = 0;
+    for (int i = 0; i < n; i++)
     {
-        if (s == t) cout << "YES" << endl;
-        else cout << "NO" << endl;
+        cin >> v[i];
+        val ^= v[i];
+    }
 
+    // cout << val << endl;
+    if (n == 1)
+    {
+        cout << 0 << endl;
         return;
     }
 
-    if (m < n - 1)
+    if (val == 0) 
     {
-        cout << "NO" << endl;
+        cout << 1 << endl;
         return;
     }
-
-    for (int i = 0; i < pos; i++)
+    int ans = 0;
+    for (auto u : v)
     {
-        if (s[i] != t[i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
+        int need = u ^ val;
+        if (need <= u) ans++;
     }
-
-    int suffixLength = n - pos - 1;
-
-    for (int i = 0; i < suffixLength; i++)
-    {
-        if (s[n - 1 - i] != t[m - 1 - i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-
-    cout << "YES" << endl;
+    // if (n % 2== 0) ans++;
+    cout << ans << endl;
 }
+
 
 int32_t main()
 {
@@ -80,7 +68,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

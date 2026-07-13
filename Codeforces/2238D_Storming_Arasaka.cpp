@@ -23,52 +23,39 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-void solve()
-{
-    int n, m;
-    cin >> n >> m;
-
-    string s, t;
-    cin >> s >> t;
-
-    int pos = s.find('*');
-
-    if (pos == string::npos)
-    {
-        if (s == t) cout << "YES" << endl;
-        else cout << "NO" << endl;
-
-        return;
-    }
-
-    if (m < n - 1)
-    {
-        cout << "NO" << endl;
-        return;
-    }
-
-    for (int i = 0; i < pos; i++)
-    {
-        if (s[i] != t[i])
-        {
-            cout << "NO" << endl;
-            return;
+vector<pair<int, int>> primeFactors(int n) {
+    vector<pair<int, int>> factors;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            int count = 0;
+            while (n % i == 0) {
+                n /= i;
+                count++;
+            }
+            factors.push_back({i, count});
         }
     }
-
-    int suffixLength = n - pos - 1;
-
-    for (int i = 0; i < suffixLength; i++)
-    {
-        if (s[n - 1 - i] != t[m - 1 - i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
+    if (n > 1) {
+        factors.push_back({n, 1});
     }
-
-    cout << "YES" << endl;
+    return factors;
 }
+
+void solve ()
+{
+    int n; cin >> n;
+    vector<pair<int, int>> factors = primeFactors(n);
+
+    int ans = factors.size();
+    // cout << ans << endl;
+
+    for (auto u : factors) {
+        ans += u.second;
+        // cout << u.first << " " << u.second << " " << ans << endl;
+    }
+    cout << ans-1 << endl;
+}
+
 
 int32_t main()
 {
@@ -80,7 +67,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

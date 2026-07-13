@@ -23,52 +23,66 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-void solve()
+void solve ()
 {
-    int n, m;
-    cin >> n >> m;
+    int n, k; cin >> n >> k;
 
-    string s, t;
-    cin >> s >> t;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
 
-    int pos = s.find('*');
+    map<int, int> cnt;
+    for (auto u : v) cnt[u]++;
 
-    if (pos == string::npos)
+    vector<int> block;
+    for (auto u : cnt) block.push_back(u.second);
+
+    sort(all(block));
+
+    int destroyed = 0;
+    int remainingBlocks = block.size();
+    int ans = 0;
+
+    int i = 0;
+
+    while (i < block.size())
     {
-        if (s == t) cout << "YES" << endl;
-        else cout << "NO" << endl;
+        int blockSize = block[i];
 
-        return;
-    }
+        // We check x = blockSize - 1
+        int x = blockSize - 1;
 
-    if (m < n - 1)
-    {
-        cout << "NO" << endl;
-        return;
-    }
+        int currentSize =
+            n - destroyed - x * remainingBlocks;
 
-    for (int i = 0; i < pos; i++)
-    {
-        if (s[i] != t[i])
+        if (currentSize <= k &&
+            (k - currentSize) % remainingBlocks == 0)
         {
-            cout << "NO" << endl;
-            return;
+            ans++;
         }
-    }
 
-    int suffixLength = n - pos - 1;
+        // Count blocks having this same size
+        int j = i;
 
-    for (int i = 0; i < suffixLength; i++)
-    {
-        if (s[n - 1 - i] != t[m - 1 - i])
+        while (j < block.size() &&
+               block[j] == blockSize)
         {
-            cout << "NO" << endl;
-            return;
+            j++;
         }
+
+        int numberOfBlocks = j - i;
+
+        // These blocks will be destroyed afterward
+        destroyed += blockSize * numberOfBlocks;
+
+        remainingBlocks -= numberOfBlocks;
+
+        i = j;
     }
 
-    cout << "YES" << endl;
+    cout << ans << endl;
 }
+
+
 
 int32_t main()
 {
@@ -80,7 +94,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

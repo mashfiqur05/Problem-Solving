@@ -23,52 +23,36 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-void solve()
+
+void solve ()
 {
-    int n, m;
-    cin >> n >> m;
+    int n, d; cin >> n >> d;
+    vector<int> v(3*n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    for (int i = 0; i < 3*n; i++) v[i] = v[i%n];
 
-    string s, t;
-    cin >> s >> t;
+    vector<int> pref(3*n+1);
 
-    int pos = s.find('*');
+    for (int i = 1; i <= 3*n; i++) pref[i] = pref[i-1] + v[i-1];
 
-    if (pos == string::npos)
+    // for (int i = 0; i <= 2*n; i++) cout << pref[i] << " "; cout << endl;
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
     {
-        if (s == t) cout << "YES" << endl;
-        else cout << "NO" << endl;
-
-        return;
+        int pos = i+n;
+        int left = pref[pos] - pref[pos - d];
+        int right = pref[pos + d + 1] - pref[pos + 1];
+        
+        int giftdile = 2 * d * v[i] - left - right;
+        // cout << i << " " << left << " " << right << " " << giftdile << endl;
+        ans += max(0LL, giftdile);
     }
 
-    if (m < n - 1)
-    {
-        cout << "NO" << endl;
-        return;
-    }
+    cout << ans << endl;
 
-    for (int i = 0; i < pos; i++)
-    {
-        if (s[i] != t[i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-
-    int suffixLength = n - pos - 1;
-
-    for (int i = 0; i < suffixLength; i++)
-    {
-        if (s[n - 1 - i] != t[m - 1 - i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-
-    cout << "YES" << endl;
 }
+
 
 int32_t main()
 {
@@ -80,7 +64,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();

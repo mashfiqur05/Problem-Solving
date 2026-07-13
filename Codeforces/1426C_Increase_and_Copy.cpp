@@ -23,52 +23,25 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-void solve()
+void solve ()
 {
-    int n, m;
-    cin >> n >> m;
-
-    string s, t;
-    cin >> s >> t;
-
-    int pos = s.find('*');
-
-    if (pos == string::npos)
+    int n; cin >> n;
+    int ans = n;
+    if (n == 1) 
     {
-        if (s == t) cout << "YES" << endl;
-        else cout << "NO" << endl;
-
+        cout << 0 << endl;
         return;
     }
 
-    if (m < n - 1)
+    for (int i = 1; i * i <= n; i++)
     {
-        cout << "NO" << endl;
-        return;
+        int moves = (i - 1) + ((n+i-1)/i - 1);
+        ans = min(ans, moves);
     }
 
-    for (int i = 0; i < pos; i++)
-    {
-        if (s[i] != t[i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-
-    int suffixLength = n - pos - 1;
-
-    for (int i = 0; i < suffixLength; i++)
-    {
-        if (s[n - 1 - i] != t[m - 1 - i])
-        {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-
-    cout << "YES" << endl;
+    cout << ans << endl;
 }
+
 
 int32_t main()
 {
@@ -80,7 +53,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    // cin >> testcases;
+    cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();
