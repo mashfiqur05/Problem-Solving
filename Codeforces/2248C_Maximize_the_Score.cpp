@@ -23,55 +23,28 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-/*
-dp[i] = minimum number meter swim to reach i
-*/
 
 void solve ()
 {
-    int n, m, k;cin >> n >> m >> k;
-    string s; cin >> s;
-    s = '.' + s;
-    vector<int> dp(n+2, inf);
-    dp[0] = 0;
+    int n; cin >> n;
+    vector<int> v(2*n+1), dp(2*n+1, 0);
 
-    for (int i = 0; i <= n; i++)
+    for (int i = 1; i <= 2*n; i++) cin >> v[i];
+
+    vector<int> pos(n+1, -1);
+    for (int i = 1; i <= 2*n; i++)
     {
-        if (dp[i] == inf) continue;
-
-        if (i == 0 || (s[i] == 'L'))
+        dp[i] = dp[i-1] + 1;
+        if (pos[v[i]] == -1) pos[v[i]] = i;
+        else 
         {
-            for (int j = i+1; j <= min (n+1, i+m); j++)
-            {
-                if (j == n+1 || s[j] == 'L') 
-                {
-                    dp[j] = min (dp[i], dp[j]);
-                }
-                else if (s[j] == 'C') continue;
-                else if (s[j] == 'W') dp[j] = min (dp[i]+1, dp[j]);
-            }
-        }
-        else if (s[i] == 'W')
-        {
-            int j = i + 1;
-
-            if (j == n + 1)
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
-            else if (s[j] == 'W')
-            {
-                dp[j] = min(dp[j], dp[i] + 1);
-            }
-            else if (s[j] == 'L')
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
+            int len = i - pos[v[i]] + 1;
+            
+            dp[i] = max(dp[i], dp[pos[v[i]]-1] + sq(len));
         }
     }
-    
-    if (dp[n+1] <= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+
+    cout << dp[2*n] << endl;
 }
 
 

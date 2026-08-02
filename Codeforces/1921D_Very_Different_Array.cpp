@@ -24,57 +24,54 @@ const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
 /*
-dp[i] = minimum number meter swim to reach i
+1 2 4 6
+1 2 3 3 5 7
+
+7 5 1 2
+6+3+3+4 = 16
 */
 
 void solve ()
 {
-    int n, m, k;cin >> n >> m >> k;
-    string s; cin >> s;
-    s = '.' + s;
-    vector<int> dp(n+2, inf);
-    dp[0] = 0;
+    int n, m; cin >> n >> m;
+    vector<int> a(n), b(m);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < m; i++) cin >> b[i];
 
-    for (int i = 0; i <= n; i++)
+    sort (all (a));
+    sort (all (b));
+
+    int ans = 0;
+    int i = 0, j = m-1;
+    int l = 0, r = n-1;
+
+    while (l <= r)
     {
-        if (dp[i] == inf) continue;
+        int right = abs (a[r] - b[i]);
+        int left = abs (a[l] - b[j]);
 
-        if (i == 0 || (s[i] == 'L'))
+        if (right > left) 
         {
-            for (int j = i+1; j <= min (n+1, i+m); j++)
-            {
-                if (j == n+1 || s[j] == 'L') 
-                {
-                    dp[j] = min (dp[i], dp[j]);
-                }
-                else if (s[j] == 'C') continue;
-                else if (s[j] == 'W') dp[j] = min (dp[i]+1, dp[j]);
-            }
+            ans += right;
+            i++;
+            r--;
         }
-        else if (s[i] == 'W')
+        else 
         {
-            int j = i + 1;
-
-            if (j == n + 1)
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
-            else if (s[j] == 'W')
-            {
-                dp[j] = min(dp[j], dp[i] + 1);
-            }
-            else if (s[j] == 'L')
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
+            ans += left;
+            j--;
+            l++;
         }
     }
-    
-    if (dp[n+1] <= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+
+    cout << ans << endl;
 }
 
+/*
+1 1 2 5 5
+1 2 2 3 6 9
 
+*/
 int32_t main()
 {
     fastio();

@@ -23,55 +23,21 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-/*
-dp[i] = minimum number meter swim to reach i
-*/
 
 void solve ()
 {
-    int n, m, k;cin >> n >> m >> k;
-    string s; cin >> s;
-    s = '.' + s;
-    vector<int> dp(n+2, inf);
-    dp[0] = 0;
-
-    for (int i = 0; i <= n; i++)
-    {
-        if (dp[i] == inf) continue;
-
-        if (i == 0 || (s[i] == 'L'))
-        {
-            for (int j = i+1; j <= min (n+1, i+m); j++)
-            {
-                if (j == n+1 || s[j] == 'L') 
-                {
-                    dp[j] = min (dp[i], dp[j]);
-                }
-                else if (s[j] == 'C') continue;
-                else if (s[j] == 'W') dp[j] = min (dp[i]+1, dp[j]);
-            }
-        }
-        else if (s[i] == 'W')
-        {
-            int j = i + 1;
-
-            if (j == n + 1)
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
-            else if (s[j] == 'W')
-            {
-                dp[j] = min(dp[j], dp[i] + 1);
-            }
-            else if (s[j] == 'L')
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
-        }
-    }
+    int a, b, n; cin >> a >> b >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
     
-    if (dp[n+1] <= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    int ans = b-1;
+    for (int i = 0; i < n; i++)
+    {
+        int val = min (a, v[i]+1);
+        ans += (val-1);
+    }
+
+    cout << ans+1 << endl;
 }
 
 

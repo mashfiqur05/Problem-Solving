@@ -23,55 +23,28 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-/*
-dp[i] = minimum number meter swim to reach i
-*/
 
 void solve ()
 {
-    int n, m, k;cin >> n >> m >> k;
     string s; cin >> s;
-    s = '.' + s;
-    vector<int> dp(n+2, inf);
-    dp[0] = 0;
-
-    for (int i = 0; i <= n; i++)
+    for (int i = 0; i < s.size(); i++) 
     {
-        if (dp[i] == inf) continue;
-
-        if (i == 0 || (s[i] == 'L'))
+        if (s[i] == '0') 
         {
-            for (int j = i+1; j <= min (n+1, i+m); j++)
-            {
-                if (j == n+1 || s[j] == 'L') 
-                {
-                    dp[j] = min (dp[i], dp[j]);
-                }
-                else if (s[j] == 'C') continue;
-                else if (s[j] == 'W') dp[j] = min (dp[i]+1, dp[j]);
-            }
-        }
-        else if (s[i] == 'W')
-        {
-            int j = i + 1;
-
-            if (j == n + 1)
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
-            else if (s[j] == 'W')
-            {
-                dp[j] = min(dp[j], dp[i] + 1);
-            }
-            else if (s[j] == 'L')
-            {
-                dp[j] = min(dp[j], dp[i]);
-            }
+            s.erase(i, 1);
+            break;
         }
     }
-    
-    if (dp[n+1] <= k) cout << "YES" << endl;
-    else cout << "NO" << endl;
+    for (int i = 0; i < s.size(); i++) 
+    {
+        if (s[i] == '1') 
+        {
+            s.erase(i, 1);
+            break;
+        }
+    }
+
+    cout << s << endl;
 }
 
 
@@ -85,7 +58,7 @@ int32_t main()
     // srand(time(NULL));
 
     int testcases = 1;
-    cin >> testcases;
+        cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         solve ();
