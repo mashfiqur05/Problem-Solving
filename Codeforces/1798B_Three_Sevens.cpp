@@ -26,36 +26,40 @@ const int MOD = 1e9+7;
 
 void solve ()
 {
-    int n; cin >> n;
-    string s; cin >> s;
-    int cnt = 0;
-    for (int i = n-1; i >= 0; i--)
+    int m; cin >> m;
+    vector<vector<int>> lottery;
+    for (int i = 1; i <= m; i++)
     {
-        if (s[i] == '0') cnt++;
-        else if (s[i] == '1' && (cnt & 1)) 
-        {
-            cout << "Alice" << endl;
-            return;
-        }
-        // cout << cnt << " ";
+        int n; cin >> n;
+        vector<int> v(n);
+        for (int j = 0; j < n; j++) cin >> v[j];
+        lottery.push_back (v);
     }
-    vector<int> pref1(n);
-    pref1[0] = (s[0] == '1');
-    for (int i = 1; i < n; i++) pref1[i] = pref1[i-1] + (s[i] == '1');
 
-    for (int i = 0; i < n; i++)
+    set<int> f;
+    vector<int> ans(m, -1);
+    bool possible = 1;
+    for (int i = m-1; i >= 0; i--)
     {
-        if (s[i] == '0') cnt++;
-        else cnt = 0;
-
-        if ((cnt * pref1[i]) % 2 == 1) 
+        for (auto val : lottery[i])
         {
-            cout << "Alice" << endl;
-            return;
+            if (f.find(val) == f.end())
+            {
+                ans[i] = val;
+            }
+            f.insert(val);
         }
+        if (ans[i] == -1) {possible = 0; break;}
     }
-    
-    cout << "Bob" << endl;
+
+    if (!possible)
+        cout << -1 << endl;
+    else
+    {
+        for (auto u : ans)
+            cout << u << " ";
+        cout << endl;
+    }
 }
 
 

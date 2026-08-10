@@ -26,36 +26,31 @@ const int MOD = 1e9+7;
 
 void solve ()
 {
-    int n; cin >> n;
-    string s; cin >> s;
-    int cnt = 0;
-    for (int i = n-1; i >= 0; i--)
+    int n, k; cin >> n >> k;
+    vector<pair<int, int>> a(n), b(n);
+    for (int i = 0; i < n; i++)
     {
-        if (s[i] == '0') cnt++;
-        else if (s[i] == '1' && (cnt & 1)) 
-        {
-            cout << "Alice" << endl;
-            return;
-        }
-        // cout << cnt << " ";
+        cin >> a[i].first;
+        a[i].second = i;
     }
-    vector<int> pref1(n);
-    pref1[0] = (s[0] == '1');
-    for (int i = 1; i < n; i++) pref1[i] = pref1[i-1] + (s[i] == '1');
 
     for (int i = 0; i < n; i++)
     {
-        if (s[i] == '0') cnt++;
-        else cnt = 0;
-
-        if ((cnt * pref1[i]) % 2 == 1) 
-        {
-            cout << "Alice" << endl;
-            return;
-        }
+        cin >> b[i].first;
+        b[i].second = i;
     }
-    
-    cout << "Bob" << endl;
+
+    sort (all (a));
+    sort (all (b));
+
+    vector<int> ans(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        ans[a[i].second] = b[i].first;
+    }
+
+    for (auto u : ans) cout << u << " "; cout << endl;
 }
 
 

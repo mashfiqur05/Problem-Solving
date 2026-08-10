@@ -23,44 +23,39 @@ const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+double dist(int x1, int y1, int x2, int y2) {
+    long long dx = x2 - x1;
+    long long dy = y2 - y1;
 
-void solve ()
-{
-    int n; cin >> n;
-    string s; cin >> s;
-    int cnt = 0;
-    for (int i = n-1; i >= 0; i--)
-    {
-        if (s[i] == '0') cnt++;
-        else if (s[i] == '1' && (cnt & 1)) 
-        {
-            cout << "Alice" << endl;
-            return;
-        }
-        // cout << cnt << " ";
-    }
-    vector<int> pref1(n);
-    pref1[0] = (s[0] == '1');
-    for (int i = 1; i < n; i++) pref1[i] = pref1[i-1] + (s[i] == '1');
-
-    for (int i = 0; i < n; i++)
-    {
-        if (s[i] == '0') cnt++;
-        else cnt = 0;
-
-        if ((cnt * pref1[i]) % 2 == 1) 
-        {
-            cout << "Alice" << endl;
-            return;
-        }
-    }
-    
-    cout << "Bob" << endl;
+    return sqrt(1.0 * dx * dx + 1.0 * dy * dy);
 }
 
 
+
+void solve ()
+{
+    int px, py, ax, ay, bx, by;
+    cin >> px >> py >> ax >> ay >> bx >> by;
+
+    double OA = dist(0, 0, ax, ay);
+    double OB = dist(0, 0, bx, by);
+    double AP = dist(ax, ay, px, py);
+    double BP = dist(bx, by, px, py);
+    double AB = dist(ax, ay, bx, by);
+
+    double ans = DBL_MAX;
+
+    ans = min(ans, max(OA, AP));
+    ans = min(ans, max(OB, BP));
+    ans = min(ans, max({AB / 2.0, OA, BP}));
+    ans = min(ans, max({AB / 2.0, OB, AP}));
+
+    cout << ans << endl;
+}
+
 int32_t main()
 {
+    fraction();
     fastio();
     #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
