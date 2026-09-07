@@ -1,52 +1,69 @@
+///   ***   ---   |||		 In the name of ALLAH		|||   ---   ***   ///
+
 #include<bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define endl "\n"
-#define Bismillah() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);    ///  Fast IO.
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+
+#define endl '\n'
+#define ll long long
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).rend()
+#define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
-#define all(v) (v).begin(),(v).end()     /// ascending
-#define rall(v) (v).rbegin(),(v).rend()  /// descending
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
-int dx[] = {0, 0, +1, -1, +1, +1, -1, -1};
-int dy[] = {+1, -1, 0, 0, +1, -1, +1, -1};
+const double PI = acos(-1);
+const double eps = 1e-9;
+const int inf = 2000000000;
+const int MX = 2e5+123;
+const ll infLL = 9000000000000000000;
+const int MOD = 1e9+7;
 
-//int gcd ( int a, int b ) { return __gcd ( a, b ); }
-//int lcm ( int a, int b ) { return a * ( b / gcd ( a, b ) ); }
 
-//const int N = 1e5+123;
-//int arr[N];
+void solve ()
+{
+    string a, b; cin >> a >> b;
+    int ans = a.size() + b.size(), cnt = ans;
+
+    b = '.'+b;
+    for (int i = 0; i < b.size(); i++)
+    {
+        int tmp = 0, j = i+1;
+        for (int k = 0; k < a.size(); k++)
+        {
+            if (a[k] == b[j]) 
+            {
+                j++;
+                tmp++;
+            }
+        }
+        ans = min (ans, (i+sz(a)+sz(b)-j));
+        // cout << i << " " << tmp << " " << ans << endl;
+    }
+
+    cout << ans << endl;
+}
+
 
 int32_t main()
 {
-    Bismillah();
+    fastio();
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    // srand(time(NULL));
 
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        string a, b;
-        cin >> a >> b;
-        int m = a.size(), n = b.size();
-
-        int ans = m + n;
-
-        for (int st = 0; st < n; st++)
-        {
-            int j = st;
-            for (int i = 0; i < m && j < n; i++ )
-            {
-                if (a[i] == b[j]) j++;
-            }
-            int tmp = m + n + st - j;
-            ans = min (ans, tmp);
-            // cout << tmp << " " << ans << endl;
-        }
-
-        cout << ans << endl; 
+        solve ();
     }
-    
+
     return 0;
 }

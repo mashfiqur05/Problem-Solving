@@ -5,7 +5,6 @@ using namespace std;
 
 #define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
-#define file() freopen("input.txt","r",stdin);freopen("output.txt","w",stdout);
 
 #define endl '\n'
 #define ll long long
@@ -20,119 +19,149 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 1e5+50003;
+const int MX = 2e5+123;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
-int segment_tree[4*MX], arr[MX];
+struct Node {
+    int sum;
 
-// Calculate the value of a node from its children
-int calculate(int node) {
-    return (segment_tree[2*node] + segment_tree[2*node + 1]);
-}
-
-// Build the segment tree: node = current node in tree, [left, right] = segment
-void build(int node, int left, int right) {
-    if (left == right) {
-        segment_tree[node] = (arr[left] != 0);
-        return; // leaf node
-    } else {
-        int mid = left + (right - left)/2;
-        build(2*node, left, mid);
-        build(2*node + 1, mid + 1, right);
-        segment_tree[node] = calculate(node);
+    Node(int _sum = 0) {
+        sum = _sum;
     }
-}
+};
 
-// Update position idx to value val
-void update(int node, int left, int right, int idx) {
-    if (left == right) {
-        segment_tree[node] = 1;
-        return;
-    } else {
-        int mid = left + (right - left)/2;
-        if (idx <= mid) update(2*node, left, mid, idx);
-        else update(2*node + 1, mid + 1, right, idx);
-        segment_tree[node] = calculate(node);
+struct SegTree {
+
+    int n;
+    vector<Node> tree;
+    vector<int> arr;
+
+    SegTree(int _n) {
+        n = _n;
+
+        tree.assign(4 * n + 5, Node());
+        arr.assign(n + 1, 0);
     }
-}
 
-void del(int node, int left, int right, int idx) {
-    if (left == right) {
-        segment_tree[node] = 0;
-        return;
-    } else {
-        int mid = left + (right - left)/2;
-        if (idx <= mid) del(2*node, left, mid, idx);
-        else del(2*node + 1, mid + 1, right, idx);
-        segment_tree[node] = calculate(node);
+    Node mergeNode(Node left, Node right) {
+        return Node((left.sum + right.sum));
     }
-}
 
-int kth (int node, int l, int r, int k)
+    void build(int node, int left, int right) {
+
+        if (left == right) {
+            tree[node] = Node(arr[left]);
+            return;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        build(2 * node, left, mid);
+        build(2 * node + 1, mid + 1, right);
+
+        tree[node] =
+            mergeNode(tree[2 * node],
+                      tree[2 * node + 1]);
+    }
+
+    void update(int node, int left, int right,
+                int idx, int val) {
+
+        if (left == right) {
+            tree[node] = Node(val);
+            return;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        if (idx <= mid)
+            update(2 * node, left, mid, idx, val);
+
+        else
+            update(2 * node + 1,
+                   mid + 1, right,
+                   idx, val);
+
+
+        tree[node] =
+            mergeNode(tree[2 * node],
+                      tree[2 * node + 1]);
+    }
+
+    int kth(int node, int left, int right, int k)
+    {
+        if (left == right)
+            return left;
+
+        int mid = left + (right - left) / 2;
+
+        int leftCount = tree[2 * node].sum;
+
+        if (k <= leftCount)
+            return kth(2 * node, left, mid, k);
+
+        return kth(2 * node + 1,
+                   mid + 1, right,
+                   k - leftCount);
+    }
+};
+
+void solve ()
 {
-    if (l == r)return l;
-    int mid = (l + r)/2;
-    if (segment_tree[2*node] >= k) return kth (2*node, l, mid, k);
-    else return kth(2*node + 1, mid+1, r, k-segment_tree[2*node]);
-}
-
-
-
-void solve (int CaseNo)
-{
-    cout << "Case " << CaseNo << ":" << endl;
     int n, q; cin >> n >> q;
-    for (int i = 1; i <= n; i++) cin >> arr[i];
-    int limit = n+q;
-    build (1,1, limit);
-    
-    // for (int i = 1; i <= 3*n; i++) cout << segment_tree[i] << " ";cout << endl;
 
-    while (q--)
+    SegTree st(n+q);
+
+    vector<int> v(n + q + 1);
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> v[i];
+        st.arr[i] = 1;
+    }
+    st.build(1, 1, n+q);
+
+    int cur = n+1;
+    int qq = q;
+    while (qq--)
     {
         char ch; cin >> ch;
+        int i; cin >> i;
         if (ch == 'a')
         {
-            int p;
-            cin >> p;
-            n++;
-            arr[n] = p;
-            update (1, 1, limit, n);
+            v[cur] = i;
+            st.update(1, 1, n+q, cur, 1);
+            cur++;
         }
         else 
         {
-            int k;
-            cin >> k;
-            // cout << segment_tree[0] <<" " << segment_tree[1] << endl;
-            if (k > segment_tree[1])
+            if (st.tree[1].sum < i) cout << "none" << endl;
+            else 
             {
-                cout << "none" << endl;
-                continue;
+                int ind = st.kth (1, 1, n+q, i);
+                cout << v[ind] << endl;
+                st.update(1, 1, n+q, ind, 0);
             }
-            int ind = kth (1, 1, limit, k);
-            cout << arr[ind] << endl;
-            del (1, 1, limit, ind);
         }
-        // for (int i = 1; i <= n; i++) cout << arr[i] << " ";cout << endl;
-        // for (int i = 1; i <= 3*n; i++) cout << segment_tree[i] << " ";cout << endl;
     }
-
-    mem (arr, 0);
-    mem (segment_tree, 0);
 }
 
 
 int32_t main()
 {
     fastio();
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
     // srand(time(NULL));
 
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        cout << "Case " << tt << ":" << endl;
+        solve ();
     }
 
     return 0;

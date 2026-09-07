@@ -1,61 +1,84 @@
+///   ***   ---   |||		 In the name of ALLAH		|||   ---   ***   ///
+
 #include<bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define endl "\n"
-#define Bismillah() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);    ///  Fast IO.
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+
+#define endl '\n'
+#define ll long long
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).rend()
+#define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
-#define all(v) (v).begin(),(v).end()     /// ascending
-#define rall(v) (v).rbegin(),(v).rend()  /// descending
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
-//int gcd ( int a, int b ) { return __gcd ( a, b ); }
-//int lcm ( int a, int b ) { return a * ( b / gcd ( a, b ) ); }
+const double PI = acos(-1);
+const double eps = 1e-9;
+const int inf = 2000000000;
+const int MX = 1e6+123;
+const ll infLL = 9000000000000000000;
+const int N = 1e6+5;
+const long long MOD = 1e9+7;
 
-//const int N = 1e5+123;
-//int arr[N];
-const ll MOD = 1000000007;
-ll fact[2000009];
+long long fact[N],invfact[N];
 
+long long power(long long a,long long b){
+    long long res=1;
+    while(b){
+        if(b&1) res=res*a%MOD;
+        a=a*a%MOD;
+        b>>=1;
+    }
+    return res;
+}
 
-void factorial()
-{
+void precompute(){
     fact[0]=1;
-    for(int i=1; i<2000002; i++)
-    {
-        fact[i]=(fact[i-1]%MOD*i)%MOD;
-    }
+    for(int i=1;i<N;i++)
+        fact[i]=fact[i-1]*i%MOD;
+
+    invfact[N-1]=power(fact[N-1],MOD-2);
+
+    for(int i=N-2;i>=0;i--)
+        invfact[i]=invfact[i+1]*(i+1)%MOD;
 }
 
-ll BigMod( ll a , ll b )
-{
-    ll res = 1;
-    while ( b )
-    {
-        if( b % 2 == 1 ) res = ( res * a ) % MOD ;
-        a = ( a * a ) % MOD ;
-        b /= 2 ;
-    }
-    return res ;
+long long nCr(int n,int r){
+    if(r>n) return 0;
+    return fact[n]*invfact[r]%MOD*invfact[n-r]%MOD;
 }
+
+
+
+void solve ()
+{
+    int n, r; cin >> n >> r;
+
+    cout << nCr(n+r-1, r-1) << endl;
+}
+
 
 int32_t main()
 {
-    Bismillah();
-    factorial();
+    fastio();
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    // srand(time(NULL));
+    precompute();
 
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
         cout << "Case " << tt << ": ";
-        int n, k;
-        cin >> n >> k;
-
-        ll ans = (fact[n+k-1] * ( BigMod( (fact[n] * fact[k-1] )%MOD , MOD - 2 ))) % MOD ;
-        cout << ans % MOD << endl;
+        solve ();
     }
-    
+
     return 0;
 }

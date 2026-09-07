@@ -1,44 +1,57 @@
+///   ***   ---   |||		 In the name of ALLAH		|||   ---   ***   ///
+
 #include<bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define endl "\n"
-#define Bismillah() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);    ///  Fast IO.
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+
+#define endl '\n'
+#define ll long long
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).rend()
+#define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
-#define all(v) (v).begin(),(v).end()     /// ascending
-#define rall(v) (v).rbegin(),(v).rend()  /// descending
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
-//ll gcd ( ll a, ll b ) { return __gcd ( a, b ); }
-//ll lcm ( ll a, ll b ) { return a * ( b / gcd ( a, b ) ); }
+const double PI = acos(-1);
+const double eps = 1e-9;
+const int inf = 2000000000;
+const int MX = 2e5+123;
+const ll infLL = 9000000000000000000;
+const int MOD = 1e9+7;
 
-//const ll MX = 123;
-//int arr[MX];
 
-int main()
+void solve ()
 {
-    Bismillah();
+    int n, m, k; cin >> n >> m >> k;
+    
+    int need = n - ((n+m-1) / m);
+    // cout << need << endl;
+    if (need > k) cout << "YES" << endl;
+    else cout << "NO" << endl;
+}
+
+// 1 2 3 4 1 2 3 4 1 2 3 4 1 2 3 4
+// 1 2 1 2 1 
+
+int32_t main()
+{
+    fastio();
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    // srand(time(NULL));
 
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        int n, m, k;
-        cin >> n >> m >> k;
-        //cout << ceil (5 / 2);
-
-
-        if (m == 1) cout << "NO" << endl;
-        else
-        {
-            double tmp = ceil (n * 1.00 / m);
-            int x = n - tmp;
-          //  cout << x << endl;
-            if (x <= k) cout << "NO" << endl;
-            else cout << "YES" << endl;
-        }
+        solve ();
     }
-    
+
     return 0;
 }

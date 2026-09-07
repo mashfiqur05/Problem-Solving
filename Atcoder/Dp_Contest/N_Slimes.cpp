@@ -5,7 +5,6 @@ using namespace std;
 
 #define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
-#define file() freopen("input.txt","r",stdin);freopen("output.txt","w",stdout);
 
 #define endl '\n'
 #define ll long long
@@ -20,57 +19,68 @@ using namespace std;
 const double PI = acos(-1);
 const double eps = 1e-9;
 const int inf = 2000000000;
-const int MX = 2e5+123;
+const int N = 423;
 const ll infLL = 9000000000000000000;
 const int MOD = 1e9+7;
 
+int n, a[N], dp[N][N], pref[N];
 
-void solve (int CaseNo)
+int fun (int l, int r)
 {
-    int n; cin >> n;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++) cin >> v[i];
+    if (l == r) return 0;
 
-    vector<int> prefix (n, 0);
-    prefix[0] = v[0];
-    for (int i = 1; i < n; i++) prefix[i] = prefix[i-1] + v[i];
+    if (dp[l][r] != -1) return dp[l][r];
 
-    vector<vector<int>> dp (n+1, vector<int> (n+1, infLL));
+    int res = infLL;
 
-    for (int i = 0; i <= n; i++) dp[i][i] = 0;
-    auto sum = [&](int l, int r)
+    for (int i = l; i < r; i++)
     {
-        if (l == 0)
-            return prefix[r];
-        return prefix[r] - prefix[l - 1];
-    };
-
-    for (int len = 2; len <= n; len++)
-    {
-        for (int l = 0; l+len-1 < n; l++)
-        {
-            int r = l+len-1;
-            for (int k = l; k < r; k++)
-            {
-                dp[l][r] = min (dp[l][k] + dp[k+1][r] + sum (l, r), dp[l][r]);
-            }
-        }
+        res = min (res, (fun(l, i) + fun (i+1, r) + pref[r]-(l-1 >= 0 ? pref[l-1] : 0)));
     }
 
-    cout << dp[0][n-1] << endl;
+    return dp[l][r] = res;
+}
+
+void solve ()
+{
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> a[i];
+    pref[0] = a[0];
+    for (int i = 1; i < n; i++)
+    {
+        pref[i] = pref[i-1] + a[i];
+        // cout << pref[i] << " ";
+    }
+    mem(dp, -1);
+
+    cout << fun (0, n-1) << endl;
+
+    // for (int i = 0; i < n; i++)
+    // {
+    //     for (int j = 0; j < n; j++)
+    //     {
+    //         // cout << "L " << i << " R " << j << " " << dp[i][j] << endl;
+    //         cout << dp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 }
 
 
 int32_t main()
 {
     fastio();
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
     // srand(time(NULL));
 
     int testcases = 1;
     // cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        solve (tt);
+        solve ();
     }
 
     return 0;
