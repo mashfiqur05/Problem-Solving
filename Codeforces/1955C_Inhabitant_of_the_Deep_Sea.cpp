@@ -1,77 +1,73 @@
+///   ***   ---   |||		 In the name of ALLAH		|||   ---   ***   ///
+
 #include<bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define endl "\n"
-#define Bismillah() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);    ///  Fast IO.
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+
+#define endl '\n'
+#define ll long long
+#define int long long
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).rend()
+#define sz(x) (int)x.size()
 #define mem(a,b) memset(a, b, sizeof(a) )
 #define sq(a) ((a) * (a))
-#define all(v) (v).begin(),(v).end()     /// ascending
-#define rall(v) (v).rbegin(),(v).rend()  /// descending
+#define unq(x) {x.erase(unique(x.begin(),x.end()),x.end());}
 
-//ll gcd ( ll a, ll b ) { return __gcd ( a, b ); }
-//ll lcm ( ll a, ll b ) { return a * ( b / gcd ( a, b ) ); }
+const double PI = acos(-1);
+const double eps = 1e-9;
+const int inf = 2000000000;
+const int N = 2e5+123;
+const ll infLL = 9000000000000000000;
+const int MOD = 1e9+7;
 
-//const ll MX = 123;
-//int arr[MX];
 
-int main()
+void solve ()
 {
-    Bismillah();
+    int n, k; cin >> n >> k;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    vector<int> prefix(n, 0), suffix(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+        if (i == 0) prefix[i] = v[i];
+        else prefix[i] = v[i] + prefix[i-1];
+    }
+
+    for (int i = n-1; i >= 0; i--)
+    {
+        if (i == n-1) suffix[i] = v[i];
+        else suffix[i] = suffix[i+1] + v[i];
+    }
+    reverse(all(suffix));
+
+    int bad = upper_bound(all(prefix), (k+1)/2)-prefix.begin();
+    int dab =  upper_bound(all (suffix), k/2)-suffix.begin();
+    // cout << bad << " " << dab  << endl;
+    int ans = bad+dab;
+
+    if (prefix[n-1] <= k) ans = n;
+    cout << ans << endl;
+}
+
+
+int32_t main()
+{
+    fastio();
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    // srand(time(NULL));
 
     int testcases = 1;
     cin >> testcases;
     for (int tt = 1; tt <= testcases; tt++)
     {
-        ll n, k;
-        cin >> n >> k;
-
-        vector<ll> v(n+1), pre(n+1, 0), back_pre(n+2, 0);
-
-        for (int i = 1; i <= n; i++) 
-        {
-            cin >> v[i];
-            pre[i] = pre[i-1] + v[i];
-        }
-
-        for (int i = n; i >= 1; i--)
-        {
-            back_pre[i] = back_pre[i+1] + v[i];
-        }
-
-        if (k >= pre[n]) cout << n << endl;
-        else
-        {
-            ll tmp1 = (k+1) / 2;
-            ll tmp2 = k - tmp1; 
-            ll f1 = 0, f2 = 0;
-
-            for (int i = 1; i <= n; i++)
-            {
-                //cout << pre[i] << ' ';
-                if (tmp1 >= pre[i])
-                {
-                    f1++;
-                }
-                else break;
-            }
-            for (int i = n; i >= 1; i--)
-            {
-               // cout << back_pre[i] << ' ';
-                if (tmp2 >= back_pre[i])
-                {
-                    f2++;
-                }
-                else break;
-            }
-
-            //cout << f1 << ' ' << f2 << endl;
-            //cout << tmp1 << ' ' << tmp2 << endl;
-
-            cout << f1+ f2 << endl;
-        }
+        solve ();
     }
-    
+
     return 0;
 }
