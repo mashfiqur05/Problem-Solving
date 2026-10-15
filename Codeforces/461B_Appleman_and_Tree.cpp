@@ -67,7 +67,6 @@ void solve ()
     for (int i = 0; i < n; i++) cin >> c[i];
 
     dfs(0,-1);
-    int ans = (dp[1][0] + dp[1][1]) % MOD;
     cout << dp[0][1] << endl;
 }
 
